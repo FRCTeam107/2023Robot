@@ -33,7 +33,7 @@ public final class Constants {
                 public static final int DRIVE_X_AXIS = 3;
                 public static final int DRIVE_Y_AXIS = 4;
                 public static final int DRIVE_Z_AXIS = 0;
-
+                
                 public static final int ACTIVATE_LIMELIGHT = 1;
                 //public static final int CLIMBER_MANUAL = 4;
                 public static final int AIM_BY_LIMELIGHT = 13;
@@ -63,11 +63,12 @@ public final class Constants {
                 static final int PICKUP_DOWN = 12;
                 static final int PICKUP_UP = 15;
                 public static final int PICKUP_EJECT = 14;
-                static final int PICKUP_INTAKE = 16;
+                static final int PICKUP_INTAKE = 1;
 
                 public static final int CLIMBER_DISMOUNT = 7;
-                public static final int CLIMBER_FIRSTBAR = 8;
-                public static final int CLIMBER_PULLUP = 9;
+                public static final int RESET_ENCODER = 2;
+                public static final int ARM_EXTEND = 4;
+                public static final int ARM_RETRACT = 3;
                 public static final int CLIMBER_GRABNEXTBAR = 10;
                 // public static final int CLIMBER_EXTEND = 8;
                 // public static final int CLIMBER_PULLUP = 9;
@@ -95,9 +96,9 @@ public final class Constants {
 
                 public static final int backRightDriveId = 10; 
                 public static final int backRightCANCoderId = 11; 
-                public static final int backRightSteerId = 12;
+                public static final int backRightSteerId = 13;
 
-                public static final int BALL_INTAKE = 14;   
+                public static final int SAMPLE_MOTOR = 12;   
                 public static final int INTAKE_ARM = 15;
                 public static final int KICKER = 16;
                 public static final int SHOOTER_TOP = 17;

@@ -41,6 +41,7 @@ import frc.robot.subsystems.LEDLights;
 import frc.robot.subsystems.Limelight;
 //import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrivetrain;
+import frc.robot.subsystems.Motor;
 //import frc.robot.subsystems.VisionCamera;
 //import frc.robot.commands.ClimberResetToHome;
 //import frc.robot.commands.DismountFirstBar;
@@ -61,6 +62,7 @@ public class RobotContainer {
   //private final Shooter m_shooter;
   //private final Intake m_Intake;
   //private final Climber m_climber;
+  private final Motor m_motor;
   private final LEDLights m_LEDLights;
   //private final VisionCamera m_Camera;
   private final Limelight m_limelight;
@@ -93,8 +95,10 @@ public class RobotContainer {
     m_limelight = new Limelight();
 
     m_DataRecorder = new DataRecorder();
+
+    m_motor = new Motor();
    
-    m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
+    // m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
     
     configureButtonBindings();
 
@@ -145,25 +149,26 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    // setup buttons
-    JoystickButton btnShoot = new JoystickButton(m_controllerJoystick, ControllerJoystick.SHOOT);
-    JoystickButton btnIntakeDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_DOWN);
-    JoystickButton btnIntakeUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_UP);
-    JoystickButton btnPickupEject = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_EJECT);
-    JoystickButton btnPickupIntake = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_INTAKE);
-    JoystickButton btnClimbFirstBar = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_FIRSTBAR);
-    JoystickButton btnClimbPullup = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_PULLUP);
-    JoystickButton btnClimbGrabNext = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_GRABNEXTBAR);
-    JoystickButton btnClimbDismount = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_DISMOUNT);
+    // // setup buttons
+    // JoystickButton btnShoot = new JoystickButton(m_controllerJoystick, ControllerJoystick.SHOOT);
+    // JoystickButton btnIntakeDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_DOWN);
+    // JoystickButton btnIntakeUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_UP);
+    // JoystickButton btnPickupEject = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_EJECT);
+    JoystickButton btnPickupIntake = new JoystickButton(m_flightcontroller, ControllerJoystick.PICKUP_INTAKE);
+    JoystickButton btnResetEncoder = new JoystickButton(m_flightcontroller, ControllerJoystick.RESET_ENCODER);
+    JoystickButton btnArmExtend = new JoystickButton(m_flightcontroller, ControllerJoystick.ARM_EXTEND);
+    JoystickButton btnArmRetract = new JoystickButton(m_flightcontroller, ControllerJoystick.ARM_RETRACT);
+    // JoystickButton btnClimbGrabNext = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_GRABNEXTBAR);
+    // JoystickButton btnClimbDismount = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_DISMOUNT);
 
     //JoystickButton btnCameraToggle = new JoystickButton(m_controllerJoystick, ControllerJoystick.CAMERA_TOGGLE);
-    JoystickButton btnResetDrivetrainOrientation =  new JoystickButton(m_controllerJoystick, ControllerJoystick.REORIENT_ROBOT);
-    JoystickButton btnClimbManualMode = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_MANUAL);
-    JoystickButton btnActivateLimelight = new JoystickButton(m_flightcontroller, FlightController.ACTIVATE_LIMELIGHT);
+    // JoystickButton btnResetDrivetrainOrientation =  new JoystickButton(m_controllerJoystick, ControllerJoystick.REORIENT_ROBOT);
+    // JoystickButton btnClimbManualMode = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_MANUAL);
+    // JoystickButton btnActivateLimelight = new JoystickButton(m_flightcontroller, FlightController.ACTIVATE_LIMELIGHT);
 
     // new JoystickButton(m_controllerJoystick,11).whileHeld(m_Intake::allowAdditionalMovement);
     
-    btnResetDrivetrainOrientation.whenPressed(new SetRobotOrientationOnField(m_Drivetrain, 0).andThen(m_Drivetrain::resetEncoders));
+    // btnResetDrivetrainOrientation.whenPressed(new SetRobotOrientationOnField(m_Drivetrain, 0).andThen(m_Drivetrain::resetEncoders));
 
     //new JoystickButton(m_rightJoystick, RightJoystick.TOGGLE_LIMELIGHT).whenPressed(m_limelight::ToggleVisionProcessing, m_limelight);
     // btnShoot.whileHeld(new Shoot(m_shooter, m_limelight,
@@ -176,9 +181,12 @@ public class RobotContainer {
     // btnPickupEject.whileHeld(m_Intake::HeimlichManeuver);
     // btnPickupEject.whenReleased(m_Intake::StopIntake);
     
-    // btnPickupIntake.whileHeld(m_Intake::StartIntake);
-    // btnPickupIntake.whenReleased(m_Intake::StopIntake);
-  
+    btnPickupIntake.whenPressed(m_motor::StartIntake);
+    btnPickupIntake.whenReleased(m_motor::StopIntake);
+
+    btnResetEncoder.whenPressed(m_motor::ZeroEncoder);
+    btnArmExtend.whenPressed(m_motor::ArmExtend);
+    btnArmRetract.whenPressed(m_motor::ArmRetract);
     // CONTROLLER'S JOYSTICK BUTTONS
     // btnClimbFirstBar.whileHeld(new ReachForTheBar(m_climber, m_LEDLights));
     // btnClimbPullup.whileHeld(new PullUpOntoTalonHooks(m_climber, m_LEDLights));
