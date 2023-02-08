@@ -4,18 +4,18 @@ package frc.robot.commands;
 //import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Climber.ClimberConstants;
+import frc.robot.subsystems.SkyHook;
+import frc.robot.subsystems.SkyHook.ClimberConstants;
 
 public class RunClimberManually extends CommandBase {
 
-  private final Climber m_Climber;
+  private final SkyHook m_Climber;
   //private final XboxController leftCcontroller;
   private final Joystick m_Joystick;
   // private final Joystick rightController;
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
 
-  public RunClimberManually(Climber _climber, Joystick controller) {
+  public RunClimberManually(SkyHook _climber, Joystick controller) {
   //public SwerveDriveCommand(SwerveDrivetrain drivetrain, XboxController controller) {
     m_Climber = _climber;
     m_Joystick = controller;

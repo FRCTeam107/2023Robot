@@ -12,13 +12,13 @@ import java.util.function.BooleanSupplier;
 import javax.lang.model.util.ElementScanner6;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.SkyHook;
 import frc.robot.subsystems.LEDLights;
-import frc.robot.subsystems.Climber.ClimberArmConstants;
-import frc.robot.subsystems.Climber.ClimberConstants;
+import frc.robot.subsystems.SkyHook.ClimberArmConstants;
+import frc.robot.subsystems.SkyHook.ClimberConstants;
 
 public class TransferToNextBar extends CommandBase {
-    private final Climber m_climber;
+    private final SkyHook m_climber;
     private final LEDLights m_LEDLights;
 
     private final BooleanSupplier m_forceToRun;
@@ -47,7 +47,7 @@ public class TransferToNextBar extends CommandBase {
     private static commandState currentState;
     private static int countDown;
 
-  public TransferToNextBar(Climber climber, LEDLights LEDLights, BooleanSupplier _forceToRun) {
+  public TransferToNextBar(SkyHook climber, LEDLights LEDLights, BooleanSupplier _forceToRun) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climber = climber;
     m_LEDLights = LEDLights;

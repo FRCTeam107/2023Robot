@@ -98,7 +98,7 @@ public final class Constants {
                 public static final int backRightCANCoderId = 11; 
                 public static final int backRightSteerId = 13;
 
-                public static final int SAMPLE_MOTOR = 12;   
+                public static final int SAMPLE_MOTOR = 10;   
                 public static final int INTAKE_ARM = 15;
                 public static final int KICKER = 16;
                 public static final int SHOOTER_TOP = 17;

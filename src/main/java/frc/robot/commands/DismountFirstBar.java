@@ -10,11 +10,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Climber.ClimberConstants;
+import frc.robot.subsystems.SkyHook;
+import frc.robot.subsystems.SkyHook.ClimberConstants;
 
 public class DismountFirstBar extends CommandBase {
-    private final Climber m_climber;
+    private final SkyHook m_climber;
 
     private enum commandState {
       Starting,
@@ -33,7 +33,7 @@ public class DismountFirstBar extends CommandBase {
 
 
 
-  public DismountFirstBar(Climber climber) {
+  public DismountFirstBar(SkyHook climber) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climber = climber;
     currentState = commandState.Starting;

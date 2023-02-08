@@ -8,14 +8,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.SkyHook;
 
 public class ClimberResetToHome extends CommandBase {
 
-  private final Climber m_climber;
+  private final SkyHook m_climber;
 
 
-  public ClimberResetToHome(Climber climber) {
+  public ClimberResetToHome(SkyHook climber) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climber = climber;
     addRequirements(m_climber);

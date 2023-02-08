@@ -8,12 +8,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Climber.ClimberConstants;
+import frc.robot.subsystems.SkyHook;
+import frc.robot.subsystems.SkyHook.ClimberConstants;
 import frc.robot.subsystems.LEDLights;
 
 public class PullUpOntoTalonHooks extends CommandBase {
-    private final Climber m_climber;
+    private final SkyHook m_climber;
     private final LEDLights m_LEDLights;
 private int countDown;
     private enum commandState {
@@ -34,7 +34,7 @@ private int countDown;
     private static commandState currentState;
 
 
-  public PullUpOntoTalonHooks(Climber climber, LEDLights LEDLights) {
+  public PullUpOntoTalonHooks(SkyHook climber, LEDLights LEDLights) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climber = climber;
     m_LEDLights = LEDLights;

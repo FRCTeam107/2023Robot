@@ -10,12 +10,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.SkyHook;
 import frc.robot.subsystems.LEDLights;
-import frc.robot.subsystems.Climber.ClimberConstants;
+import frc.robot.subsystems.SkyHook.ClimberConstants;
 
 public class ReachForTheBar extends CommandBase {
-    private final Climber m_climber;
+    private final SkyHook m_climber;
     private final LEDLights m_LEDLights;
 
     private enum commandState {
@@ -33,7 +33,7 @@ public class ReachForTheBar extends CommandBase {
 
 
 
-  public ReachForTheBar(Climber climber, LEDLights LEDLights) {
+  public ReachForTheBar(SkyHook climber, LEDLights LEDLights) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climber = climber;
     m_LEDLights = LEDLights;

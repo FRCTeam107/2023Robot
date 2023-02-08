@@ -23,7 +23,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-public class Climber extends SubsystemBase {
+public class SkyHook extends SubsystemBase {
 
 private final WPI_TalonFX m_climber, m_climberArm;
 private final DigitalInput m_talonHookLeft, m_talonHookRight;
@@ -100,9 +100,9 @@ public static final class ClimberArmConstants {
   }
 
 /**
-   * Creates a new Climber.
+   * Creates a new SkyHook.
    */
-  public Climber() {
+  public SkyHook() {
     super();
 
     m_talonHookLeft = new DigitalInput(DIOPorts.TALONHOOK_LEFT);

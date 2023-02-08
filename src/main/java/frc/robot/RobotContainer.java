@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.List;
 
+import com.ctre.phoenix.CANifier.PWMChannel;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,6 +17,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -40,7 +43,7 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.LEDLights;
 import frc.robot.subsystems.Limelight;
 //import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.SwerveDrivetrain;
+//import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.Motor;
 //import frc.robot.subsystems.VisionCamera;
 //import frc.robot.commands.ClimberResetToHome;
@@ -58,7 +61,7 @@ import frc.robot.subsystems.Motor;
 public class RobotContainer {
   // private final Joystick m_leftJoystick, m_rightJoystick, m_controllerJoystick;
   private final Joystick m_flightcontroller, m_controllerJoystick;
-  private final SwerveDrivetrain m_Drivetrain;
+ // private final SwerveDrivetrain m_Drivetrain;
   //private final Shooter m_shooter;
   //private final Intake m_Intake;
   //private final Climber m_climber;
@@ -66,6 +69,7 @@ public class RobotContainer {
   private final LEDLights m_LEDLights;
   //private final VisionCamera m_Camera;
   private final Limelight m_limelight;
+  private final PWM m_limit;
   
   public DataRecorder m_DataRecorder = new DataRecorder();
 
@@ -83,11 +87,12 @@ public class RobotContainer {
     m_flightcontroller.setXChannel(FlightController.DRIVE_X_AXIS);
     m_flightcontroller.setYChannel(FlightController.DRIVE_Y_AXIS);
     m_flightcontroller.setZChannel(FlightController.DRIVE_Z_AXIS);
-
+    m_limit = new PWM(0);
+    
     // m_rightJoystick = new Joystick(Constants.UsbPorts.RIGHT_STICK);
     m_controllerJoystick = new Joystick(Constants.UsbPorts.CONTROLLER_STICK);
     m_LEDLights = new LEDLights();
-    m_Drivetrain  = new SwerveDrivetrain(0);  // begin assuming no field offset angle of robot (facing straight "north")
+    //m_Drivetrain  = new SwerveDrivetrain(0);  // begin assuming no field offset angle of robot (facing straight "north")
     //m_Intake = new Intake ();
     //m_shooter = new Shooter();
     //m_climber = new Climber();
