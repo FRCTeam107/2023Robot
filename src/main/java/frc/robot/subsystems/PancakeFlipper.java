@@ -20,7 +20,7 @@ import frc.robot.Constants.Motors;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.DataRecorder.datapoint;
 
-public class Shooter extends SubsystemBase {
+public class PancakeFlipper extends SubsystemBase {
   private final WPI_TalonFX m_shootbottom, m_shoottop;
   private final WPI_TalonSRX m_kicker;
 
@@ -35,7 +35,7 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-  public Shooter() {
+  public PancakeFlipper() {
     super();
 
     manualForceReady = false;

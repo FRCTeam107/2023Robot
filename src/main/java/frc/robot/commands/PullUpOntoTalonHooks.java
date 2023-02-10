@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
-import frc.robot.subsystems.SkyHook.ClimberConstants;
+import frc.robot.subsystems.SkyHook.ExtensionConstants;
 import frc.robot.subsystems.LEDLights;
 
 public class PullUpOntoTalonHooks extends CommandBase {
@@ -68,7 +68,7 @@ private int countDown;
       case StraightenArm:
           // move arm to vertical
           m_LEDLights.lightsYellow();
-          if (m_climber.moveArmToPosition(ClimberConstants.armPullupPos)){
+          if (m_climber.moveArmToPosition(ExtensionConstants.armPullupPos)){
             moveToNextState = true;
           }
           break;
@@ -76,7 +76,7 @@ private int countDown;
       case PullTalonsAboveBar:
         // pull hook so talon hooks go past the bar
         m_LEDLights.lightsPurple();
-        if (m_climber.moveHookToPosition(ClimberConstants.hookPullupPos, false)){
+        if (m_climber.moveHookToPosition(ExtensionConstants.hookPullupPos, false)){
           moveToNextState = true;
         }
         break;
@@ -84,7 +84,7 @@ private int countDown;
       case ArmBackToTransferToTalons:
         // reach climber arm back to swing robot forward
         m_LEDLights.lightsYellow();
-        if (m_climber.moveArmToPosition(ClimberConstants.armTransferOntoTalonsPos)){
+        if (m_climber.moveArmToPosition(ExtensionConstants.armTransferOntoTalonsPos)){
           countDown--;
           moveToNextState = (countDown <= 0);
           //moveToNextState = true;
@@ -95,7 +95,7 @@ private int countDown;
       case TransferOntoTalons:
         // extend hook up so weight is transferred to talon hooks
         m_LEDLights.lightsYellow();
-        if (m_climber.moveHookToPosition(ClimberConstants.hookTransferToTalonsPos, true)){
+        if (m_climber.moveHookToPosition(ExtensionConstants.hookTransferToTalonsPos, true)){
           moveToNextState = true;
         }
         break;

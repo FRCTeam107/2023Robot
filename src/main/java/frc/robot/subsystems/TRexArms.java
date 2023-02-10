@@ -5,23 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+
 package frc.robot.subsystems;
 
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
-import edu.wpi.first.wpilibj.AnalogOutput;
-// import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType; 
-import com.revrobotics.AnalogInput;
-import com.revrobotics.SparkMaxAnalogSensor;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PWM;
@@ -31,7 +33,8 @@ import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.subsystems.DataRecorder.datapoint;
 
-public class Motor extends SubsystemBase {
+
+public class TRexArms extends SubsystemBase {
   private final CANSparkMax m_motor;
   // private final WPI_TalonSRX m_IntakeArm;
   private SparkMaxPIDController m_pidController;
@@ -41,18 +44,15 @@ public class Motor extends SubsystemBase {
   private RelativeEncoder m_encoder;
   //private Solenoid m_airSolenoid;
   private  PneumaticsControlModule m_phPneumaticsControlModule;
-  private Solenoid[] m_solenoids; 
+  private Solenoid[] m_solenoids;
   private Solenoid m_airSolenoid;
   private DigitalInput m_DigitalInput;
-  private SparkMaxAnalogSensor m_analogSensor;
-  private AnalogInput m_AnalogInput;
 private int counter = 0;
-//private PWM m_analog;
-// private AnalogOutput m_AnalogOutput;
-// PWM
+private PWM m_limit;
+
 
   //private DataRecorder m_dataRecorder;
-  
+ 
   // public static final class IntakeArmConstants {
   //   //run arm motor to extended position, find right position
   //   public static final double armStartingPos = 0;
@@ -60,38 +60,43 @@ private int counter = 0;
   //   public static final double armStopRetract = -2500;
   //   public static final double armSlowRetract = -25000;
   //   public static final double armExtendedPos = -67000;
-    
+   
     // intake arm PID values
-    // public static final double kP =2; // 0.4; //0.04; 
+    // public static final double kP =2; // 0.4; //0.04;
     // public static final double kI = 0; //0.0002;
-    // public static final double kD = 0.0; 
-    // public static final double kIz = 0; //8000; 
-    // public static final double kFF = 8; //0.1;// 0;//.000015; 
-    // public static final double kMaxOutput = 0.2; // 0.3; 
+    // public static final double kD = 0.0;
+    // public static final double kIz = 0; //8000;
+    // public static final double kFF = 8; //0.1;// 0;//.000015;
+    // public static final double kMaxOutput = 0.2; // 0.3;
     // public static final double kMinOutput = -1;
     // public static final double maxRPM = 5700;  
 //}
 
+
   public static final class MotorConstants {
-    public static final double kP = 0.4096; 
+
+
+    public static final double kP = 0.4096;
     public static final double kI = 0.00;
-    public static final double kD = 0; 
-    public static final double kIz = 8000; 
-    public static final double kFF = 0;//.000015; 
-    public static final double kMaxOutput = 0.05; 
+    public static final double kD = 0;
+    public static final double kIz = 8000;
+    public static final double kFF = 0;//.000015;
+    public static final double kMaxOutput = 0.05;
     public static final double kMinOutput = -0.05;
 
+
     // public static final double EncoderToNumber = 1;
-    // public static final double maxRPM = 5700; 
+    // public static final double maxRPM = 5700;
+
 
   }
   /**
    * Creates a new Intake.
    */
-  public Motor() {
+  public TRexArms() {
     m_motor = new CANSparkMax(Motors.SAMPLE_MOTOR, MotorType.kBrushless);
     m_motor.restoreFactoryDefaults();
-  // DigitalInput toplimitSwitch = new DigitalInput(2);
+  //  DigitalInput toplimitSwitch = new DigitalInput(2);
     // m_IntakeMotor.configClosedloopRamp(0.5);
     m_pidController = m_motor.getPIDController();
     m_pidController.setP(MotorConstants.kP);
@@ -101,13 +106,9 @@ private int counter = 0;
     m_pidController.setFF(MotorConstants.kFF);
     m_pidController.setOutputRange(MotorConstants.kMinOutput, MotorConstants.kMaxOutput);
 
-    // m_DigitalInput = new DigitalInput(2);
-    // m_airSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 0);  
-    // m_analogSensor = null;
-   // m_analog = new PWM(9) ;
-      
-    
-    
+
+    m_DigitalInput = new DigitalInput(2);
+    m_airSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 0);
     // m_solenoids = new Solenoid[] {new Solenoid(PneumaticsModuleType.REVPH, 0)};
       // new Solenoid(PneumaticsModuleType.REVPH, 1), new Solenoid(PneumaticsModuleType.REVPH, 2),
       // new Solenoid(PneumaticsModuleType.REVPH, 3), new Solenoid(PneumaticsModuleType.REVPH, 4),
@@ -118,18 +119,25 @@ private int counter = 0;
       // new Solenoid(PneumaticsModuleType.REVPH, 13), new Solenoid(PneumaticsModuleType.REVPH, 14),
       // new Solenoid(PneumaticsModuleType.REVPH, 15)   };
 
-      
+
+     
       m_phPneumaticsControlModule = new PneumaticsControlModule();
 
-      
+
+     
+
+
+
 
 
 
     // m_IntakeMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 1000);
     // m_IntakeMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1000);
 
+
     double junk = SmartDashboard.getNumber("intakeSpeed", 35000);
     SmartDashboard.putNumber("intakeSpeed", junk);
+
 
     m_IntakeSpeed = 0;
    
@@ -146,42 +154,48 @@ private int counter = 0;
     // m_IntakeArm.config_kF(0, IntakeArmConstants.kFF);
     // m_IntakeArm.configClosedLoopPeakOutput(0, IntakeArmConstants.kMaxOutput);
 
+
     // m_IntakeArm.configClearPositionOnLimitR(clearPositionOnLimitR, timeoutMs)
     // m_IntakeArm.configClearPositionOnLimitF(clearPositionOnLimitF, timeoutMs)
 
+
     // m_IntakeArm.setStatusFramePeriod(StatusFrame.Status_1_General, 20);
     // m_IntakeArm.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 20);
+
 
    // m_dataRecorder = null;
     // intakeExtended = false;
     // m_Intake_ArmSpeed = 0;
   }
 
+
   // public void setDataRecorder(DataRecorder _dataRecorder){
   //   m_dataRecorder = _dataRecorder;
   // }
+
 
    
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //SmartDashboard.putNumber("pressure", m_analog.getRaw());
     // SmartDashboard.putNumber("IntakeArmAt", m_IntakeArm.getSelectedSensorPosition());
     // SmartDashboard.putBoolean("IntakeFwdLimit", m_IntakeArm.getSensorCollection().isFwdLimitSwitchClosed());
     // SmartDashboard.putBoolean("IntakeRevLimit", m_IntakeArm.getSensorCollection().isRevLimitSwitchClosed());
+
 
     // runMotor(m_CurrentSpeed);
         // m_motor.set(ControlMode.PercentOutput, m_CurrentSpeed);
     // m_motor.set(m_IntakeSpeed);
     m_pidController.setReference(m_IntakeSpeed, CANSparkMax.ControlType.kPosition);
 
-    // m_DigitalInput.get();
-    //SmartDashboard.getBoolean("m_DigitalInput", m_DigitalInput.get());
+
+    m_DigitalInput.get();
+    SmartDashboard.getBoolean("m_DigitalInput", m_DigitalInput.get());
     //NetworkTableInstance.getDefault().getTable("dataRecorder").
     // if (m_encoder != null){
     //     SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
     // }
-  
+ 
     SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeMotorSpeed, m_IntakeSpeed);
     if (intakeExtended) {
       SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeIsExtended, 1.0);
@@ -192,14 +206,16 @@ private int counter = 0;
     //SmartDashboard.putBoolean("dataRecorder.extended", intakeExtended);
 
 
+
+
     //SmartDashboard.putNumber("IntakeArmAt", m_IntakeArm.getSelectedSensorPosition());
     // if upper or lower limit switch is hit, then reset encoder position to upper or lower
     // if (m_IntakeArm.getSensorCollection().isFwdLimitSwitchClosed()){
     //   m_IntakeArm.setSelectedSensorPosition(IntakeArmConstants.armStartingPos);
     // }
-    
+   
     // if (intakeExtended){
-    //   if (m_IntakeArm.getSensorCollection().isRevLimitSwitchClosed() 
+    //   if (m_IntakeArm.getSensorCollection().isRevLimitSwitchClosed()
     //       || m_IntakeArm.getSelectedSensorPosition() <= IntakeArmConstants.armExtendedPos){
     //     m_Intake_ArmSpeed = 0;
     //     stopArm();
@@ -209,7 +225,7 @@ private int counter = 0;
     //   }
     // }
     // else {
-    //   if (m_IntakeArm.getSensorCollection().isFwdLimitSwitchClosed() 
+    //   if (m_IntakeArm.getSensorCollection().isFwdLimitSwitchClosed()
     //     || m_IntakeArm.getSelectedSensorPosition() >= IntakeArmConstants.armStopRetract ){
     //   //   m_IntakeArm.setSelectedSensorPosition(IntakeArmConstants.armExtendedPos);
     //     stopArm();
@@ -220,7 +236,7 @@ private int counter = 0;
     //   }
     // }
     // m_IntakeArm.set(ControlMode.PercentOutput, m_Intake_ArmSpeed);  
-  
+ 
   }
   // public void runMotor(double speed){
   //   //m_IntakeMotor.set(ControlMode.PercentOutput, speed);
@@ -238,33 +254,38 @@ private int counter = 0;
 //   // }
 // }
 
+
 // public void retractArm(){
 //   //m_IntakeArm.set(ControlMode.PercentOutput, -1);
 //   SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeIsExtended, 0.0);
 
+
 //   //m_IntakeArm.set(ControlMode.Position, IntakeArmConstants.armRetractPos);
 //   intakeExtended = false;
 //   m_Intake_ArmSpeed = 0.55;// IntakeArmConstants.kMaxOutput;
-  
+ 
 //   // if (m_dataRecorder != null) {
 //   //   m_dataRecorder.recordValue(datapoint.IntakeIsExtended, (double)0.00);
 //   // }
 
+
 // }
+
 
 // public void stopArm() {
 //   m_IntakeArm.set(ControlMode.PercentOutput, 0);
 //   m_Intake_ArmSpeed = 0;
 // }
 
+
 public void runIntake(double position){
-  // m_IntakeSpeed = position;
-  
+  m_IntakeSpeed = position;
   // m_motor.set(.025);
   // if (m_DigitalInput.get()) {
     // m_motor.set(0);
   // }
   }
+
 
   public void HeimlichManeuver() {
     runIntake( -1 * SmartDashboard.getNumber("intakeSpeed", 25000));
@@ -282,8 +303,10 @@ public void runIntake(double position){
     m_phPneumaticsControlModule.enableCompressorDigital();
     m_airSolenoid.set(true);
 
+
     // counter ++;
 // SmartDashboard.putNumber("Counter", counter);
+
 
     // int i = 0;
     // boolean setOn = false;
@@ -293,7 +316,9 @@ public void runIntake(double position){
     //   i ++;
     // }
 
+
   }
+
 
   public void ZeroEncoder(){
     m_encoder = m_motor.getEncoder();
@@ -312,6 +337,7 @@ SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
   // public void allowAdditionalMovement(){
   //   m_IntakeArm.setSelectedSensorPosition( IntakeArmConstants.armExtendedPos / 2);
   // }
-  
+ 
   }
-  
+ 
+

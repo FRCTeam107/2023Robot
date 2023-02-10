@@ -14,8 +14,8 @@ import javax.lang.model.util.ElementScanner6;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
 import frc.robot.subsystems.LEDLights;
-import frc.robot.subsystems.SkyHook.ClimberArmConstants;
-import frc.robot.subsystems.SkyHook.ClimberConstants;
+import frc.robot.subsystems.SkyHook.FlipFlopConstants;
+import frc.robot.subsystems.SkyHook.ExtensionConstants;
 
 public class TransferToNextBar extends CommandBase {
     private final SkyHook m_climber;
@@ -86,11 +86,11 @@ public class TransferToNextBar extends CommandBase {
       case ReleaseCurrentBar:
         // extend the hook past the current bar and to punch next one
         m_LEDLights.lightsYellow();
-        if (m_climber.HookPosition() < ClimberConstants.hookReleasecurrentBar){
+        if (m_climber.HookPosition() < ExtensionConstants.hookReleasecurrentBar){
           moveToNextState =  true;
         }
         else {
-          moveToNextState =  m_climber.moveHookToPosition(ClimberConstants.hookReleasecurrentBar, true);
+          moveToNextState =  m_climber.moveHookToPosition(ExtensionConstants.hookReleasecurrentBar, true);
         }
         
         if (moveToNextState) {
@@ -130,8 +130,8 @@ public class TransferToNextBar extends CommandBase {
         // move arm to reach backwards slightly past the next bar
         m_LEDLights.lightsYellow();
 
-        boolean armReady = m_climber.moveArmToPosition(ClimberConstants.armReachPastNextBar);
-        boolean hookReady = m_climber.moveHookToPosition(ClimberConstants.hookBelowNextBar, true);
+        boolean armReady = m_climber.moveArmToPosition(ExtensionConstants.armReachPastNextBar);
+        boolean hookReady = m_climber.moveHookToPosition(ExtensionConstants.hookBelowNextBar, true);
         moveToNextState = (armReady && hookReady);
         break;
         
@@ -139,7 +139,7 @@ public class TransferToNextBar extends CommandBase {
         // extend the hook past the next bar
         m_LEDLights.lightsYellow();
 
-        if (m_climber.moveHookToPosition(ClimberConstants.hookPastNextBar, true)){
+        if (m_climber.moveHookToPosition(ExtensionConstants.hookPastNextBar, true)){
           moveToNextState = true;
         }
         break;
@@ -148,7 +148,7 @@ public class TransferToNextBar extends CommandBase {
         // now bring arm forward to make arm touch the bar
         m_LEDLights.lightsYellow();
 
-        if (m_climber.moveArmToPosition(ClimberConstants.armHugNextBar)) {
+        if (m_climber.moveArmToPosition(ExtensionConstants.armHugNextBar)) {
           moveToNextState = true;
           countDown = 20; // 20ms loop * countdown timer;
         }
@@ -161,14 +161,14 @@ public class TransferToNextBar extends CommandBase {
 
         countDown --;
         if (countDown <= 0){
-          if (m_climber.moveHookToPosition(ClimberConstants.hookPullTalonsOffBar, false) ) {
+          if (m_climber.moveHookToPosition(ExtensionConstants.hookPullTalonsOffBar, false) ) {
             moveToNextState = true;
           } 
         }
         break;
 
       case RetractArmForNextClimb:
-        if (m_climber.moveArmToPosition(ClimberConstants.armTransferOntoTalonsPos)) {
+        if (m_climber.moveArmToPosition(ExtensionConstants.armTransferOntoTalonsPos)) {
           moveToNextState = true;
         }
         break;

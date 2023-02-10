@@ -44,7 +44,7 @@ import frc.robot.subsystems.LEDLights;
 import frc.robot.subsystems.Limelight;
 //import frc.robot.subsystems.Shooter;
 //import frc.robot.subsystems.SwerveDrivetrain;
-import frc.robot.subsystems.Motor;
+import frc.robot.subsystems.TRexArms;
 //import frc.robot.subsystems.VisionCamera;
 //import frc.robot.commands.ClimberResetToHome;
 //import frc.robot.commands.DismountFirstBar;
@@ -65,7 +65,7 @@ public class RobotContainer {
   //private final Shooter m_shooter;
   //private final Intake m_Intake;
   //private final Climber m_climber;
-  private final Motor m_motor;
+  private final TRexArms m_motor;
   private final LEDLights m_LEDLights;
   //private final VisionCamera m_Camera;
   private final Limelight m_limelight;
@@ -101,7 +101,7 @@ public class RobotContainer {
 
     m_DataRecorder = new DataRecorder();
 
-    m_motor = new Motor();
+    m_motor = new TRexArms();
    
     // m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
     

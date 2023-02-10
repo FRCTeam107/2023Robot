@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
 import frc.robot.subsystems.LEDLights;
-import frc.robot.subsystems.SkyHook.ClimberConstants;
+import frc.robot.subsystems.SkyHook.ExtensionConstants;
 
 public class ReachForTheBar extends CommandBase {
     private final SkyHook m_climber;
@@ -66,8 +66,8 @@ public class ReachForTheBar extends CommandBase {
       case StraightenArmAndLiftHook:
         m_LEDLights.lightsYellow();
         // move arm to vertical and lift hook so it is above the first bar (at same time)
-        boolean armReady = m_climber.moveArmToPosition(ClimberConstants.armFirstBarPos);
-        boolean hookReady = m_climber.moveHookToPositionSuperFast(ClimberConstants.hookAboveFirstBarPos);   
+        boolean armReady = m_climber.moveArmToPosition(ExtensionConstants.armFirstBarPos);
+        boolean hookReady = m_climber.moveHookToPositionSuperFast(ExtensionConstants.hookAboveFirstBarPos);   
         moveToNextState = (hookReady && armReady);
        break;
         

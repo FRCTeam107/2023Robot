@@ -11,7 +11,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
-import frc.robot.subsystems.SkyHook.ClimberConstants;
+import frc.robot.subsystems.SkyHook.ExtensionConstants;
 
 public class DismountFirstBar extends CommandBase {
     private final SkyHook m_climber;
@@ -59,20 +59,20 @@ public class DismountFirstBar extends CommandBase {
         break;
 
       case PullHook:
-        if (m_climber.moveHookToPosition(ClimberConstants.hookPullupPos, true)){
+        if (m_climber.moveHookToPosition(ExtensionConstants.hookPullupPos, true)){
           moveToNextState = true;
         }
        break;
       
       case MoveArmForward:
           // move arm to vertical
-          if (m_climber.moveArmToPosition(ClimberConstants.armPullupPos)){
+          if (m_climber.moveArmToPosition(ExtensionConstants.armPullupPos)){
             moveToNextState = true;
           }
           break;
 
       case RaiseHook:
-        if (m_climber.moveHookToPosition(ClimberConstants.hookAboveFirstBarPos, true)){
+        if (m_climber.moveHookToPosition(ExtensionConstants.hookAboveFirstBarPos, true)){
           moveToNextState = true;
         }
         break;

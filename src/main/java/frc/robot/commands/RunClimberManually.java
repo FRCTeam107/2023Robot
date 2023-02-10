@@ -5,7 +5,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
-import frc.robot.subsystems.SkyHook.ClimberConstants;
+import frc.robot.subsystems.SkyHook.ExtensionConstants;
 
 public class RunClimberManually extends CommandBase {
 
@@ -29,11 +29,11 @@ public class RunClimberManually extends CommandBase {
 
 
     if (m_Climber.armHitBackLimit()){
-      m_Climber.setArmSensorPosition(ClimberConstants.armsStartingPos);
+      m_Climber.setArmSensorPosition(ExtensionConstants.armsStartingPos);
     }
 
     if (m_Climber.hookHitForwardLimit()){
-      m_Climber.setHookSensorPosition(ClimberConstants.armsStartingPos);
+      m_Climber.setHookSensorPosition(ExtensionConstants.armsStartingPos);
     }
     
     if (hookMove==0 || hookMove==45 || hookMove==315){

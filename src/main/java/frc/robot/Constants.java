@@ -103,8 +103,8 @@ public final class Constants {
                 public static final int KICKER = 16;
                 public static final int SHOOTER_TOP = 17;
                 public static final int SHOOTER_BOTTOM = 18;
-                public static final int CLIMBER_ONE = 19; // Falcon 500
-                public static final int CLIMBER_ARM = 20;
+                public static final int SkyhookExtension = 19;
+                public static final int SkyhookFlipFlop = 20;
         }
 
         // DIO Ports
