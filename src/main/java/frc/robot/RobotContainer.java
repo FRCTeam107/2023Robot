@@ -45,6 +45,7 @@ import frc.robot.subsystems.Limelight;
 //import frc.robot.subsystems.Shooter;
 //import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.TRexArms;
+import frc.robot.subsystems.PancakeFlipper;
 //import frc.robot.subsystems.VisionCamera;
 //import frc.robot.commands.ClimberResetToHome;
 //import frc.robot.commands.DismountFirstBar;
@@ -70,6 +71,9 @@ public class RobotContainer {
   //private final VisionCamera m_Camera;
   private final Limelight m_limelight;
   private final PWM m_limit;
+  private final PancakeFlipper m_flipArm;
+  private final PancakeFlipper m_intakeLeft;
+  private final PancakeFlipper m_intakeRight;
   
   public DataRecorder m_DataRecorder = new DataRecorder();
 
@@ -102,6 +106,10 @@ public class RobotContainer {
     m_DataRecorder = new DataRecorder();
 
     m_motor = new TRexArms();
+
+    m_flipArm = new PancakeFlipper();
+    m_intakeLeft = new PancakeFlipper();
+    m_intakeRight = new PancakeFlipper();
    
     // m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
     
@@ -159,10 +167,10 @@ public class RobotContainer {
     // JoystickButton btnIntakeDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_DOWN);
     // JoystickButton btnIntakeUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_UP);
     // JoystickButton btnPickupEject = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_EJECT);
-    JoystickButton btnPickupIntake = new JoystickButton(m_flightcontroller, ControllerJoystick.PICKUP_INTAKE);
-    JoystickButton btnResetEncoder = new JoystickButton(m_flightcontroller, ControllerJoystick.RESET_ENCODER);
-    JoystickButton btnArmExtend = new JoystickButton(m_flightcontroller, ControllerJoystick.ARM_EXTEND);
-    JoystickButton btnArmRetract = new JoystickButton(m_flightcontroller, ControllerJoystick.ARM_RETRACT);
+    // JoystickButton btnPickupIntake = new JoystickButton(m_flightcontroller, ControllerJoystick.PICKUP_INTAKE);
+    JoystickButton btnFlipperPickup = new JoystickButton(m_flightcontroller, ControllerJoystick.RUN_FLIPPER_INTAKE);
+    JoystickButton btnFlipperUp = new JoystickButton(m_flightcontroller, ControllerJoystick.FLIPPER_UP);
+    JoystickButton btnFlipperDown = new JoystickButton(m_flightcontroller, ControllerJoystick.FLIPPER_DOWN);
     // JoystickButton btnClimbGrabNext = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_GRABNEXTBAR);
     // JoystickButton btnClimbDismount = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_DISMOUNT);
 
@@ -186,12 +194,15 @@ public class RobotContainer {
     // btnPickupEject.whileHeld(m_Intake::HeimlichManeuver);
     // btnPickupEject.whenReleased(m_Intake::StopIntake);
     
-    btnPickupIntake.whenPressed(m_motor::StartIntake);
-    btnPickupIntake.whenReleased(m_motor::StopIntake);
+    // btnPickupIntake.whenPressed(m_motor::StartIntake);
+    // btnPickupIntake.whenReleased(m_motor::StopIntake);
 
-    btnResetEncoder.whenPressed(m_motor::ZeroEncoder);
-    btnArmExtend.whenPressed(m_motor::ArmExtend);
-    btnArmRetract.whenPressed(m_motor::ArmRetract);
+    btnFlipperPickup.whenPressed(m_intakeLeft::Pickup);
+    btnFlipperPickup.whenPressed(m_intakeRight::Pickup);
+    btnFlipperPickup.whenReleased(m_intakeLeft::Pickup);
+    btnFlipperPickup.whenReleased(m_intakeRight::Pickup);
+    btnFlipperUp.whenPressed(m_flipArm::FlipUp);
+    btnFlipperDown.whenPressed(m_flipArm::FlipDown);
     // CONTROLLER'S JOYSTICK BUTTONS
     // btnClimbFirstBar.whileHeld(new ReachForTheBar(m_climber, m_LEDLights));
     // btnClimbPullup.whileHeld(new PullUpOntoTalonHooks(m_climber, m_LEDLights));
