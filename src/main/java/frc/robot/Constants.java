@@ -77,6 +77,10 @@ public final class Constants {
 
                 // public static final int CLIMBER_EXTEND = 8;
                 //  public static final int CLIMBER_RETRACT = 9;
+                public static final int SLAP_TREX_ARMS = 11;
+                public static final int CLAP_TREX_ARMS = 12;
+                public static final int FEED_TREX_ARMS = 13;
+
         }
 
         //MOTORS
@@ -105,6 +109,14 @@ public final class Constants {
                 public static final int Intake_Left = 18;
                 public static final int SkyhookExtension = 19;
                 public static final int SkyhookFlipFlop = 20;
+
+                public static final int LEFT_UP_DOWN_MOTOR = 21;
+                public static final int RIGHT_UP_DOWN_MOTOR = 22;
+                public static final int LEFT_ELBOW_MOTOR = 23;
+                public static final int RIGHT_ELBOW_MOTOR = 24;
+                public static final int LEFT_FINGERTIPS_MOTOR = 25;
+                public static final int RIGHT_FINGERTIPS_MOTOR = 26;
+
         }
 
         // DIO Ports
