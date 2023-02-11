@@ -8,12 +8,10 @@
 
 package frc.robot.subsystems;
 
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
 import edu.wpi.first.wpilibj.DigitalInput;
-
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -23,59 +21,30 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-
-
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PWM;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
- import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.subsystems.DataRecorder.datapoint;
 
-
 public class TRexArms extends SubsystemBase {
-  private final CANSparkMax m_motor;
-  // private final WPI_TalonSRX m_IntakeArm;
-  private SparkMaxPIDController m_pidController;
-  private boolean intakeExtended = false;
-  // private double m_Intake_ArmSpeed;
-  private double m_IntakeSpeed;
-  private RelativeEncoder m_encoder;
-  //private Solenoid m_airSolenoid;
-  private  PneumaticsControlModule m_phPneumaticsControlModule;
-  private Solenoid[] m_solenoids;
-  private Solenoid m_airSolenoid;
-  private DigitalInput m_DigitalInput;
+private final CANSparkMax m_leftUpDown,m_rightUpDown;
+private final CANSparkMax m_leftElbow, m_rightElbow;
+private final CANSparkMax m_leftFingertips, m_rightFingertips;
+private SparkMaxPIDController m_leftUpDown_pidController;
+private SparkMaxPIDController m_rightUpDown_pidController;
+private SparkMaxPIDController m_leftElbow_pidController;
+private SparkMaxPIDController m_rightElbow_pidController;
+private SparkMaxPIDController m_leftFingertips_pidController;
+private SparkMaxPIDController m_rightFingertips_pidController;
+private double m_leftFingertipsSpeed,m_rightFingertipsSpeed;
+private RelativeEncoder m_encoder;
+
 private int counter = 0;
 private PWM m_limit;
 
 
   //private DataRecorder m_dataRecorder;
  
-  // public static final class IntakeArmConstants {
-  //   //run arm motor to extended position, find right position
-  //   public static final double armStartingPos = 0;
-  //  //public static final double armRetractPos = 1000;
-  //   public static final double armStopRetract = -2500;
-  //   public static final double armSlowRetract = -25000;
-  //   public static final double armExtendedPos = -67000;
-   
-    // intake arm PID values
-    // public static final double kP =2; // 0.4; //0.04;
-    // public static final double kI = 0; //0.0002;
-    // public static final double kD = 0.0;
-    // public static final double kIz = 0; //8000;
-    // public static final double kFF = 8; //0.1;// 0;//.000015;
-    // public static final double kMaxOutput = 0.2; // 0.3;
-    // public static final double kMinOutput = -1;
-    // public static final double maxRPM = 5700;  
-//}
-
-
-  public static final class MotorConstants {
-
-
+  public static final class UpDownMotorConstants {
     public static final double kP = 0.4096;
     public static final double kI = 0.00;
     public static final double kD = 0;
@@ -83,261 +52,124 @@ private PWM m_limit;
     public static final double kFF = 0;//.000015;
     public static final double kMaxOutput = 0.05;
     public static final double kMinOutput = -0.05;
+  }
 
+  public static final class ElbowMotorConstants {
+    public static final double kP = 0.4096;
+    public static final double kI = 0.00;
+    public static final double kD = 0;
+    public static final double kIz = 8000;
+    public static final double kFF = 0;//.000015;
+    public static final double kMaxOutput = 0.05;
+    public static final double kMinOutput = -0.05;
+  }
 
-    // public static final double EncoderToNumber = 1;
-    // public static final double maxRPM = 5700;
-
-
+  public static final class FingertipsMotorConstants {
+    public static final double kP = 0.4096;
+    public static final double kI = 0.00;
+    public static final double kD = 0;
+    public static final double kIz = 8000;
+    public static final double kFF = 0;//.000015;
+    public static final double kMaxOutput = 0.05;
+    public static final double kMinOutput = -0.05;
   }
   /**
-   * Creates a new Intake.
+   * Creates a new T-Rex.
    */
   public TRexArms() {
-    m_motor = new CANSparkMax(Motors.SAMPLE_MOTOR, MotorType.kBrushless);
-    m_motor.restoreFactoryDefaults();
-  //  DigitalInput toplimitSwitch = new DigitalInput(2);
-    // m_IntakeMotor.configClosedloopRamp(0.5);
-    m_pidController = m_motor.getPIDController();
-    m_pidController.setP(MotorConstants.kP);
-    m_pidController.setI(MotorConstants.kI);
-    m_pidController.setD(MotorConstants.kD);
-    m_pidController.setIZone(MotorConstants.kIz);
-    m_pidController.setFF(MotorConstants.kFF);
-    m_pidController.setOutputRange(MotorConstants.kMinOutput, MotorConstants.kMaxOutput);
+    m_leftUpDown = new CANSparkMax(Motors.LEFT_UP_DOWN_MOTOR, MotorType.kBrushless);
+    m_rightUpDown = new CANSparkMax(Motors.RIGHT_UP_DOWN_MOTOR, MotorType.kBrushless);
+    m_leftElbow = new CANSparkMax(Motors.LEFT_ELBOW_MOTOR,MotorType.kBrushless);
+    m_rightElbow = new CANSparkMax(Motors.RIGHT_ELBOW_MOTOR,MotorType.kBrushless);
+    m_leftFingertips = new CANSparkMax(Motors.LEFT_FINGERTIPS_MOTOR,MotorType.kBrushless);
+    m_rightFingertips = new CANSparkMax(Motors.RIGHT_FINGERTIPS_MOTOR,MotorType.kBrushless);
 
+    //Set factory defaults
+    m_leftUpDown.restoreFactoryDefaults();
+    m_rightUpDown.restoreFactoryDefaults();
+    m_leftElbow.restoreFactoryDefaults()  ;
+    m_rightElbow.restoreFactoryDefaults();
+    m_leftFingertips.restoreFactoryDefaults();
+    m_leftFingertips.restoreFactoryDefaults();
+    
+   //
+    m_leftUpDown_pidController = m_leftUpDown.getPIDController();
+    m_leftUpDown_pidController.setP(UpDownMotorConstants.kP);
+    m_leftUpDown_pidController.setI(UpDownMotorConstants.kI);
+    m_leftUpDown_pidController.setD(UpDownMotorConstants.kD);
+    m_leftUpDown_pidController.setIZone(UpDownMotorConstants.kIz);
+    m_leftUpDown_pidController.setFF(UpDownMotorConstants.kFF);
+    m_leftUpDown_pidController.setOutputRange(UpDownMotorConstants.kMinOutput, UpDownMotorConstants.kMaxOutput);
 
-    m_DigitalInput = new DigitalInput(2);
-    m_airSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 0);
-    // m_solenoids = new Solenoid[] {new Solenoid(PneumaticsModuleType.REVPH, 0)};
-      // new Solenoid(PneumaticsModuleType.REVPH, 1), new Solenoid(PneumaticsModuleType.REVPH, 2),
-      // new Solenoid(PneumaticsModuleType.REVPH, 3), new Solenoid(PneumaticsModuleType.REVPH, 4),
-      // new Solenoid(PneumaticsModuleType.REVPH, 5), new Solenoid(PneumaticsModuleType.REVPH, 6),
-      // new Solenoid(PneumaticsModuleType.REVPH, 7), new Solenoid(PneumaticsModuleType.REVPH, 8),
-      // new Solenoid(PneumaticsModuleType.REVPH, 9), new Solenoid(PneumaticsModuleType.REVPH, 10),
-      // new Solenoid(PneumaticsModuleType.REVPH, 11), new Solenoid(PneumaticsModuleType.REVPH, 12),
-      // new Solenoid(PneumaticsModuleType.REVPH, 13), new Solenoid(PneumaticsModuleType.REVPH, 14),
-      // new Solenoid(PneumaticsModuleType.REVPH, 15)   };
+    m_rightUpDown_pidController = m_rightUpDown.getPIDController();
+    m_rightUpDown_pidController.setP(UpDownMotorConstants.kP);
+    m_rightUpDown_pidController.setI(UpDownMotorConstants.kI);
+    m_rightUpDown_pidController.setD(UpDownMotorConstants.kD);
+    m_rightUpDown_pidController.setIZone(UpDownMotorConstants.kIz);
+    m_rightUpDown_pidController.setFF(UpDownMotorConstants.kFF);
+    m_rightUpDown_pidController.setOutputRange(UpDownMotorConstants.kMinOutput, UpDownMotorConstants.kMaxOutput);
 
+    m_leftElbow_pidController = m_leftElbow.getPIDController();
+    m_leftElbow_pidController.setP(ElbowMotorConstants.kP);
+    m_leftElbow_pidController.setI(ElbowMotorConstants.kI);
+    m_leftElbow_pidController.setD(ElbowMotorConstants.kD);
+    m_leftElbow_pidController.setIZone(ElbowMotorConstants.kIz);
+    m_leftElbow_pidController.setFF(ElbowMotorConstants.kFF);
+    m_leftElbow_pidController.setOutputRange(ElbowMotorConstants.kMinOutput, ElbowMotorConstants.kMaxOutput);
 
-     
-      m_phPneumaticsControlModule = new PneumaticsControlModule();
+    m_rightElbow_pidController = m_rightElbow.getPIDController();
+    m_rightElbow_pidController.setP(ElbowMotorConstants.kP);
+    m_rightElbow_pidController.setI(ElbowMotorConstants.kI);
+    m_rightElbow_pidController.setD(ElbowMotorConstants.kD);
+    m_rightElbow_pidController.setIZone(ElbowMotorConstants.kIz);
+    m_rightElbow_pidController.setFF(ElbowMotorConstants.kFF);
+    m_rightElbow_pidController.setOutputRange(ElbowMotorConstants.kMinOutput, ElbowMotorConstants.kMaxOutput);
 
-
-     
-
-
-
-
-
-
-    // m_IntakeMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 1000);
-    // m_IntakeMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1000);
+    m_leftFingertips_pidController = m_leftFingertips.getPIDController();
+    m_leftFingertips_pidController.setP( FingertipsMotorConstants.kP);
+    m_leftFingertips_pidController.setI( FingertipsMotorConstants.kI);
+    m_leftFingertips_pidController.setD( FingertipsMotorConstants.kD);
+    m_leftFingertips_pidController.setIZone( FingertipsMotorConstants.kIz);
+    m_leftFingertips_pidController.setFF( FingertipsMotorConstants.kFF);
+    m_leftFingertips_pidController.setOutputRange( FingertipsMotorConstants.kMinOutput,  FingertipsMotorConstants.kMaxOutput);
+    
+    m_rightFingertips_pidController = m_rightFingertips.getPIDController();
+    m_rightFingertips_pidController.setP( FingertipsMotorConstants.kP);
+    m_rightFingertips_pidController.setI( FingertipsMotorConstants.kI);
+    m_rightFingertips_pidController.setD( FingertipsMotorConstants.kD);
+    m_rightFingertips_pidController.setIZone( FingertipsMotorConstants.kIz);
+    m_rightFingertips_pidController.setFF( FingertipsMotorConstants.kFF);
+    m_rightFingertips_pidController.setOutputRange( FingertipsMotorConstants.kMinOutput,  FingertipsMotorConstants.kMaxOutput);
 
 
     double junk = SmartDashboard.getNumber("intakeSpeed", 35000);
     SmartDashboard.putNumber("intakeSpeed", junk);
 
-
-    m_IntakeSpeed = 0;
+    m_leftFingertipsSpeed=0;
+    m_rightFingertipsSpeed=0;
    
-    // m_IntakeArm = new WPI_TalonSRX(Motors.INTAKE_ARM);
-    // m_IntakeArm.configFactoryDefault();
-    // m_IntakeArm.setInverted(false);
-    // m_IntakeArm.setNeutralMode(NeutralMode.Brake);
-    // m_IntakeArm.setSelectedSensorPosition(IntakeArmConstants.armStartingPos);
-    // // PID values for INTAKE_ARM
-    // m_IntakeArm.config_kP(0, IntakeArmConstants.kP);
-    // m_IntakeArm.config_kI(0, IntakeArmConstants.kI);
-    // m_IntakeArm.config_kD(0, IntakeArmConstants.kD);
-    // m_IntakeArm.config_IntegralZone(0, IntakeArmConstants.kIz);
-    // m_IntakeArm.config_kF(0, IntakeArmConstants.kFF);
-    // m_IntakeArm.configClosedLoopPeakOutput(0, IntakeArmConstants.kMaxOutput);
-
-
-    // m_IntakeArm.configClearPositionOnLimitR(clearPositionOnLimitR, timeoutMs)
-    // m_IntakeArm.configClearPositionOnLimitF(clearPositionOnLimitF, timeoutMs)
-
-
-    // m_IntakeArm.setStatusFramePeriod(StatusFrame.Status_1_General, 20);
-    // m_IntakeArm.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 20);
-
-
-   // m_dataRecorder = null;
-    // intakeExtended = false;
-    // m_Intake_ArmSpeed = 0;
   }
 
-
-  // public void setDataRecorder(DataRecorder _dataRecorder){
-  //   m_dataRecorder = _dataRecorder;
-  // }
-
-
-   
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    // SmartDashboard.putNumber("IntakeArmAt", m_IntakeArm.getSelectedSensorPosition());
-    // SmartDashboard.putBoolean("IntakeFwdLimit", m_IntakeArm.getSensorCollection().isFwdLimitSwitchClosed());
-    // SmartDashboard.putBoolean("IntakeRevLimit", m_IntakeArm.getSensorCollection().isRevLimitSwitchClosed());
-
-
-    // runMotor(m_CurrentSpeed);
-        // m_motor.set(ControlMode.PercentOutput, m_CurrentSpeed);
-    // m_motor.set(m_IntakeSpeed);
-    m_pidController.setReference(m_IntakeSpeed, CANSparkMax.ControlType.kPosition);
-
-
-    m_DigitalInput.get();
-    SmartDashboard.getBoolean("m_DigitalInput", m_DigitalInput.get());
-    //NetworkTableInstance.getDefault().getTable("dataRecorder").
-    // if (m_encoder != null){
-    //     SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
-    // }
- 
-    SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeMotorSpeed, m_IntakeSpeed);
-    if (intakeExtended) {
-      SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeIsExtended, 1.0);
-    }
-    else {
-      SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeIsExtended, 0.0);
-    }
-    //SmartDashboard.putBoolean("dataRecorder.extended", intakeExtended);
-
-
-
-
-    //SmartDashboard.putNumber("IntakeArmAt", m_IntakeArm.getSelectedSensorPosition());
-    // if upper or lower limit switch is hit, then reset encoder position to upper or lower
-    // if (m_IntakeArm.getSensorCollection().isFwdLimitSwitchClosed()){
-    //   m_IntakeArm.setSelectedSensorPosition(IntakeArmConstants.armStartingPos);
-    // }
-   
-    // if (intakeExtended){
-    //   if (m_IntakeArm.getSensorCollection().isRevLimitSwitchClosed()
-    //       || m_IntakeArm.getSelectedSensorPosition() <= IntakeArmConstants.armExtendedPos){
-    //     m_Intake_ArmSpeed = 0;
-    //     stopArm();
-    //   }
-    //   else if (m_Intake_ArmSpeed < 0 && m_IntakeArm.getSelectedSensorPosition() <  -10000) {
-    //     m_Intake_ArmSpeed = -0.55;  // speed up on lower end of extending arm
-    //   }
-    // }
-    // else {
-    //   if (m_IntakeArm.getSensorCollection().isFwdLimitSwitchClosed()
-    //     || m_IntakeArm.getSelectedSensorPosition() >= IntakeArmConstants.armStopRetract ){
-    //   //   m_IntakeArm.setSelectedSensorPosition(IntakeArmConstants.armExtendedPos);
-    //     stopArm();
-    //     m_Intake_ArmSpeed = 0;
-    //   }
-    //   else if (m_Intake_ArmSpeed > 0 && m_IntakeArm.getSelectedSensorPosition() >= IntakeArmConstants.armSlowRetract) {
-    //     m_Intake_ArmSpeed = 0.15;  // slow down as we approach closed position
-    //   }
-    // }
-    // m_IntakeArm.set(ControlMode.PercentOutput, m_Intake_ArmSpeed);  
- 
-  }
-  // public void runMotor(double speed){
-  //   //m_IntakeMotor.set(ControlMode.PercentOutput, speed);
-  //   m_IntakeMotor.set(ControlMode.Velocity, speed);
-  // }
-// public void extendArm(){
-//   // m_IntakeArm.set(ControlMode.PercentOutput, 1);
-//   SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeIsExtended, 1.0);
-//   //m_IntakeArm.set(ControlMode.Position, IntakeArmConstants.armExtendedPos);
-//   intakeExtended = true;
-//   m_IntakeMotor.set(ControlMode.PercentOutput, -0.3);
-//   m_Intake_ArmSpeed = -0.20;// -IntakeArmConstants.kMaxOutput;
-//   // if (m_dataRecorder != null) {
-//   //   m_dataRecorder.recordValue(datapoint.IntakeIsExtended, (double)1.00);
-//   // }
-// }
-
-
-// public void retractArm(){
-//   //m_IntakeArm.set(ControlMode.PercentOutput, -1);
-//   SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeIsExtended, 0.0);
-
-
-//   //m_IntakeArm.set(ControlMode.Position, IntakeArmConstants.armRetractPos);
-//   intakeExtended = false;
-//   m_Intake_ArmSpeed = 0.55;// IntakeArmConstants.kMaxOutput;
- 
-//   // if (m_dataRecorder != null) {
-//   //   m_dataRecorder.recordValue(datapoint.IntakeIsExtended, (double)0.00);
-//   // }
-
-
-// }
-
-
-// public void stopArm() {
-//   m_IntakeArm.set(ControlMode.PercentOutput, 0);
-//   m_Intake_ArmSpeed = 0;
-// }
-
-
-public void runIntake(double position){
-  m_IntakeSpeed = position;
-  // m_motor.set(.025);
-  // if (m_DigitalInput.get()) {
-    // m_motor.set(0);
-  // }
+    m_leftFingertips_pidController.setReference(m_leftFingertipsSpeed, CANSparkMax.ControlType.kVelocity);    
+    m_rightFingertips_pidController.setReference(m_rightFingertipsSpeed, CANSparkMax.ControlType.kVelocity);
   }
 
 
-  public void HeimlichManeuver() {
-    runIntake( -1 * SmartDashboard.getNumber("intakeSpeed", 25000));
-  }
-  public void StopIntake() {
-    runIntake(0);
-    m_phPneumaticsControlModule.disableCompressor();
-    m_airSolenoid.set(false);
-    // for (Solenoid solenoid : m_solenoids) {
-    //   solenoid.set(false);
-    // }
-  }
-  public void StartIntake() {
-    runIntake(SmartDashboard.getNumber("intakeSpeed", 1));
-    m_phPneumaticsControlModule.enableCompressorDigital();
-    m_airSolenoid.set(true);
-
-
-    // counter ++;
-// SmartDashboard.putNumber("Counter", counter);
-
-
-    // int i = 0;
-    // boolean setOn = false;
-    // for (Solenoid solenoid : m_solenoids) {
-    //   setOn = (counter & i) == i;
-    //   solenoid.set(setOn);
-    //   i ++;
-    // }
-
-
+  public void runSlapper (double leftPosition, double rightPosition){
+    m_leftUpDown_pidController.setReference(leftPosition, CANSparkMax.ControlType.kPosition);
+    m_rightUpDown_pidController.setReference(rightPosition, CANSparkMax.ControlType.kPosition);
+  
   }
 
+  public void runClapper (double leftPosition, double rightPosition){
+    m_leftElbow_pidController.setReference(leftPosition, CANSparkMax.ControlType.kPosition);
+    m_rightElbow_pidController.setReference(rightPosition, CANSparkMax.ControlType.kPosition);
+  }
 
-  public void ZeroEncoder(){
-    m_encoder = m_motor.getEncoder();
-    SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
-    // m_encoder.setPosition(0);
-    // SmartDashboard.putNumber("EncoderValueZero.", m_encoder.getPosition());
+  public void runTapper (double speed){
+    m_leftFingertips.set(speed);
+    m_rightFingertips.follow(m_leftFingertips, true);
   }
-  public void ArmExtend(){
-runIntake(.5);
-SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
-  }
-  public void ArmRetract(){
-runIntake(1);
-SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
-  }
-  // public void allowAdditionalMovement(){
-  //   m_IntakeArm.setSelectedSensorPosition( IntakeArmConstants.armExtendedPos / 2);
-  // }
- 
-  }
- 
-
+}
