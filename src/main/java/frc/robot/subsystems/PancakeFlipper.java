@@ -41,13 +41,12 @@ public class PancakeFlipper extends SubsystemBase {
     public static final double kMaxOutput = 0.05;
     public static final double kMinOutput = -0.05;
   }
-  
   private final CANSparkMax m_intakeLeft, m_intakeRight;
   private final CANSparkMax m_flipArm;
 
   private final SparkMaxPIDController m_IntakeLeftPID, m_IntakeRightPID, m_flipArmPID;
 
-  private double setSpeedTop, setSpeedBottom;
+  private double setFlipperPosition, setSpeedBottom;
 
   // private double kP, kI, kD, kFF, kMaxOutput, kMinOutput, maxRPM;
   // private int kIz;
@@ -117,69 +116,86 @@ public class PancakeFlipper extends SubsystemBase {
     // m_shootbottom.configClosedloopRamp(0.3);
     // m_shoottop.configClosedloopRamp(0.3);
    
-    setSpeedTop = 0;
+    setFlipperPosition = 0;
     setSpeedBottom = 0;
+
 
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Flipper set point", setFlipperPosition);
+    m_flipArmPID.setReference(setFlipperPosition, CANSparkMax.ControlType.kPosition);
  }
 
- 
-public void runMotor(double speedbottom, double speedtop){
-    SmartDashboard.putNumber("dataRecorder." + datapoint.ShooterBottom, speedbottom);
-    SmartDashboard.putNumber("dataRecorder." + datapoint.ShooterTop, speedtop);
+ public void FlipUp(){
+ setFlipperPosition = .5;
+ }
+ public void FlipDown(){
+  setFlipperPosition = 0;
+ }
 
-    setSpeedBottom = -speedbottom;
-    setSpeedTop = speedtop;
+ public void Pickup(){
+  m_intakeLeft.set(0.5);
+  m_intakeRight.set(-0.5);
+ }
+ public void StopPickup(){
+  m_intakeLeft.set(0);
+  m_intakeRight.set(0);
+ }
+// public void runMotor(double speedbottom, double speedtop){
+//     SmartDashboard.putNumber("dataRecorder." + datapoint.ShooterBottom, speedbottom);
+//     SmartDashboard.putNumber("dataRecorder." + datapoint.ShooterTop, speedtop);
 
-    if (setSpeedTop == 0 ){
-      m_IntakeLeftPID.setReference(0, CANSparkMax.ControlType.kVoltage);
-      //m_intakeLeft.set(0);
-      //m_IntakeLeftPID.setReference(0, CANSparkMax.ControlType.kPosition);
-      //m_intakeRight.set(0);
-      m_IntakeRightPID.setReference(0, CANSparkMax.ControlType.kVoltage);
-    }
-    else
-    {
-      //m_IntakeLeftPID.
-      //m_intakeLeft.set(setSpeedBottom);
-      //m_intakeRight.set(setSpeedTop); //TalonFXControlMode.Velocity, setSpeedTop);      
-      m_IntakeLeftPID.setReference(setSpeedBottom, CANSparkMax.ControlType.kVelocity);
-      m_IntakeRightPID.setReference(setSpeedBottom, CANSparkMax.ControlType.kVelocity);
-    }
-  }
+//     setSpeedBottom = -speedbottom;
+//     setSpeedTop = speedtop;
 
-  public void setForceReady(boolean enableOverride){
-    manualForceReady = enableOverride;
-  }
-  public void runKicker(double Speed){
-    //m_flipArm.set(ControlMode.PercentOutput, Speed);
-    SmartDashboard.putNumber("dataRecorder." + datapoint.KickerSpeed, Speed);
-  }
-  public boolean isReady(){
-    if (manualForceReady) {
-      return true;
-    }
+//     if (setSpeedTop == 0 ){
+//       m_IntakeLeftPID.setReference(0, CANSparkMax.ControlType.kVoltage);
+//       //m_intakeLeft.set(0);
+//       //m_IntakeLeftPID.setReference(0, CANSparkMax.ControlType.kPosition);
+//       //m_intakeRight.set(0);
+//       m_IntakeRightPID.setReference(0, CANSparkMax.ControlType.kVoltage);
+//     }
+//     else
+//     {
+//       //m_IntakeLeftPID.
+//       //m_intakeLeft.set(setSpeedBottom);
+//       //m_intakeRight.set(setSpeedTop); //TalonFXControlMode.Velocity, setSpeedTop);      
+//       m_IntakeLeftPID.setReference(setSpeedBottom, CANSparkMax.ControlType.kVelocity);
+//       m_IntakeRightPID.setReference(setSpeedBottom, CANSparkMax.ControlType.kVelocity);
+//     }
+//   }
 
-    // boolean topReady = (setSpeedTop!=0 && Math.abs(m_intakeRight.getSelectedSensorVelocity() - setSpeedTop) <= 100);
-    // boolean bottomReady = (setSpeedBottom!=0 && Math.abs(m_intakeLeft.getSelectedSensorVelocity() - setSpeedBottom) <= 100);
+//   public void setForceReady(boolean enableOverride){
+//     manualForceReady = enableOverride;
+//   }
+//   public void runKicker(double Speed){
+//     //m_flipArm.set(ControlMode.PercentOutput, Speed);
+//     SmartDashboard.putNumber("dataRecorder." + datapoint.KickerSpeed, Speed);
+//   }
+//   public boolean isReady(){
+//     if (manualForceReady) {
+//       return true;
+//     }
+
+//     // boolean topReady = (setSpeedTop!=0 && Math.abs(m_intakeRight.getSelectedSensorVelocity() - setSpeedTop) <= 100);
+//     // boolean bottomReady = (setSpeedBottom!=0 && Math.abs(m_intakeLeft.getSelectedSensorVelocity() - setSpeedBottom) <= 100);
     
-    // if (topReady && bottomReady) {readyCounter += 1; }
-    // //else {readyCounter = 0; }
+//     // if (topReady && bottomReady) {readyCounter += 1; }
+//     // //else {readyCounter = 0; }
 
-    // if (cacheTopReady != topReady) {cacheTopReady=topReady; SmartDashboard.putBoolean("i T Ready", topReady); }
-    // if (cacheBottomReady != bottomReady) {cacheBottomReady=bottomReady; SmartDashboard.putBoolean("i B Ready", bottomReady); }
+//     // if (cacheTopReady != topReady) {cacheTopReady=topReady; SmartDashboard.putBoolean("i T Ready", topReady); }
+//     // if (cacheBottomReady != bottomReady) {cacheBottomReady=bottomReady; SmartDashboard.putBoolean("i B Ready", bottomReady); }
     
-    return (readyCounter > 3); //require 10 consecutive readies before reporting we are ready
-  }
+//     return (readyCounter > 3); //require 10 consecutive readies before reporting we are ready
+//   }
 
-  public void clearReadyFlags(){
-    // cacheTopReady=false;
-    // cacheBottomReady=false;
-    readyCounter = 0;
-    //SmartDashboard.putString("ResetShooter", "Reset");
-  }
+//   public void clearReadyFlags(){
+//     // cacheTopReady=false;
+//     // cacheBottomReady=false;
+//     readyCounter = 0;
+//     //SmartDashboard.putString("ResetShooter", "Reset");
+//   }
 }
