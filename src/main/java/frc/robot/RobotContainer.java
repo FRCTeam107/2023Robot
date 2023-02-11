@@ -43,10 +43,12 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.LEDLights;
 import frc.robot.subsystems.Limelight;
 //import frc.robot.subsystems.Shooter;
-//import frc.robot.subsystems.SwerveDrivetrain;
+import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.TRexArms;
 import frc.robot.subsystems.PancakeFlipper;
 //import frc.robot.subsystems.VisionCamera;
+import frc.robot.subsystems.SkyHook;
+import frc.robot.subsystems.VisionCamera;
 //import frc.robot.commands.ClimberResetToHome;
 //import frc.robot.commands.DismountFirstBar;
 //import frc.robot.commands.ReachForTheBar;
@@ -62,18 +64,20 @@ import frc.robot.subsystems.PancakeFlipper;
 public class RobotContainer {
   // private final Joystick m_leftJoystick, m_rightJoystick, m_controllerJoystick;
   private final Joystick m_flightcontroller, m_controllerJoystick;
- // private final SwerveDrivetrain m_Drivetrain;
+  private final SwerveDrivetrain m_Drivetrain;
   //private final Shooter m_shooter;
   //private final Intake m_Intake;
   //private final Climber m_climber;
-  private final TRexArms m_motor;
-  private final LEDLights m_LEDLights;
+  // private final TRexArms m_TRexArms;
+   private final LEDLights m_LEDLights;
   //private final VisionCamera m_Camera;
   private final Limelight m_limelight;
-  private final PWM m_limit;
+  // private final PWM m_limit;
   private final PancakeFlipper m_flipArm;
   private final PancakeFlipper m_intakeLeft;
   private final PancakeFlipper m_intakeRight;
+  // private final PWM m_limit;
+  private final SkyHook m_skyHook;
   
   public DataRecorder m_DataRecorder = new DataRecorder();
 
@@ -91,27 +95,28 @@ public class RobotContainer {
     m_flightcontroller.setXChannel(FlightController.DRIVE_X_AXIS);
     m_flightcontroller.setYChannel(FlightController.DRIVE_Y_AXIS);
     m_flightcontroller.setZChannel(FlightController.DRIVE_Z_AXIS);
-    m_limit = new PWM(0);
-    
+    // m_limit = new PWM(0);
+    m_skyHook = new SkyHook();
+
     // m_rightJoystick = new Joystick(Constants.UsbPorts.RIGHT_STICK);
     m_controllerJoystick = new Joystick(Constants.UsbPorts.CONTROLLER_STICK);
-    m_LEDLights = new LEDLights();
-    //m_Drivetrain  = new SwerveDrivetrain(0);  // begin assuming no field offset angle of robot (facing straight "north")
+     m_LEDLights = new LEDLights();
+    m_Drivetrain  = new SwerveDrivetrain(0);  // begin assuming no field offset angle of robot (facing straight "north")
     //m_Intake = new Intake ();
     //m_shooter = new Shooter();
     //m_climber = new Climber();
     //m_Camera = new VisionCamera();
-    m_limelight = new Limelight();
+     m_limelight = new Limelight();
 
-    m_DataRecorder = new DataRecorder();
+    // m_DataRecorder = new DataRecorder();
 
-    m_motor = new TRexArms();
+    // m_motor = new TRexArms();
 
     m_flipArm = new PancakeFlipper();
     m_intakeLeft = new PancakeFlipper();
     m_intakeRight = new PancakeFlipper();
    
-    // m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
+     m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
     
     configureButtonBindings();
 
@@ -171,6 +176,12 @@ public class RobotContainer {
     JoystickButton btnFlipperPickup = new JoystickButton(m_flightcontroller, ControllerJoystick.RUN_FLIPPER_INTAKE);
     JoystickButton btnFlipperUp = new JoystickButton(m_flightcontroller, ControllerJoystick.FLIPPER_UP);
     JoystickButton btnFlipperDown = new JoystickButton(m_flightcontroller, ControllerJoystick.FLIPPER_DOWN);
+    // JoystickButton btnResetEncoder = new JoystickButton(m_flightcontroller, ControllerJoystick.RESET_ENCODER);
+    // JoystickButton btnArmExtend = new JoystickButton(m_flightcontroller, ControllerJoystick.ARM_EXTEND);
+    // JoystickButton btnArmRetract = new JoystickButton(m_flightcontroller, ControllerJoystick.ARM_RETRACT);
+
+    JoystickButton btnSqueeze = new JoystickButton(m_controllerJoystick, 1);
+    JoystickButton btnReleeve = new JoystickButton(m_controllerJoystick, 2);
     // JoystickButton btnClimbGrabNext = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_GRABNEXTBAR);
     // JoystickButton btnClimbDismount = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_DISMOUNT);
 
@@ -203,6 +214,16 @@ public class RobotContainer {
     btnFlipperPickup.whenReleased(m_intakeRight::Pickup);
     btnFlipperUp.whenPressed(m_flipArm::FlipUp);
     btnFlipperDown.whenPressed(m_flipArm::FlipDown);
+    // btnPickupIntake.whenPressed(m_TRexArms::StartIntake);
+    // btnPickupIntake.whenReleased(m_TRexArms::StopIntake);
+
+    // btnResetEncoder.whenPressed(m_TRexArms::ZeroEncoder);
+    // btnArmExtend.whenPressed(m_TRexArms::ArmExtend);
+    // btnArmRetract.whenPressed(m_TRexArms::ArmRetract);
+
+    btnSqueeze.whenPressed(m_skyHook::squeeze);
+    btnReleeve.whenPressed(m_skyHook::releeve);
+
     // CONTROLLER'S JOYSTICK BUTTONS
     // btnClimbFirstBar.whileHeld(new ReachForTheBar(m_climber, m_LEDLights));
     // btnClimbPullup.whileHeld(new PullUpOntoTalonHooks(m_climber, m_LEDLights));
