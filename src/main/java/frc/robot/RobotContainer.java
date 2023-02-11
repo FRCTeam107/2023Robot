@@ -219,9 +219,9 @@ public class RobotContainer {
     
     // btnPickupIntake.whenPressed(m_motor::StartIntake);
     // btnPickupIntake.whenReleased(m_motor::StopIntake);
-    btnIntake.whenPressed(m_flipArm::Pickup);
-    btnStop.whenPressed(m_flipArm::StopPickup);
-    btnPoop.whenPressed(m_flipArm::Poop);
+    btnIntake.whileHeld(m_flipArm::Pickup);
+    btnStop.whileHeld(m_flipArm::StopPickup);
+    btnPoop.whileHeld(m_flipArm::Poop);
 
     // btnPickupIntake.whenPressed(m_TRexArms::StartIntake);
     // btnPickupIntake.whenReleased(m_TRexArms::StopIntake);
