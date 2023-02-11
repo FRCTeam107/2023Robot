@@ -136,14 +136,19 @@ public void runMotor(double speedbottom, double speedtop){
     setSpeedTop = speedtop;
 
     if (setSpeedTop == 0 ){
-      m_intakeLeft.set(0);
-      m_intakeRight.set(0);
+      m_IntakeLeftPID.setReference(0, CANSparkMax.ControlType.kVoltage);
+      //m_intakeLeft.set(0);
+      //m_IntakeLeftPID.setReference(0, CANSparkMax.ControlType.kPosition);
+      //m_intakeRight.set(0);
+      m_IntakeRightPID.setReference(0, CANSparkMax.ControlType.kVoltage);
     }
     else
     {
       //m_IntakeLeftPID.
-      m_intakeLeft.set(setSpeedBottom);
-      m_intakeRight.set(setSpeedTop); //TalonFXControlMode.Velocity, setSpeedTop);      
+      //m_intakeLeft.set(setSpeedBottom);
+      //m_intakeRight.set(setSpeedTop); //TalonFXControlMode.Velocity, setSpeedTop);      
+      m_IntakeLeftPID.setReference(setSpeedBottom, CANSparkMax.ControlType.kVelocity);
+      m_IntakeRightPID.setReference(setSpeedBottom, CANSparkMax.ControlType.kVelocity);
     }
   }
 
