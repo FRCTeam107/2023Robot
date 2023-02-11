@@ -75,44 +75,44 @@ public class Shoot extends CommandBase {
     //   speedTop += adjustSpeed;
     // }
 
-    if (m_turboShot.getAsBoolean()){
-      m_shoot.runMotor(11000 ,11000);
-    }
-    else {
-      m_shoot.runMotor(speedBottom ,speedTop);
-    }
+    // if (m_turboShot.getAsBoolean()){
+    //   m_shoot.runMotor(11000 ,11000);
+    // }
+    // else {
+    //   m_shoot.runMotor(speedBottom ,speedTop);
+    // }
    // SmartDashboard.putNumber("ShooterSppeed", speedTop);
     // SmartDashboard.putNumber("mShoot Bot", speedBottom);
    // m_turret.setLifterPosition(liftPosition);
 
 
-    if (m_forceShot.getAsBoolean()){ //} || (m_shoot.isReady()) ) { //&& m_turret.isLiftReady()) ) { //&& m_Limelight.isReady()) ){
-     m_shoot.runKicker(0.3);
-     // m_Hopper.runMotor(0.41);
+    // if (m_forceShot.getAsBoolean()){ //} || (m_shoot.isReady()) ) { //&& m_turret.isLiftReady()) ) { //&& m_Limelight.isReady()) ){
+    //  m_shoot.runKicker(0.3);
+    //  // m_Hopper.runMotor(0.41);
 
-    //   double tt = Timer.getFPGATimestamp();
-    //    if ((int)(tt * 10) % 3 == 0) {
-    //    //  m_Hopper.runMotor(0.35);
-    //    }
-    //    else {
-    //     // m_Hopper.runMotor(0);
-    //    }
-    }
-     else
-    { 
-      m_shoot.runKicker(0);
-      // m_Indexer.runMotor(-0.3);
-      // m_Hopper.runMotor(0);
-    }
+    // //   double tt = Timer.getFPGATimestamp();
+    // //    if ((int)(tt * 10) % 3 == 0) {
+    // //    //  m_Hopper.runMotor(0.35);
+    // //    }
+    // //    else {
+    // //     // m_Hopper.runMotor(0);
+    // //    }
+    // }
+    //  else
+    // { 
+    //   m_shoot.runKicker(0);
+    //   // m_Indexer.runMotor(-0.3);
+    //   // m_Hopper.runMotor(0);
+    // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     //m_turret.isShooting = false;
-    m_shoot.runMotor(0, 0);
-    m_shoot.clearReadyFlags();
-    m_shoot.runKicker(0);
+    // m_shoot.runMotor(0, 0);
+    // m_shoot.clearReadyFlags();
+    // m_shoot.runKicker(0);
     //m_Indexer.runMotor(0);
     //m_Hopper.runMotor(0);
     //m_Limelight.DisableVisionProcessing();
