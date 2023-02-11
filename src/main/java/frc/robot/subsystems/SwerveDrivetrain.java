@@ -45,7 +45,7 @@ public class SwerveDrivetrain extends SubsystemBase {
   public static double frontLeftOffset = 74;//89.9;
   public static double frontRightOffset = -10;//281.9;
   public static double backLeftOffset = 104;//116.9;
-  public static double backRightOffset = 167;//304.8;
+  public static double backRightOffset = 347;//304.8;
 
   // COMPETITION ROBOT SETTINGS
   // public static double frontLeftOffset = 128;
