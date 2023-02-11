@@ -41,7 +41,8 @@ public class PancakeFlipper extends SubsystemBase {
     public static final double kMaxOutput = 0.05;
     public static final double kMinOutput = -0.05;
   }
-  private final CANSparkMax m_intakeLeft, m_intakeRight;
+  private final CANSparkMax m_intakeLeft;
+  private final CANSparkMax m_intakeRight;
   private final CANSparkMax m_flipArm;
 
   private final SparkMaxPIDController m_IntakeLeftPID, m_IntakeRightPID, m_flipArmPID;
@@ -137,13 +138,18 @@ public class PancakeFlipper extends SubsystemBase {
  }
 
  public void Pickup(){
-  m_intakeLeft.set(0.5);
+   m_intakeLeft.set(0.5);
   m_intakeRight.set(-0.5);
  }
  public void StopPickup(){
-  m_intakeLeft.set(0);
-  m_intakeRight.set(0);
+   m_intakeLeft.set(0);
+   m_intakeRight.set(0);
  }
+  public void Poop(){
+  m_intakeLeft.set(-0.5);
+  m_intakeRight.set(0.5);
+  }
+ 
 // public void runMotor(double speedbottom, double speedtop){
 //     SmartDashboard.putNumber("dataRecorder." + datapoint.ShooterBottom, speedbottom);
 //     SmartDashboard.putNumber("dataRecorder." + datapoint.ShooterTop, speedtop);

@@ -66,7 +66,7 @@ public final class Constants {
                 static final int PICKUP_INTAKE = 1;
 
                 public static final int CLIMBER_DISMOUNT = 7;
-                public static final int RUN_FLIPPER_INTAKE = 2;
+                public static final int RUN_FLIPPER_INTAKE = 5;
                 public static final int FLIPPER_UP = 4;
                 public static final int FLIPPER_DOWN = 3;
                 public static final int CLIMBER_GRABNEXTBAR = 10;
@@ -98,9 +98,9 @@ public final class Constants {
                 public static final int backRightCANCoderId = 11; 
                 public static final int backRightSteerId = 12;
 
-                public static final int SAMPLE_MOTOR = 13;   
+                public static final int SAMPLE_MOTOR = 14;   
                 public static final int INTAKE_ARM = 15;
-                public static final int PancakeFlipArm = 12;
+                public static final int PancakeFlipArm = 13;
                 public static final int Intake_Right = 17;
                 public static final int Intake_Left = 18;
                 public static final int SkyhookExtension = 19;

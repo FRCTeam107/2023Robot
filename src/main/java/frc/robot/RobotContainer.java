@@ -74,8 +74,6 @@ public class RobotContainer {
   private final Limelight m_limelight;
   // private final PWM m_limit;
   private final PancakeFlipper m_flipArm;
-  private final PancakeFlipper m_intakeLeft;
-  private final PancakeFlipper m_intakeRight;
   // private final PWM m_limit;
   private final SkyHook m_skyHook;
   
@@ -113,8 +111,6 @@ public class RobotContainer {
     // m_motor = new TRexArms();
 
     m_flipArm = new PancakeFlipper();
-    m_intakeLeft = new PancakeFlipper();
-    m_intakeRight = new PancakeFlipper();
    
      m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
     
@@ -173,15 +169,19 @@ public class RobotContainer {
     // JoystickButton btnIntakeUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_UP);
     // JoystickButton btnPickupEject = new JoystickButton(m_controllerJoystick, ControllerJoystick.PICKUP_EJECT);
     // JoystickButton btnPickupIntake = new JoystickButton(m_flightcontroller, ControllerJoystick.PICKUP_INTAKE);
-    JoystickButton btnFlipperPickup = new JoystickButton(m_flightcontroller, ControllerJoystick.RUN_FLIPPER_INTAKE);
-    JoystickButton btnFlipperUp = new JoystickButton(m_flightcontroller, ControllerJoystick.FLIPPER_UP);
-    JoystickButton btnFlipperDown = new JoystickButton(m_flightcontroller, ControllerJoystick.FLIPPER_DOWN);
+    // JoystickButton btnFlipperPickup = new JoystickButton(m_flightcontroller, ControllerJoystick.RUN_FLIPPER_INTAKE);
+    // JoystickButton btnFlipperUp = new JoystickButton(m_flightcontroller, ControllerJoystick.FLIPPER_UP);
+    // JoystickButton btnFlipperDown = new JoystickButton(m_flightcontroller, ControllerJoystick.FLIPPER_DOWN);
     // JoystickButton btnResetEncoder = new JoystickButton(m_flightcontroller, ControllerJoystick.RESET_ENCODER);
     // JoystickButton btnArmExtend = new JoystickButton(m_flightcontroller, ControllerJoystick.ARM_EXTEND);
     // JoystickButton btnArmRetract = new JoystickButton(m_flightcontroller, ControllerJoystick.ARM_RETRACT);
 
     JoystickButton btnSqueeze = new JoystickButton(m_controllerJoystick, 1);
     JoystickButton btnReleeve = new JoystickButton(m_controllerJoystick, 2);
+
+    JoystickButton btnIntake = new JoystickButton(m_controllerJoystick, 3);
+    JoystickButton btnStop = new JoystickButton(m_controllerJoystick, 5);
+    JoystickButton btnPoop = new JoystickButton(m_controllerJoystick, 4);
     // JoystickButton btnClimbGrabNext = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_GRABNEXTBAR);
     // JoystickButton btnClimbDismount = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_DISMOUNT);
 
@@ -207,13 +207,10 @@ public class RobotContainer {
     
     // btnPickupIntake.whenPressed(m_motor::StartIntake);
     // btnPickupIntake.whenReleased(m_motor::StopIntake);
+    btnIntake.whenPressed(m_flipArm::Pickup);
+    btnStop.whenPressed(m_flipArm::StopPickup);
+    btnPoop.whenPressed(m_flipArm::Poop);
 
-    btnFlipperPickup.whenPressed(m_intakeLeft::Pickup);
-    btnFlipperPickup.whenPressed(m_intakeRight::Pickup);
-    btnFlipperPickup.whenReleased(m_intakeLeft::Pickup);
-    btnFlipperPickup.whenReleased(m_intakeRight::Pickup);
-    btnFlipperUp.whenPressed(m_flipArm::FlipUp);
-    btnFlipperDown.whenPressed(m_flipArm::FlipDown);
     // btnPickupIntake.whenPressed(m_TRexArms::StartIntake);
     // btnPickupIntake.whenReleased(m_TRexArms::StopIntake);
 
