@@ -38,6 +38,14 @@ private SparkMaxPIDController m_rightFingertips_pidController;
 private double m_leftFingertipsSpeed,m_rightFingertipsSpeed;
 private RelativeEncoder m_encoder;
 
+  // private final WPI_TalonSRX m_IntakeArm;
+  private SparkMaxPIDController m_pidController;
+  private boolean intakeExtended = false;
+  // private double m_Intake_ArmSpeed;
+  private double m_IntakeSpeed;
+  // private RelativeEncoder m_encoder;
+  //private Solenoid m_airSolenoid;
+  private DigitalInput m_DigitalInput;
 private int counter = 0;
 private PWM m_limit;
 

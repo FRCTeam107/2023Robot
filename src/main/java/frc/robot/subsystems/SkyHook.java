@@ -9,12 +9,12 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import edu.wpi.first.wpilibj.Solenoid;
+// import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DIOPorts;
 import frc.robot.Constants.Motors;
-//import frc.robot.Constants.Solenoids;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -25,6 +25,7 @@ public class SkyHook extends SubsystemBase {
 
   private final CANSparkMax m_ExtensionMotor, m_FlipFlopMotor;
   private final SparkMaxPIDController m_ExtensionPID, m_FlipFlopPID;
+  private final DoubleSolenoid m_clapper;
 
 //private final DigitalInput m_talonHookLeft, m_talonHookRight;
 
@@ -43,7 +44,7 @@ public static final class ExtensionConstants {
     public static final double armsStartingPos = 0; // starting position
     public static final double armMaxReach = 118000; // 145000;
     public static final double hookStartingPos = 0;
-    private static final double hookMaxReachPos = -340000;// -380000; //-406000; // 421000; 
+    //private static final double hookMaxReachPos = -340000;// -380000; //-406000; // 421000; 
 
 
     // reach for the bar
@@ -102,6 +103,8 @@ public static final class FlipFlopConstants {
     m_ExtensionMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
     m_ExtensionMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 100);
 
+    m_clapper = new DoubleSolenoid(1, PneumaticsModuleType.REVPH, 4, 5);
+
     m_ExtensionPID = m_ExtensionMotor.getPIDController();
     m_ExtensionPID.setP(ExtensionConstants.kP);
     m_ExtensionPID.setI(ExtensionConstants.kI);
@@ -145,6 +148,15 @@ public static final class FlipFlopConstants {
     // SmartDashboard.putBoolean("climbHookRevLimit", hookHitBackLimit());
   }
 
+  public void squeeze(){
+    SmartDashboard.putString("skyHookArm", "Squeeze");
+    m_clapper.set(kForward);
+  }
+
+  public void releeve(){
+    SmartDashboard.putString("skyHookArm", "Release");
+     m_clapper.set(kReverse);
+  }
   // public void setArmSensorPosition(double armPosition){
   //   m_climberArm.setSelectedSensorPosition(armPosition);
   // }
