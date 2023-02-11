@@ -33,7 +33,7 @@ public final class Constants {
                 public static final int DRIVE_X_AXIS = 3;
                 public static final int DRIVE_Y_AXIS = 4;
                 public static final int DRIVE_Z_AXIS = 0;
-
+                
                 public static final int ACTIVATE_LIMELIGHT = 1;
                 //public static final int CLIMBER_MANUAL = 4;
                 public static final int AIM_BY_LIMELIGHT = 13;
@@ -63,11 +63,12 @@ public final class Constants {
                 static final int PICKUP_DOWN = 12;
                 static final int PICKUP_UP = 15;
                 public static final int PICKUP_EJECT = 14;
-                static final int PICKUP_INTAKE = 16;
+                static final int PICKUP_INTAKE = 1;
 
                 public static final int CLIMBER_DISMOUNT = 7;
-                public static final int CLIMBER_FIRSTBAR = 8;
-                public static final int CLIMBER_PULLUP = 9;
+                public static final int RESET_ENCODER = 2;
+                public static final int ARM_EXTEND = 4;
+                public static final int ARM_RETRACT = 3;
                 public static final int CLIMBER_GRABNEXTBAR = 10;
                 // public static final int CLIMBER_EXTEND = 8;
                 // public static final int CLIMBER_PULLUP = 9;
@@ -95,15 +96,15 @@ public final class Constants {
 
                 public static final int backRightDriveId = 10; 
                 public static final int backRightCANCoderId = 11; 
-                public static final int backRightSteerId = 12;
+                public static final int backRightSteerId = 13;
 
-                public static final int BALL_INTAKE = 14;   
+                public static final int SAMPLE_MOTOR = 10;   
                 public static final int INTAKE_ARM = 15;
-                public static final int KICKER = 16;
-                public static final int SHOOTER_TOP = 17;
-                public static final int SHOOTER_BOTTOM = 18;
-                public static final int CLIMBER_ONE = 19; // Falcon 500
-                public static final int CLIMBER_ARM = 20;
+                public static final int PancakeFlipArm = 16;
+                public static final int Intake_Right = 17;
+                public static final int Intake_Left = 18;
+                public static final int SkyhookExtension = 19;
+                public static final int SkyhookFlipFlop = 20;
         }
 
         // DIO Ports
@@ -122,16 +123,7 @@ public final class Constants {
                 // public static final int SHIFT_FORWARD = 5;
         }
 
-        public static final class ShooterConstants {
-                public static final double kP = 0.25; 
-                public static final double kI = 0.0005;
-                public static final double kD = 0.0001; 
-                public static final double kIz = 8000; 
-                public static final double kFF = 0.01;//.000015; 
-                // public static final double kMaxOutput = 1; 
-                // public static final double kMinOutput = -1;
-                // public static final double maxRPM = 5700;  
-        }
+
 
         // Trajectory / Pathweaver constants
         public static final class DriveConstants {

@@ -13,20 +13,20 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.PancakeFlipper;
 
 public class Shoot extends CommandBase {
   /**
    * Creates a new Shoot.
    */
-  private final Shooter m_shoot;
+  private final PancakeFlipper m_shoot;
   private final BooleanSupplier m_forceShot;
   private final BooleanSupplier m_turboShot;
   private final Limelight m_Limelight;
 
   private double iTop, iBottom;
  
-  public Shoot(Shooter _shooter, Limelight _limeLight, BooleanSupplier _forceShot, BooleanSupplier _turboShot) {
+  public Shoot(PancakeFlipper _shooter, Limelight _limeLight, BooleanSupplier _forceShot, BooleanSupplier _turboShot) {
     m_shoot = _shooter;
     m_forceShot = _forceShot;
     m_turboShot = _turboShot;
