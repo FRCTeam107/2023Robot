@@ -41,7 +41,7 @@ public class TRexArms extends SubsystemBase {
   private boolean intakeExtended = false;
   // private double m_Intake_ArmSpeed;
   private double m_IntakeSpeed;
-  private RelativeEncoder m_encoder;
+  // private RelativeEncoder m_encoder;
   //private Solenoid m_airSolenoid;
   private  PneumaticsControlModule m_phPneumaticsControlModule;
   private Solenoid[] m_solenoids;
@@ -321,18 +321,18 @@ public void runIntake(double position){
 
 
   public void ZeroEncoder(){
-    m_encoder = m_motor.getEncoder();
-    SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
+    // m_encoder = m_motor.getEncoder();
+    // SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
     // m_encoder.setPosition(0);
     // SmartDashboard.putNumber("EncoderValueZero.", m_encoder.getPosition());
   }
   public void ArmExtend(){
 runIntake(.5);
-SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
+// SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
   }
   public void ArmRetract(){
 runIntake(1);
-SmartDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
+// Sm?artDashboard.putNumber("EncoderValue.", m_encoder.getPosition());
   }
   // public void allowAdditionalMovement(){
   //   m_IntakeArm.setSelectedSensorPosition( IntakeArmConstants.armExtendedPos / 2);
