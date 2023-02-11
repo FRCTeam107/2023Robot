@@ -10,19 +10,42 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import frc.robot.Constants.Motors;
-import frc.robot.Constants.ShooterConstants;
+//import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.DataRecorder.datapoint;
 
 public class PancakeFlipper extends SubsystemBase {
-  private final WPI_TalonFX m_shootbottom, m_shoottop;
-  private final WPI_TalonSRX m_kicker;
+  public static final class IntakeConstants {
+    // PID values
+    public static final double kP = 0.4096;
+    public static final double kI = 0.00;
+    public static final double kD = 0;
+    public static final double kIz = 8000;
+    public static final double kFF = 0;//.000015;
+    public static final double kMaxOutput = 0.05;
+    public static final double kMinOutput = -0.05;
+  }
+  
+  public static final class FlipperConstants {
+    // PID values
+    public static final double kP = 0.4096;
+    public static final double kI = 0.00;
+    public static final double kD = 0;
+    public static final double kIz = 8000;
+    public static final double kFF = 0;//.000015;
+    public static final double kMaxOutput = 0.05;
+    public static final double kMinOutput = -0.05;
+  }
+  
+  private final CANSparkMax m_intakeLeft, m_intakeRight;
+  private final CANSparkMax m_flipArm;
+
+  private final SparkMaxPIDController m_IntakeLeftPID, m_IntakeRightPID, m_flipArmPID;
 
   private double setSpeedTop, setSpeedBottom;
 
@@ -31,7 +54,7 @@ public class PancakeFlipper extends SubsystemBase {
   private boolean manualForceReady;
   private int readyCounter;  // number of times shooters report ready in a row
 
-  private boolean cacheTopReady, cacheBottomReady;
+  //private boolean cacheTopReady, cacheBottomReady;
   /**
    * Creates a new Shooter.
    */
@@ -39,56 +62,63 @@ public class PancakeFlipper extends SubsystemBase {
     super();
 
     manualForceReady = false;
-    cacheBottomReady = false;
-    cacheTopReady = false;
+    // cacheBottomReady = false;
+    // cacheTopReady = false;
 
     readyCounter = 0;
-    m_shootbottom = new WPI_TalonFX(Motors.SHOOTER_BOTTOM);
-    m_shoottop = new WPI_TalonFX(Motors.SHOOTER_TOP);
-    m_kicker = new WPI_TalonSRX(Motors.KICKER);
+    m_flipArm = new CANSparkMax(Motors.PancakeFlipArm, MotorType.kBrushless);
+    m_flipArm.restoreFactoryDefaults();
+    // reduce communication on CAN bus
+    m_flipArm.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
+    m_flipArm.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
+    m_flipArm.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 100);
 
-    m_shootbottom.configFactoryDefault();
-    m_shoottop.configFactoryDefault();
-    m_kicker.configFactoryDefault();
+    m_flipArmPID = m_flipArm.getPIDController();
+    m_flipArmPID.setP(FlipperConstants.kP);
+    m_flipArmPID.setI(FlipperConstants.kI);
+    m_flipArmPID.setD(FlipperConstants.kD);
+    m_flipArmPID.setIZone(FlipperConstants.kIz);
+    m_flipArmPID.setFF(FlipperConstants.kFF);
+    m_flipArmPID.setOutputRange(FlipperConstants.kMinOutput, FlipperConstants.kMaxOutput);
 
 
-    m_shoottop.setStatusFramePeriod(StatusFrame.Status_1_General, 100);
-    m_shootbottom.setStatusFramePeriod(StatusFrame.Status_1_General, 100);
+    m_intakeLeft = new CANSparkMax(Motors.Intake_Left, MotorType.kBrushless);
+    m_intakeLeft.restoreFactoryDefaults();
+    // reduce communication on CAN bus
+    m_intakeLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
+    m_intakeLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
+    m_intakeLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 100);
 
-    m_shoottop.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 100);
-    m_shootbottom.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 100);
+    m_IntakeLeftPID = m_intakeLeft.getPIDController();
+    m_IntakeLeftPID.setP(IntakeConstants.kP);
+    m_IntakeLeftPID.setI(IntakeConstants.kI);
+    m_IntakeLeftPID.setD(IntakeConstants.kD);
+    m_IntakeLeftPID.setIZone(IntakeConstants.kIz);
+    m_IntakeLeftPID.setFF(IntakeConstants.kFF);
+    m_IntakeLeftPID.setOutputRange(IntakeConstants.kMinOutput, IntakeConstants.kMaxOutput);
 
-    m_kicker.setStatusFramePeriod(StatusFrame.Status_1_General, 1000);
-    m_kicker.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1000);
+
+    m_intakeRight = new CANSparkMax(Motors.Intake_Right, MotorType.kBrushless);
+    m_intakeRight.restoreFactoryDefaults();
+    // reduce communication on CAN bus
+    m_intakeRight.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
+    m_intakeRight.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
+    m_intakeRight.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 100);
+
+    m_IntakeRightPID = m_intakeRight.getPIDController();
+    m_IntakeRightPID.setP(IntakeConstants.kP);
+    m_IntakeRightPID.setI(IntakeConstants.kI);
+    m_IntakeRightPID.setD(IntakeConstants.kD);
+    m_IntakeRightPID.setIZone(IntakeConstants.kIz);
+    m_IntakeRightPID.setFF(IntakeConstants.kFF);
+    m_IntakeRightPID.setOutputRange(IntakeConstants.kMinOutput, IntakeConstants.kMaxOutput);
+
 
     // m_shootbottom.configClosedloopRamp(0.3);
     // m_shoottop.configClosedloopRamp(0.3);
    
     setSpeedTop = 0;
     setSpeedBottom = 0;
-
-    // setup PID closed-loop values
-    // kP = 0.25; 
-    // kI = 0.0005;
-    // kD = 0.0001; 
-    // kIz = 8000; 
-    // kFF = 0;//.000015; 
-    // kMaxOutput = 1; 
-    // kMinOutput = -1;
-    // maxRPM = 5700;
-    m_shootbottom.config_kP(0, ShooterConstants.kP);
-    m_shootbottom.config_kI(0, ShooterConstants.kI);
-    m_shootbottom.config_kD(0, ShooterConstants.kD);
-    m_shootbottom.config_IntegralZone(0, ShooterConstants.kIz);
-    m_shootbottom.config_kF(0, ShooterConstants.kFF);
-    // m_shootbottom.configClosedLoopPeakOutput(slotIdx, percentOut)
-
-    m_shoottop.config_kP(0, ShooterConstants.kP);
-    m_shoottop.config_kI(0, ShooterConstants.kI);
-    m_shoottop.config_kD(0, ShooterConstants.kD);
-    m_shoottop.config_IntegralZone(0, ShooterConstants.kIz);
-    m_shoottop.config_kF(0, ShooterConstants.kFF);
-    // m_shoottop.configClosedLoopPeakOutput(slotIdx, percentOut)
 
   }
 
@@ -106,13 +136,14 @@ public void runMotor(double speedbottom, double speedtop){
     setSpeedTop = speedtop;
 
     if (setSpeedTop == 0 ){
-      m_shootbottom.set(TalonFXControlMode.PercentOutput, 0);
-      m_shoottop.set(TalonFXControlMode.PercentOutput,0);
+      m_intakeLeft.set(0);
+      m_intakeRight.set(0);
     }
     else
     {
-      m_shootbottom.set(TalonFXControlMode.Velocity, setSpeedBottom);
-      m_shoottop.set(TalonFXControlMode.Velocity, setSpeedTop);      
+      //m_IntakeLeftPID.
+      m_intakeLeft.set(setSpeedBottom);
+      m_intakeRight.set(setSpeedTop); //TalonFXControlMode.Velocity, setSpeedTop);      
     }
   }
 
@@ -120,7 +151,7 @@ public void runMotor(double speedbottom, double speedtop){
     manualForceReady = enableOverride;
   }
   public void runKicker(double Speed){
-    m_kicker.set(ControlMode.PercentOutput, Speed);
+    //m_flipArm.set(ControlMode.PercentOutput, Speed);
     SmartDashboard.putNumber("dataRecorder." + datapoint.KickerSpeed, Speed);
   }
   public boolean isReady(){
@@ -128,21 +159,21 @@ public void runMotor(double speedbottom, double speedtop){
       return true;
     }
 
-    boolean topReady = (setSpeedTop!=0 && Math.abs(m_shoottop.getSelectedSensorVelocity() - setSpeedTop) <= 100);
-    boolean bottomReady = (setSpeedBottom!=0 && Math.abs(m_shootbottom.getSelectedSensorVelocity() - setSpeedBottom) <= 100);
+    // boolean topReady = (setSpeedTop!=0 && Math.abs(m_intakeRight.getSelectedSensorVelocity() - setSpeedTop) <= 100);
+    // boolean bottomReady = (setSpeedBottom!=0 && Math.abs(m_intakeLeft.getSelectedSensorVelocity() - setSpeedBottom) <= 100);
     
-    if (topReady && bottomReady) {readyCounter += 1; }
-    //else {readyCounter = 0; }
+    // if (topReady && bottomReady) {readyCounter += 1; }
+    // //else {readyCounter = 0; }
 
-    if (cacheTopReady != topReady) {cacheTopReady=topReady; SmartDashboard.putBoolean("i T Ready", topReady); }
-    if (cacheBottomReady != bottomReady) {cacheBottomReady=bottomReady; SmartDashboard.putBoolean("i B Ready", bottomReady); }
+    // if (cacheTopReady != topReady) {cacheTopReady=topReady; SmartDashboard.putBoolean("i T Ready", topReady); }
+    // if (cacheBottomReady != bottomReady) {cacheBottomReady=bottomReady; SmartDashboard.putBoolean("i B Ready", bottomReady); }
     
     return (readyCounter > 3); //require 10 consecutive readies before reporting we are ready
   }
 
   public void clearReadyFlags(){
-    cacheTopReady=false;
-    cacheBottomReady=false;
+    // cacheTopReady=false;
+    // cacheBottomReady=false;
     readyCounter = 0;
     //SmartDashboard.putString("ResetShooter", "Reset");
   }

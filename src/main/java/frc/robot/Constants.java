@@ -100,9 +100,9 @@ public final class Constants {
 
                 public static final int SAMPLE_MOTOR = 10;   
                 public static final int INTAKE_ARM = 15;
-                public static final int KICKER = 16;
-                public static final int SHOOTER_TOP = 17;
-                public static final int SHOOTER_BOTTOM = 18;
+                public static final int PancakeFlipArm = 16;
+                public static final int Intake_Right = 17;
+                public static final int Intake_Left = 18;
                 public static final int SkyhookExtension = 19;
                 public static final int SkyhookFlipFlop = 20;
         }
@@ -123,16 +123,7 @@ public final class Constants {
                 // public static final int SHIFT_FORWARD = 5;
         }
 
-        public static final class ShooterConstants {
-                public static final double kP = 0.25; 
-                public static final double kI = 0.0005;
-                public static final double kD = 0.0001; 
-                public static final double kIz = 8000; 
-                public static final double kFF = 0.01;//.000015; 
-                // public static final double kMaxOutput = 1; 
-                // public static final double kMinOutput = -1;
-                // public static final double maxRPM = 5700;  
-        }
+
 
         // Trajectory / Pathweaver constants
         public static final class DriveConstants {
