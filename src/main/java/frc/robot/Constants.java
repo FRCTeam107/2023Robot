@@ -22,9 +22,8 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
         public class UsbPorts{
-                public static final int LEFT_STICK = 0;
-                public static final int RIGHT_STICK = 1;
-                public static final int CONTROLLER_STICK = 2;
+                public static final int FlightController = 0;
+                public static final int CONTROLLER_STICK = 1;
                 //public static final int CAMERA_PORT = 0;
         }
 
@@ -54,9 +53,9 @@ public final class Constants {
 
         public class ControllerJoystick{
                 public static final int SHOOT = 1;
-                static final int TURBO_SHOT =2;
+                static final int RUN_PICKUP = 2;
                 //public static final int CAMERA_TOGGLE = 3;
-                public static final int CLIMBER_MANUAL = 3;
+                public static final int EJECT_PICKUP = 3;
                 static final int FORCE_READY = 4;
                 static final int REORIENT_ROBOT = 5;
                 
@@ -69,14 +68,6 @@ public final class Constants {
                 public static final int RUN_FLIPPER_INTAKE = 5;
                 public static final int FLIPPER_UP = 4;
                 public static final int FLIPPER_DOWN = 3;
-                public static final int CLIMBER_GRABNEXTBAR = 10;
-                // public static final int CLIMBER_EXTEND = 8;
-                // public static final int CLIMBER_PULLUP = 9;
-                // public static final int ARM_REACHBACK = 10;
-                // public static final int ARM_VERTICAL = 11;
-
-                // public static final int CLIMBER_EXTEND = 8;
-                //  public static final int CLIMBER_RETRACT = 9;
                 public static final int SLAP_TREX_ARMS = 11;
                 public static final int CLAP_TREX_ARMS = 12;
                 public static final int FEED_TREX_ARMS = 13;
@@ -102,10 +93,9 @@ public final class Constants {
                 public static final int backRightCANCoderId = 11; 
                 public static final int backRightSteerId = 12;
 
-                public static final int SAMPLE_MOTOR = 14;   
                 public static final int INTAKE_ARM = 15;
-                public static final int PancakeFlipArm = 13;
-                public static final int Intake_Right = 17;
+                public static final int PancakeFlipArm = 17;
+                public static final int Intake_Right = 13;
                 public static final int Intake_Left = 18;
                 public static final int SkyhookExtension = 19;
                 public static final int SkyhookFlipFlop = 20;
@@ -121,8 +111,8 @@ public final class Constants {
 
         // DIO Ports
         public class DIOPorts{
-                public static final int TALONHOOK_LEFT = 0;
-                public static final int TALONHOOK_RIGHT = 1;
+                // public static final int TALONHOOK_LEFT = 0;
+                // public static final int TALONHOOK_RIGHT = 1;
         }
         
         // SOLENOIDS

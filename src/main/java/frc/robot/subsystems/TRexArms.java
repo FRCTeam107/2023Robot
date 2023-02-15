@@ -158,6 +158,11 @@ private PWM m_limit;
    
   }
 
+  public void something(){
+    SmartDashboard.putString("Flipper", "I am working");
+  }
+
+
   @Override
   public void periodic() {
     m_leftFingertips_pidController.setReference(m_leftFingertipsSpeed, CANSparkMax.ControlType.kVelocity);    

@@ -12,22 +12,27 @@ import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.PancakeFlipper;
 import frc.robot.subsystems.TRexArms;
+import frc.robot.subsystems.PancakeFlipper.FlipperConstants;
+import frc.robot.subsystems.PancakeFlipper.IntakeConstants;
 
-public class UpTRexArms extends CommandBase {
+public class CaptureGamePiece extends CommandBase {
   /**
-   * Creates a new Shoot.`
+   * Creates a new Shoot.
    */
   private final TRexArms m_tRexArms;
+  private final PancakeFlipper m_pancakeFlipper;
 
 
 
  
-  public UpTRexArms(TRexArms _tRexArms) {
+  public CaptureGamePiece(TRexArms _tRexArms, PancakeFlipper _pancakeFlipper) {
     m_tRexArms = _tRexArms;
+    m_pancakeFlipper = _pancakeFlipper;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_tRexArms);
+    addRequirements(m_tRexArms, m_pancakeFlipper);
   }
 
     // Called when the command is initially scheduled.
@@ -39,7 +44,10 @@ public class UpTRexArms extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_tRexArms.runSlapper(0, 0);
+    m_tRexArms.runClapper(0, 0);
+    m_pancakeFlipper.SetFlipperPos(FlipperConstants.homePos);
+    m_pancakeFlipper.RunPickupMotors(IntakeConstants.pickupPower);
+
   }
 
   // Called once the command ends or is interrupted.
