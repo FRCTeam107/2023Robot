@@ -39,7 +39,7 @@ public class CloseTRexArms extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_tRexArms.runClapper(ElbowMotorConstants.inPos, ElbowMotorConstants.inPos);
+    m_tRexArms.runClapper(ElbowMotorConstants.inPos, -ElbowMotorConstants.inPos);
     m_tRexArms.runTapper(0.5);
   }
 

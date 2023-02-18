@@ -36,8 +36,10 @@ private SparkMaxPIDController m_rightElbow_pidController;
 private SparkMaxPIDController m_leftFingertips_pidController;
 private SparkMaxPIDController m_rightFingertips_pidController;
 private double m_leftFingertipsSpeed,m_rightFingertipsSpeed;
-private RelativeEncoder m_slapperEncoder;
-private RelativeEncoder m_clapperEncoder;
+private RelativeEncoder m_leftUpDownEncoder;
+private RelativeEncoder m_rightUpDownEncoder;
+private RelativeEncoder m_leftElbowEncoder;
+private RelativeEncoder m_rightElbowEncoder;
 
   // private final WPI_TalonSRX m_IntakeArm;
   private SparkMaxPIDController m_pidController;
@@ -54,16 +56,18 @@ private PWM m_limit;
   //private DataRecorder m_dataRecorder;
  
   public static final class UpDownMotorConstants {
-    public static final double kP = 0.4096;
+    public static final double kP = 0.45;
     public static final double kI = 0.00;
     public static final double kD = 0;
     public static final double kIz = 8000;
-    public static final double kFF = 0;//.000015;
-    public static final double kMaxOutput = 0.05;
-    public static final double kMinOutput = -0.05;
+    public static final double kFF = 0.3;//.000015;
+    public static final double kMaxOutput = 0.4;
+    public static final double kMinOutput = -0.075;
 
-    public static final double upPos = 0;
-    public static final double downPos = 0.785;
+    public static final double upPos = -0.238;
+    public static final double downPos = -0.5;
+    public static final double homePos = 0;
+
 
 
   }
@@ -74,11 +78,12 @@ private PWM m_limit;
     public static final double kD = 0;
     public static final double kIz = 8000;
     public static final double kFF = 0;//.000015;
-    public static final double kMaxOutput = 0.05;
-    public static final double kMinOutput = -0.05;
+    public static final double kMaxOutput = 0.1;
+    public static final double kMinOutput = -0.1;
 
-    public static final double inPos = 0;
-    public static final double outPos = 1;
+    public static final double inPos = -0.5;
+    public static final double outPos = 0.5;
+    public static final double homePos = 0;
   }
 
   public static final class FingertipsMotorConstants {
@@ -117,8 +122,8 @@ private PWM m_limit;
     m_leftUpDown_pidController.setIZone(UpDownMotorConstants.kIz);
     m_leftUpDown_pidController.setFF(UpDownMotorConstants.kFF);
     m_leftUpDown_pidController.setOutputRange(UpDownMotorConstants.kMinOutput, UpDownMotorConstants.kMaxOutput);
-    m_slapperEncoder = m_leftUpDown.getEncoder();
-    m_slapperEncoder.setPosition(UpDownMotorConstants.upPos);
+    m_leftUpDownEncoder = m_leftUpDown.getEncoder();
+    m_leftUpDownEncoder.setPosition(UpDownMotorConstants.homePos);
 
     m_rightUpDown_pidController = m_rightUpDown.getPIDController();
     m_rightUpDown_pidController.setP(UpDownMotorConstants.kP);
@@ -127,6 +132,8 @@ private PWM m_limit;
     m_rightUpDown_pidController.setIZone(UpDownMotorConstants.kIz);
     m_rightUpDown_pidController.setFF(UpDownMotorConstants.kFF);
     m_rightUpDown_pidController.setOutputRange(UpDownMotorConstants.kMinOutput, UpDownMotorConstants.kMaxOutput);
+    m_rightUpDownEncoder = m_rightUpDown.getEncoder();
+    m_rightUpDownEncoder.setPosition(UpDownMotorConstants.homePos);
 
     m_leftElbow_pidController = m_leftElbow.getPIDController();
     m_leftElbow_pidController.setP(ElbowMotorConstants.kP);
@@ -135,8 +142,8 @@ private PWM m_limit;
     m_leftElbow_pidController.setIZone(ElbowMotorConstants.kIz);
     m_leftElbow_pidController.setFF(ElbowMotorConstants.kFF);
     m_leftElbow_pidController.setOutputRange(ElbowMotorConstants.kMinOutput, ElbowMotorConstants.kMaxOutput);
-    m_clapperEncoder = m_leftElbow.getEncoder();
-    m_clapperEncoder.setPosition(UpDownMotorConstants.upPos);
+    m_leftElbowEncoder = m_leftElbow.getEncoder();
+    m_leftElbowEncoder.setPosition(ElbowMotorConstants.homePos);
 
     m_rightElbow_pidController = m_rightElbow.getPIDController();
     m_rightElbow_pidController.setP(ElbowMotorConstants.kP);
@@ -145,6 +152,8 @@ private PWM m_limit;
     m_rightElbow_pidController.setIZone(ElbowMotorConstants.kIz);
     m_rightElbow_pidController.setFF(ElbowMotorConstants.kFF);
     m_rightElbow_pidController.setOutputRange(ElbowMotorConstants.kMinOutput, ElbowMotorConstants.kMaxOutput);
+    m_rightElbowEncoder = m_rightElbow.getEncoder();
+    m_rightElbowEncoder.setPosition(ElbowMotorConstants.homePos);
 
     m_leftFingertips_pidController = m_leftFingertips.getPIDController();
     m_leftFingertips_pidController.setP( FingertipsMotorConstants.kP);
@@ -177,8 +186,9 @@ private PWM m_limit;
   public void periodic() {
     m_leftFingertips_pidController.setReference(m_leftFingertipsSpeed, CANSparkMax.ControlType.kVelocity);    
     m_rightFingertips_pidController.setReference(m_rightFingertipsSpeed, CANSparkMax.ControlType.kVelocity);
-    SmartDashboard.putNumber("slapperEncoder value", m_slapperEncoder.getPosition());
-    SmartDashboard.putNumber("clapperEncoder value", m_clapperEncoder.getPosition());
+    SmartDashboard.putNumber("rightUpDownEncoder value", m_rightUpDownEncoder.getPosition());
+    SmartDashboard.putNumber("leftUpDownEncoder value", m_leftUpDownEncoder.getPosition());
+    SmartDashboard.putNumber("clapperEncoder value", m_rightElbowEncoder.getPosition());
   }
 
 
