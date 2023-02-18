@@ -43,6 +43,7 @@ import frc.robot.commands.SetRobotOrientationOnField;
 import frc.robot.subsystems.DataRecorder;
 //import frc.robot.subsystems.Intake;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.UpTRexArms;
 //import frc.robot.commands.TransferToNextBar;
 //import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.LEDLights;
@@ -174,7 +175,9 @@ public class RobotContainer {
 
     // // T-Rex Buttons
     JoystickButton btnSlapTRexArms = new JoystickButton(m_controllerJoystick, ControllerJoystick.SLAP_TREX_ARMS);
+    JoystickButton btnUnSlapTRexArms = new JoystickButton(m_controllerJoystick, ControllerJoystick.UNSLAP_TREX_ARMS);
     JoystickButton btnClapTRexArms = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLAP_TREX_ARMS);
+    JoystickButton btnUnClapTRexArms = new JoystickButton(m_controllerJoystick, ControllerJoystick.UNCLAP_TREX_ARMS);
 
     //JoystickButton btnCameraToggle = new JoystickButton(m_controllerJoystick, ControllerJoystick.CAMERA_TOGGLE);
     // JoystickButton btnResetDrivetrainOrientation =  new JoystickButton(m_controllerJoystick, ControllerJoystick.REORIENT_ROBOT);
@@ -198,7 +201,9 @@ public class RobotContainer {
     // btnPickupEject.whileHeld(m_Intake::HeimlichManeuver);
     // btnPickupEject.whenReleased(m_Intake::StopIntake);
     btnSlapTRexArms.whileTrue(new DownTRexArms(m_tRexArms));
+    btnUnSlapTRexArms.whileTrue(new UpTRexArms(m_tRexArms));
     btnClapTRexArms.whileTrue(new CloseTRexArms(m_tRexArms));
+    btnUnClapTRexArms.whileTrue(new OpenTRexArms(m_tRexArms));
 
         
     btnRunPickup.whileTrue(new RunIntakeSystem(m_tRexArms, m_pancakeFlipper));

@@ -69,8 +69,10 @@ public final class Constants {
                 public static final int FLIPPER_UP = 4;
                 public static final int FLIPPER_DOWN = 3;
                 public static final int SLAP_TREX_ARMS = 11;
-                public static final int CLAP_TREX_ARMS = 12;
-                public static final int FEED_TREX_ARMS = 13;
+                public static final int UNSLAP_TREX_ARMS = 12;
+                public static final int CLAP_TREX_ARMS = 13;
+                public static final int UNCLAP_TREX_ARMS = 14;
+                public static final int FEED_TREX_ARMS = 15;
 
         }
 
@@ -93,19 +95,18 @@ public final class Constants {
                 public static final int backRightCANCoderId = 11; 
                 public static final int backRightSteerId = 12;
 
-                public static final int INTAKE_ARM = 15;
-                public static final int PancakeFlipArm = 17;
-                public static final int Intake_Right = 13;
-                public static final int Intake_Left = 18;
-                public static final int SkyhookExtension = 19;
-                public static final int SkyhookFlipFlop = 20;
+                public static final int PancakeFlipArm = 13;
+                public static final int Intake_Right = 14;
+                public static final int Intake_Left = 15;
+                public static final int SkyhookExtension = 16;
+                public static final int SkyhookFlipFlop = 17;
 
-                public static final int LEFT_UP_DOWN_MOTOR = 21;
-                public static final int RIGHT_UP_DOWN_MOTOR = 22;
-                public static final int LEFT_ELBOW_MOTOR = 23;
-                public static final int RIGHT_ELBOW_MOTOR = 24;
-                public static final int LEFT_FINGERTIPS_MOTOR = 25;
-                public static final int RIGHT_FINGERTIPS_MOTOR = 26;
+                public static final int LEFT_UP_DOWN_MOTOR = 18;
+                public static final int RIGHT_UP_DOWN_MOTOR = 19;
+                public static final int LEFT_ELBOW_MOTOR = 20;
+                public static final int RIGHT_ELBOW_MOTOR = 21;
+                public static final int LEFT_FINGERTIPS_MOTOR = 22;
+                public static final int RIGHT_FINGERTIPS_MOTOR = 23;
 
         }
 

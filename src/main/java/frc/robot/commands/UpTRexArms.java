@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TRexArms;
+import frc.robot.subsystems.TRexArms.UpDownMotorConstants;
 
 public class UpTRexArms extends CommandBase {
   /**
@@ -39,7 +40,7 @@ public class UpTRexArms extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_tRexArms.runSlapper(0, 0);
+    m_tRexArms.runSlapper(UpDownMotorConstants.upPos, UpDownMotorConstants.upPos);
   }
 
   // Called once the command ends or is interrupted.
