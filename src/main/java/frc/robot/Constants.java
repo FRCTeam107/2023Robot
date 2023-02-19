@@ -52,28 +52,23 @@ public final class Constants {
         // }
 
         public class ControllerJoystick{
-                public static final int SHOOT = 1;
+                //public static final int SHOOT = 1;
                 static final int RUN_PICKUP = 2;
-                //public static final int CAMERA_TOGGLE = 3;
                 public static final int EJECT_PICKUP = 3;
-                static final int FORCE_READY = 4;
                 static final int REORIENT_ROBOT = 5;
+
+                static final int SKYHOOK_REACHBACK = 6;
+                static final int SKYHOOK_REACHFORWARD = 9;
+                static final int SKYHOOK_GOHOME = 10;
                 
-                static final int PICKUP_DOWN = 12;
-                static final int PICKUP_UP = 15;
-                public static final int PICKUP_EJECT = 14;
-                static final int PICKUP_INTAKE = 1;
+                public static final int FLIPPER_UP = 7;
+                public static final int FLIPPER_DOWN = 8;
 
-                public static final int CLIMBER_DISMOUNT = 7;
-                public static final int RUN_FLIPPER_INTAKE = 5;
-                public static final int FLIPPER_UP = 4;
-                public static final int FLIPPER_DOWN = 3;
-                public static final int SLAP_TREX_ARMS = 11;
-                public static final int UNSLAP_TREX_ARMS = 12;
-                public static final int CLAP_TREX_ARMS = 13;
-                public static final int UNCLAP_TREX_ARMS = 14;
+                public static final int LOWER_TREX_ARMS = 11;
+                public static final int RAISE_TREX_ARMS = 12;
+                public static final int CLOSE_TREX_ARMS = 13;
+                public static final int OPEN_TREX_ARMS = 14;
                 public static final int FEED_TREX_ARMS = 15;
-
         }
 
         //MOTORS
