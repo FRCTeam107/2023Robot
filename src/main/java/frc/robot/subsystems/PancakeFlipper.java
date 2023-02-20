@@ -7,13 +7,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
@@ -35,48 +33,43 @@ public class PancakeFlipper extends SubsystemBase {
     public static final double ejectPower = -.5;
   }
   
-  public static final class FlipperConstants {
+  public final class FlipperPosition{
+    public static final double HOME = 0.01;
+    public static final double UP = -0.75;
+    public static final double PICKUP = 0;
+  }
+  static final class FlipperConstants {
     // PID values
-    public static final double kP = 0.4096;
-    public static final double kI = 0.00;
-    public static final double kD = 0;
-    public static final double kIz = 8000;
-    public static final double kFF = 0;//.000015;
-    public static final double kMaxOutput = 0.05;
-    public static final double kMinOutput = -0.05;
-    public static final double homePos = 0;
-    public static final double pickupPos = 1;
-
-
+    static final double kP = 0.4096;
+    static final double kI = 0.00;
+    static final double kD = 0;
+    static final double kIz = 8000;
+    static final double kFF = 0.2;//.000015;
+    static final double kMaxOutput = 0.05;
+    static final double kMinOutput = -0.35;
   }
   private final CANSparkMax m_intakeLeft;
   private final CANSparkMax m_intakeRight;
   private final CANSparkMax m_flipArm;
-  private RelativeEncoder m_encoder;
 
   private final SparkMaxPIDController m_IntakeLeftPID, m_IntakeRightPID, m_flipArmPID;
 
-  private double setFlipperPosition, setSpeedBottom;
 
   // private double kP, kI, kD, kFF, kMaxOutput, kMinOutput, maxRPM;
   // private int kIz;
-  private boolean manualForceReady;
-  private int readyCounter;  // number of times shooters report ready in a row
-
-  //private boolean cacheTopReady, cacheBottomReady;
+  
   /**
    * Creates a new Shooter.
    */
   public PancakeFlipper() {
     super();
 
-    manualForceReady = false;
     // cacheBottomReady = false;
     // cacheTopReady = false;
 
-    readyCounter = 0;
     m_flipArm = new CANSparkMax(Motors.PancakeFlipArm, MotorType.kBrushless);
     m_flipArm.restoreFactoryDefaults();
+    m_flipArm.setIdleMode(IdleMode.kBrake);
     // reduce communication on CAN bus
     m_flipArm.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
     m_flipArm.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
@@ -89,9 +82,10 @@ public class PancakeFlipper extends SubsystemBase {
     m_flipArmPID.setIZone(FlipperConstants.kIz);
     m_flipArmPID.setFF(FlipperConstants.kFF);
     m_flipArmPID.setOutputRange(FlipperConstants.kMinOutput, FlipperConstants.kMaxOutput);
+// tell encoder for flipper that it is in the zero (home) position
 
-    m_encoder = m_flipArm.getEncoder();
-    m_encoder.setPosition(FlipperConstants.homePos);
+    m_flipArm.getEncoder().setPosition(FlipperPosition.HOME);
+
     m_intakeLeft = new CANSparkMax(Motors.Intake_Left, MotorType.kBrushless);
     m_intakeLeft.restoreFactoryDefaults();
     // reduce communication on CAN bus
@@ -126,17 +120,13 @@ public class PancakeFlipper extends SubsystemBase {
 
     // m_shootbottom.configClosedloopRamp(0.3);
     // m_shoottop.configClosedloopRamp(0.3);
-   
-    setFlipperPosition = 0;
-    setSpeedBottom = 0;
-
-
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Flipper set point", setFlipperPosition);
+    //SmartDashboard.putNumber("Flipper set point", setFlipperPosition);
+    //SmartDashboard.putNumber("pancakeflipperPosition", m_flipArm.getEncoder().getPosition());
  }
 
  public void SetFlipperPos(double position){

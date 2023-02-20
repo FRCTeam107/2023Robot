@@ -17,6 +17,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -67,9 +68,6 @@ private PWM m_limit;
     public static final double upPos = -0.238;
     public static final double downPos = -0.5;
     public static final double homePos = 0;
-
-
-
   }
 
   public static final class ElbowMotorConstants {
@@ -108,9 +106,17 @@ private PWM m_limit;
 
     //Set factory defaults
     m_leftUpDown.restoreFactoryDefaults();
+    m_leftUpDown.setIdleMode(IdleMode.kBrake);
+
     m_rightUpDown.restoreFactoryDefaults();
-    m_leftElbow.restoreFactoryDefaults()  ;
+    m_rightUpDown.setIdleMode(IdleMode.kBrake);
+  
+    m_leftElbow.restoreFactoryDefaults();
+    m_leftElbow.setIdleMode(IdleMode.kBrake);
+
     m_rightElbow.restoreFactoryDefaults();
+    m_rightElbow.setIdleMode(IdleMode.kBrake);
+
     m_leftFingertips.restoreFactoryDefaults();
     m_leftFingertips.restoreFactoryDefaults();
     

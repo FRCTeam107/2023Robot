@@ -20,6 +20,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 public class SkyHook extends SubsystemBase {
 
@@ -77,17 +78,22 @@ public static final class ExtensionConstants {
     public static final double hookPullTalonsOffBar = -233000; //-270000;
   }
 
-public static final class FlipFlopConstants { 
+  public static final class ArmFlip{
+    public static final double BACK = 20;
+    public static final double FORWARD = -10;
+    public static final double HOME = 0;
+    }
+
+static final class FlipFlopConstants { 
   
     // PID values
-    public static final double kP = 0.4096;
-    public static final double kI = 0.00;
-    public static final double kD = 0;
-    public static final double kIz = 8000;
-    public static final double kFF = 0;//.000015;
-    public static final double kMaxOutput = 0.05;
-    public static final double kMinOutput = -0.05;
-
+    static final double kP = 0.4096;
+    static final double kI = 0.00;
+    static final double kD = 0;
+    static final double kIz = 8000;
+    static final double kFF = 0;//.000015;
+    static final double kMaxOutput = 0.2;
+    static final double kMinOutput = -0.2;
   }
 
 /**
@@ -98,6 +104,9 @@ public static final class FlipFlopConstants {
 
     m_ExtensionMotor = new CANSparkMax(Motors.SkyhookExtension, MotorType.kBrushless);
     m_ExtensionMotor.restoreFactoryDefaults();
+    m_ExtensionMotor.setIdleMode(IdleMode.kBrake);
+    m_ExtensionMotor.getEncoder().setPosition(ArmFlip.HOME);
+
     // Reduce CAN bus traffic
     m_ExtensionMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
     m_ExtensionMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
@@ -115,6 +124,9 @@ public static final class FlipFlopConstants {
 
     m_FlipFlopMotor = new CANSparkMax(Motors.SkyhookFlipFlop, MotorType.kBrushless);
     m_FlipFlopMotor.restoreFactoryDefaults();
+    m_FlipFlopMotor.setIdleMode(IdleMode.kBrake);
+    m_FlipFlopMotor.getEncoder().setPosition(0);
+
     // reduce communication on CAN bus
     m_FlipFlopMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
     m_FlipFlopMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
@@ -134,12 +146,9 @@ public static final class FlipFlopConstants {
   public void periodic() {
     // This method will be called once per scheduler run
     // output values that show on driver screen dashboard, or are used in LED lights
-    // SmartDashboard.putBoolean("leftTalonHooked", LeftTalonHooked());
-    // SmartDashboard.putBoolean("rightTalonHooked", RightTalonHooked());
-    
-    // SmartDashboard.putBoolean("climberArmRevLimit", armHitBackLimit());
 
-    // SmartDashboard.putNumber("climberArmPosition", m_climberArm.getSelectedSensorPosition());
+    SmartDashboard.putNumber("SkyHookFlipper", m_FlipFlopMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("SkyHookElevator", m_ExtensionMotor.getEncoder().getPosition());
     // SmartDashboard.putBoolean("climberArmFwdLimit", armHitForwardLimit());
     // SmartDashboard.putBoolean("climberArmRevLimit", armHitBackLimit());
 
@@ -147,6 +156,10 @@ public static final class FlipFlopConstants {
     // SmartDashboard.putBoolean("climbHookForwardLimit", hookHitForwardLimit());
     // SmartDashboard.putBoolean("climbHookRevLimit", hookHitBackLimit());
   }
+
+  public void SetFlipperPos(double position){
+    m_FlipFlopPID.setReference(position, CANSparkMax.ControlType.kPosition);
+   }
 
   public void squeeze(){
     SmartDashboard.putString("skyHookArm", "Squeeze");

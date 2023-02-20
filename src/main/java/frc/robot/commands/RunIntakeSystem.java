@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.PancakeFlipper;
 import frc.robot.subsystems.TRexArms;
-import frc.robot.subsystems.PancakeFlipper.FlipperConstants;
+import frc.robot.subsystems.PancakeFlipper.FlipperPosition;
 
 public class RunIntakeSystem extends CommandBase {
   /**
@@ -43,8 +43,8 @@ public class RunIntakeSystem extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_tRexArms.runClapper(0, 0);
-    m_pancakeFlipper.SetFlipperPos(FlipperConstants.pickupPos);
+    //m_tRexArms.runClapper(0, 0);
+    m_pancakeFlipper.SetFlipperPos(FlipperPosition.PICKUP);
     m_pancakeFlipper.RunPickupMotors(.5);
 
   }
@@ -52,7 +52,7 @@ public class RunIntakeSystem extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_pancakeFlipper.SetFlipperPos(FlipperConstants.homePos);
+    //m_pancakeFlipper.SetFlipperPos(FlipperConstants.homePos);
     m_pancakeFlipper.RunPickupMotors(0);
   }
 
