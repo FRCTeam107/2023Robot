@@ -61,8 +61,8 @@ public final class Constants {
                 static final int SKYHOOK_REACHFORWARD = 9;
                 static final int SKYHOOK_GOHOME = 10;
                 
-                public static final int FLIPPER_UP = 7;
-                public static final int FLIPPER_DOWN = 8;
+                public static final int WRIST_UP = 7;
+                public static final int WRIST_DOWN = 8;
 
                 public static final int LOWER_TREX_ARMS = 11;
                 public static final int RAISE_TREX_ARMS = 12;
@@ -90,11 +90,12 @@ public final class Constants {
                 public static final int backRightCANCoderId = 11; 
                 public static final int backRightSteerId = 12;
 
-                public static final int PancakeFlipArm = 13;
-                public static final int Intake_Right = 14;
-                public static final int Intake_Left = 15;
-                public static final int SkyhookExtension = 16;
-                public static final int SkyhookFlipFlop = 17;
+                public static final int SKYHOOK_WRIST = 13;
+                public static final int SKYHOOK_INTAKE = 14;
+                //public static final int Intake_Left = 15;
+                public static final int SKYHOOK_EXTENDER = 16;
+                public static final int SKYHOOK_ARM = 17;
+
 
                 public static final int LEFT_UP_DOWN_MOTOR = 18;
                 public static final int RIGHT_UP_DOWN_MOTOR = 19;

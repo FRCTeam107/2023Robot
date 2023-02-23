@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
 
 
-public class MoveSkyHook extends CommandBase {
+public class SkyHook_MoveElevator extends CommandBase {
   /**
    * Creates a new Shoot.`
    */
   private final SkyHook m_skyHook;
   private final double m_position;
 
-  public MoveSkyHook(SkyHook _skyHook, Double _position) {
+  public SkyHook_MoveElevator(SkyHook _skyHook, Double _position) {
     m_skyHook = _skyHook;
     m_position = _position;
 
@@ -36,7 +36,7 @@ public class MoveSkyHook extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_skyHook.SetFlipperPos(m_position);
+    m_skyHook.SetArmPosition(m_position);
   }
 
   // Called once the command ends or is interrupted.
