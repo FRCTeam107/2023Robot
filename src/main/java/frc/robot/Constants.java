@@ -103,7 +103,6 @@ public final class Constants {
                 public static final int RIGHT_ELBOW_MOTOR = 21;
                 public static final int LEFT_FINGERTIPS_MOTOR = 22;
                 public static final int RIGHT_FINGERTIPS_MOTOR = 23;
-
         }
 
         // DIO Ports

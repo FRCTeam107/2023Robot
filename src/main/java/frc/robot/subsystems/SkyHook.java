@@ -9,12 +9,13 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
@@ -24,14 +25,20 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 public class SkyHook extends SubsystemBase {
 
-  private final CANSparkMax m_ExtensionMotor, m_ArmMotor, m_WristMotor, m_IntakeMotor;
-  private final SparkMaxPIDController m_ExtensionPID, m_ArmPID, m_WristPID, m_IntakePID;
+  private final CANSparkMax m_ExtensionMotor, m_ArmMotor;
+  private final WPI_TalonFX m_WristMotor, m_IntakeMotor;
+  //ControlMode.Velocity
+  private ControlMode m_WristCtrlType, m_IntakeCtrlType;
 
-  private CANSparkMax.ControlType m_ExtensionCtrlType, m_ArmCtrlType, m_WristCtrlType, m_IntakeCtrlType;
+  
+  private final SparkMaxPIDController m_ExtensionPID, m_ArmPID;//, m_WristPID, m_IntakePID;
+
+  private CANSparkMax.ControlType m_ExtensionCtrlType, m_ArmCtrlType;
   private double m_ExtensionSetpoint, m_ArmSetpoint, m_WristSetpoint, m_IntakeSetpoint;
+
   public static final class ArmFlip{
-    public static final double BACK = 20;
-    public static final double FORWARD = -10;
+    public static final double BACK = 29;
+    public static final double FORWARD = -12;
     public static final double HOME = 0;
     }
 
@@ -44,43 +51,6 @@ static final class ExtensionConstants {
     static final double kFF = 0;//.000015;
     static final double kMaxOutput = 0.05;
     static final double kMinOutput = -0.05;
-
-    // values for actual robot climber arm positions
-    // starting position
-    // public static final double armsStartingPos = 0; // starting position
-    // public static final double armMaxReach = 118000; // 145000;
-    // public static final double hookStartingPos = 0;
-    //private static final double hookMaxReachPos = -340000;// -380000; //-406000; // 421000; 
-
-
-    // reach for the bar
-    // public static final double armFirstBarPos = 4000;//6000; // reach up to bar
-    // public static final double hookAboveFirstBarPos = -320000; //-339000; // -234000;
-
-    
-    // do a pull-up
-    // public static final double armPullupPos = 4000; //4000;// 1000; // keep arm stiff during pullup
-    // // note: pullup position is beyond limit of the hook, need to pull right to limit switch
-    // public static final double hookPullupPos = -4000;//-2000; // -5000; // + 20000); // position to pullup and get talons to "hook"
-
-    // // release onto talons
-    // public static final double armTransferOntoTalonsPos = 28000;
-    // public static final double hookTransferToTalonsPos = -29000; //-33200; //-29800;
-
-    // // steps to get to next bar:
-    // public static final double hookReleasecurrentBar = -65000; //-52000; //-29800;
-
-    // // public static final double armToPunchNextBar = 97800; //118000;
-    // // public static final double hookToPunchNextBar = -330000;
-
-    // public static final double hookBelowNextBar = -220000;
-    // public static final double armReachPastNextBar = 160000; //140000;
-
-    // // note: position is beyond limit of the hook, need to pull right to limit switch
-    // public static final double hookPastNextBar = -350000; //-378000;// (hookMaxReachPos - 8000);
-
-    // public static final double armHugNextBar = 125000; // 120000;
-    // public static final double hookPullTalonsOffBar = -233000; //-270000;
   }
 
   static final class ArmConstants { 
@@ -121,8 +91,8 @@ static final class ExtensionConstants {
 
     m_ExtensionCtrlType = ControlType.kDutyCycle;
     m_ArmCtrlType = ControlType.kDutyCycle;
-    m_WristCtrlType = ControlType.kDutyCycle;
-    m_IntakeCtrlType = ControlType.kDutyCycle;
+    m_WristCtrlType = ControlMode.PercentOutput;// ControlType.kDutyCycle;
+    m_IntakeCtrlType = ControlMode.PercentOutput;//ControlType.kDutyCycle;
     m_ExtensionSetpoint = 0;
     m_ArmSetpoint = 0;
     m_WristSetpoint = 0;
@@ -165,41 +135,98 @@ static final class ExtensionConstants {
     m_ArmPID.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
 
     // Wrist to bend the intake head
-    m_WristMotor = new CANSparkMax(Motors.SKYHOOK_WRIST, MotorType.kBrushless);
-    m_WristMotor.restoreFactoryDefaults();
-    m_WristMotor.setIdleMode(IdleMode.kBrake);
-    m_WristMotor.getEncoder().setPosition(0);
+    m_WristMotor = new WPI_TalonFX(Motors.SKYHOOK_WRIST);
+    m_WristMotor.configFactoryDefault();
+    m_WristMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 100);
+    m_WristMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 100);
+    m_WristMotor.setSelectedSensorPosition(0);
+    m_WristMotor.setNeutralMode(NeutralMode.Brake);
+    // m_shootbottom.configClosedloopRamp(0.3);
+    // m_shoottop.configClosedloopRamp(0.3);
+;
 
-    // reduce communication on CAN bus
-    m_WristMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
-    m_WristMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
-    m_WristMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 100);
+    // setup PID closed-loop values
+    // kP = 0.25; 
+    // kI = 0.0005;
+    // kD = 0.0001; 
+    // kIz = 8000; 
+    // kFF = 0;//.000015; 
+    // kMaxOutput = 1; 
+    // kMinOutput = -1;
+    // maxRPM = 5700;
+    m_WristMotor.config_kP(0, WristConstants.kP);
+    m_WristMotor.config_kI(0, WristConstants.kI);
+    m_WristMotor.config_kD(0, WristConstants.kD);
+    m_WristMotor.config_IntegralZone(0, WristConstants.kIz);
+    m_WristMotor.config_kF(0, WristConstants.kFF);
+    m_WristMotor.configClosedLoopPeakOutput(0, WristConstants.kMaxOutput);
+    m_WristMotor.configPeakOutputForward(WristConstants.kMaxOutput);
+    m_WristMotor.configPeakOutputReverse(WristConstants.kMinOutput);
 
-    m_WristPID = m_WristMotor.getPIDController();
-    m_WristPID.setP(WristConstants.kP);
-    m_WristPID.setI(WristConstants.kI);
-    m_WristPID.setD(WristConstants.kD);
-    m_WristPID.setIZone(WristConstants.kIz);
-    m_WristPID.setFF(WristConstants.kFF);
-    m_WristPID.setOutputRange(WristConstants.kMinOutput, WristConstants.kMaxOutput);
+
+    // m_WristMotor = new CANSparkMax(Motors.SKYHOOK_WRIST, MotorType.kBrushless);
+    // m_WristMotor.restoreFactoryDefaults();
+    // m_WristMotor.setIdleMode(IdleMode.kBrake);
+    // m_WristMotor.getEncoder().setPosition(0);
+
+    // // reduce communication on CAN bus
+    // m_WristMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
+    // m_WristMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
+    // m_WristMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 100);
+
+    // m_WristPID = m_WristMotor.getPIDController();
+    // m_WristPID.setP(WristConstants.kP);
+    // m_WristPID.setI(WristConstants.kI);
+    // m_WristPID.setD(WristConstants.kD);
+    // m_WristPID.setIZone(WristConstants.kIz);
+    // m_WristPID.setFF(WristConstants.kFF);
+    // m_WristPID.setOutputRange(WristConstants.kMinOutput, WristConstants.kMaxOutput);
 
     // intake motor
-    m_IntakeMotor = new CANSparkMax(Motors.SKYHOOK_INTAKE, MotorType.kBrushless);
-    m_IntakeMotor.restoreFactoryDefaults();
-    m_IntakeMotor.setIdleMode(IdleMode.kBrake);
-    m_IntakeMotor.getEncoder().setPosition(0);
-    // reduce communication on CAN bus
-    m_IntakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
-    m_IntakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
-    m_IntakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 100);
+    m_IntakeMotor = new WPI_TalonFX(Motors.SKYHOOK_INTAKE);
+    m_IntakeMotor.configFactoryDefault();
+    m_IntakeMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 100);
+    m_IntakeMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 100);
+    m_IntakeMotor.setSelectedSensorPosition(0);
+    m_IntakeMotor.setNeutralMode(NeutralMode.Brake);
+    // m_shootbottom.configClosedloopRamp(0.3);
+    // m_shoottop.configClosedloopRamp(0.3);
+;
 
-    m_IntakePID = m_IntakeMotor.getPIDController();
-    m_IntakePID.setP(IntakeConstants.kP);
-    m_IntakePID.setI(IntakeConstants.kI);
-    m_IntakePID.setD(IntakeConstants.kD);
-    m_IntakePID.setIZone(IntakeConstants.kIz);
-    m_IntakePID.setFF(IntakeConstants.kFF);
-    m_IntakePID.setOutputRange(IntakeConstants.kMinOutput, IntakeConstants.kMaxOutput);
+    // setup PID closed-loop values
+    // kP = 0.25; 
+    // kI = 0.0005;
+    // kD = 0.0001; 
+    // kIz = 8000; 
+    // kFF = 0;//.000015; 
+    // kMaxOutput = 1; 
+    // kMinOutput = -1;
+    // maxRPM = 5700;
+    m_IntakeMotor.config_kP(0, IntakeConstants.kP);
+    m_IntakeMotor.config_kI(0, IntakeConstants.kI);
+    m_IntakeMotor.config_kD(0, IntakeConstants.kD);
+    m_IntakeMotor.config_IntegralZone(0, IntakeConstants.kIz);
+    m_IntakeMotor.config_kF(0, IntakeConstants.kFF);
+    m_IntakeMotor.configClosedLoopPeakOutput(0, IntakeConstants.kMaxOutput);
+    // m_IntakeMotor.configPeakOutputForward(IntakeConstants.kMaxOutput);
+    // m_IntakeMotor.configPeakOutputReverse(IntakeConstants.kMinOutput);
+
+    // m_IntakeMotor = new CANSparkMax(Motors.SKYHOOK_INTAKE, MotorType.kBrushless);
+    // m_IntakeMotor.restoreFactoryDefaults();
+    // m_IntakeMotor.setIdleMode(IdleMode.kBrake);
+    // m_IntakeMotor.getEncoder().setPosition(0);
+    // // reduce communication on CAN bus
+    // m_IntakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
+    // m_IntakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
+    // m_IntakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 100);
+
+    // m_IntakePID = m_IntakeMotor.getPIDController();
+    // m_IntakePID.setP(IntakeConstants.kP);
+    // m_IntakePID.setI(IntakeConstants.kI);
+    // m_IntakePID.setD(IntakeConstants.kD);
+    // m_IntakePID.setIZone(IntakeConstants.kIz);
+    // m_IntakePID.setFF(IntakeConstants.kFF);
+    // m_IntakePID.setOutputRange(IntakeConstants.kMinOutput, IntakeConstants.kMaxOutput);
   }
 
   @Override
@@ -209,15 +236,19 @@ static final class ExtensionConstants {
     SmartDashboard.putNumber("SkyHookArm", GetArmPosition());
     SmartDashboard.putNumber("SkyHookExtension", GetExtensionPosition());
     SmartDashboard.putNumber("SkyHookWrist", GetWristPosition());
+    SmartDashboard.putNumber("SkyHookIntake", m_IntakeSetpoint);
     //SmartDashboard.putNumber("SkyHookExtension", GetExtensionPosition());
 
     // TODO: put code here to prevent moving arm through robot if extension or wrist in unsafe position
     // ideally, the code will move the wrist & arm to safely pass through robot
 
     m_ArmPID.setReference(m_ArmSetpoint, m_ArmCtrlType);
-    m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
-    m_WristPID.setReference(m_WristSetpoint, m_WristCtrlType);
-    m_IntakePID.setReference(m_IntakeSetpoint, m_IntakeCtrlType);
+    //m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
+    m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
+    //m_WristPID.setReference(m_WristSetpoint, m_WristCtrlType);
+    m_IntakeMotor.set(m_IntakeCtrlType, m_IntakeSetpoint);
+    //m_IntakeMotor.set(ControlMode.PercentOutput, m_IntakeSetpoint)
+    //m_IntakePID.setReference(m_IntakeSetpoint, m_IntakeCtrlType);
   }
 
   // methods for Arm motor
@@ -270,50 +301,55 @@ static final class ExtensionConstants {
 
   // methods for Wrist motor   
    public void SetWristPosition(double position){
-    m_WristCtrlType = ControlType.kPosition;
+    m_WristCtrlType = ControlMode.Position;// ControlType.kPosition;
     m_WristSetpoint = position;
    }
    public void SetWristVelocity(double velocity){
-    m_WristCtrlType = ControlType.kVelocity;
+    m_WristCtrlType = ControlMode.Velocity;// ControlType.kVelocity;
     m_WristSetpoint = velocity;
    }
    public void SetWristSmartMotion(double position){
-    m_WristCtrlType = ControlType.kSmartMotion;
+    m_WristCtrlType = ControlMode.MotionMagic; //ControlType.kSmartMotion;
     m_WristSetpoint = position;
    }
    public void SetWristPower(double percent){
-    m_WristCtrlType = ControlType.kDutyCycle;
+    m_WristCtrlType = ControlMode.PercentOutput; //ControlType.kDutyCycle;
     m_WristSetpoint = percent;
+    SmartDashboard.putNumber("WristPower", m_WristSetpoint);
    }
    public double GetWristPosition(){
-    return m_WristMotor.getEncoder().getPosition();
+    //return m_WristMotor.getEncoder().getPosition();
+    return m_WristMotor.getSelectedSensorPosition();
    }
    public double GetWristVelocity(){
-    return m_WristMotor.getEncoder().getVelocity();
+    //return m_WristMotor.getEncoder().getVelocity();
+    return m_WristMotor.getSelectedSensorPosition();
    }
 
    // methods for Intake motor
    public void SetIntakePosition(double position){
-    m_IntakeCtrlType = ControlType.kPosition;
+    m_IntakeCtrlType = ControlMode.Position;// ControlType.kPosition;
     m_IntakeSetpoint = position; 
    }
    public void SetIntakeVelocity(double velocity){
-    m_IntakeCtrlType = ControlType.kVelocity;
+    m_IntakeCtrlType = ControlMode.Velocity;// ControlType.kVelocity;
     m_IntakeSetpoint = velocity;
    }
    public void SetSmartMotion(double position){
-    m_IntakeCtrlType = ControlType.kSmartMotion;
+    m_IntakeCtrlType = ControlMode.MotionMagic; // ControlType.kSmartMotion;
     m_IntakeSetpoint = position;
    }
    public void SetIntakePower(double percent){
-    m_IntakeCtrlType = ControlType.kDutyCycle;
+    m_IntakeCtrlType = ControlMode.PercentOutput;// ControlType.kDutyCycle;
     m_IntakeSetpoint = percent;
    }
    public double GetIntakePosition(){
-    return m_IntakeMotor.getEncoder().getPosition();
+    //return m_IntakeMotor.getEncoder().getPosition();
+    return m_IntakeMotor.getSelectedSensorPosition();
    }
    public double GetIntakeVelocity(){
-    return m_IntakeMotor.getEncoder().getVelocity();
+    //return m_IntakeMotor.getEncoder().getVelocity();
+    return m_IntakeMotor.getSelectedSensorVelocity();
    }
   
   // public void setArmSensorPosition(double armPosition){
