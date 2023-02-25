@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
 
-
 public class SkyHook_MoveWrist extends CommandBase {
   /**
    * Creates a new Shoot.`

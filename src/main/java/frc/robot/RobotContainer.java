@@ -33,15 +33,23 @@ import frc.robot.Constants.FlightController;
 import frc.robot.commands.SkyHook_MoveWrist;
 import frc.robot.commands.SkyHook_RunIntake;
 import frc.robot.commands.SkyHook_MoveArm;
+<<<<<<< HEAD
 import frc.robot.commands.SkyHook_MoveElevator;
 
+=======
+>>>>>>> c5108bc7c289b26b9d9c54cddb93ff45b2b9f6c5
 //import frc.robot.commands.ReplayFile;
 import frc.robot.commands.SetRobotOrientationOnField;
 
 import frc.robot.subsystems.DataRecorder;
 //import frc.robot.subsystems.Intake;
 import frc.robot.commands.SwerveDriveCommand;
+<<<<<<< HEAD
 
+=======
+//import frc.robot.commands.TransferToNextBar;
+//import frc.robot.subsystems.Climber;
+>>>>>>> c5108bc7c289b26b9d9c54cddb93ff45b2b9f6c5
 import frc.robot.subsystems.LEDLights;
 import frc.robot.subsystems.Limelight;
 //import frc.robot.subsystems.Shooter;
@@ -61,7 +69,10 @@ public class RobotContainer {
   // private final Joystick m_leftJoystick, m_rightJoystick, m_controllerJoystick;
   private final Joystick m_flightcontroller, m_controllerJoystick;
   private final SwerveDrivetrain m_Drivetrain;
+<<<<<<< HEAD
   // private final TRexArms m_tRexArms;
+=======
+>>>>>>> c5108bc7c289b26b9d9c54cddb93ff45b2b9f6c5
   private final LEDLights m_LEDLights;
   //private final VisionCamera m_Camera;
   private final Limelight m_limelight;
@@ -161,20 +172,37 @@ public class RobotContainer {
     
     btnResetDrivetrainOrientation.onTrue(new SetRobotOrientationOnField(m_Drivetrain, 0).andThen(m_Drivetrain::resetEncoders));
 
+<<<<<<< HEAD
     
     btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.25));
+=======
+    //new JoystickButton(m_rightJoystick, RightJoystick.TOGGLE_LIMELIGHT).whenPressed(m_limelight::ToggleVisionProcessing, m_limelight);
+    // btnShoot.whileHeld(new Shoot(m_shooter, m_limelight,
+    //             () -> m_controllerJoystick.getRawButton(ControllerJoystick.FORCE_READY) ,
+    //             () -> m_controllerJoystick.getRawButton(ControllerJoystick.TURBO_SHOT) ));
+    // btnTrexArmDown.whileTrue(new DownTRexArms(m_tRexArms));
+    // btnTrexArmUp.whileTrue(new UpTRexArms(m_tRexArms));
+    // btnTrexClose.whileTrue(new CloseTRexArms(m_tRexArms));
+    // btnTrexOpen.whileTrue(new OpenTRexArms(m_tRexArms));
+
+    //btnFlipperDown.whileTrue(new SkyHook_MoveWrist(m_pancakeFlipper, PancakeFlipper.FlipperPosition.PICKUP));
+    //btnFlipperUp.whileTrue(new SkyHook_MoveWrist(m_pancakeFlipper, PancakeFlipper.FlipperPosition.UP));
+
+    btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.5));
+>>>>>>> c5108bc7c289b26b9d9c54cddb93ff45b2b9f6c5
     btnRunPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
-    btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.25));
+    btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
 
-    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, 0.25));
+    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, 0.1));
     btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, -0.25));
+    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, -0.1));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
+<<<<<<< HEAD
     
     btnSkyHookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK));
     btnSkyHookHome.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.HOME));
@@ -183,6 +211,11 @@ public class RobotContainer {
     btnSkyHookExtend.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ArmFlip.EXTENDED));
     btnSkyHookRetract.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ArmFlip.RETRACTED));
     
+=======
+    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK));
+    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.HOME));
+    btnSkyhookForward.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.FORWARD));
+>>>>>>> c5108bc7c289b26b9d9c54cddb93ff45b2b9f6c5
 
      //btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);

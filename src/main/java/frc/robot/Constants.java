@@ -90,8 +90,7 @@ public final class Constants {
 
                 public static final int SKYHOOK_WRIST = 13;
                 public static final int SKYHOOK_INTAKE = 14;
-                //public static final int Intake_Left = 15;
-                public static final int SKYHOOK_EXTENDER = 18;
+                public static final int SKYHOOK_EXTENDER = 15;
                 public static final int SKYHOOK_ARM = 16;
 
         }
