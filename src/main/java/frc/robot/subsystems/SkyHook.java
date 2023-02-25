@@ -33,75 +33,50 @@ public class SkyHook extends SubsystemBase {
     public static final double BACK = 20;
     public static final double FORWARD = -10;
     public static final double HOME = 0;
+    public static final double RETRACTED = 0;
+    public static final double EXTENDED = 10;
     }
 
-static final class ExtensionConstants {
+
+  static final class ExtensionConstants {
     // PID values
-    static final double kP = 0.4096;
-    static final double kI = 0.00;
+    static final double kP = 5e-5;
+    static final double kI = 1e-6;
     static final double kD = 0;
-    static final double kIz = 8000;
-    static final double kFF = 0;//.000015;
-    static final double kMaxOutput = 0.05;
-    static final double kMinOutput = -0.05;
-
-    // values for actual robot climber arm positions
-    // starting position
-    // public static final double armsStartingPos = 0; // starting position
-    // public static final double armMaxReach = 118000; // 145000;
-    // public static final double hookStartingPos = 0;
-    //private static final double hookMaxReachPos = -340000;// -380000; //-406000; // 421000; 
-
-
-    // reach for the bar
-    // public static final double armFirstBarPos = 4000;//6000; // reach up to bar
-    // public static final double hookAboveFirstBarPos = -320000; //-339000; // -234000;
-
-    
-    // do a pull-up
-    // public static final double armPullupPos = 4000; //4000;// 1000; // keep arm stiff during pullup
-    // // note: pullup position is beyond limit of the hook, need to pull right to limit switch
-    // public static final double hookPullupPos = -4000;//-2000; // -5000; // + 20000); // position to pullup and get talons to "hook"
-
-    // // release onto talons
-    // public static final double armTransferOntoTalonsPos = 28000;
-    // public static final double hookTransferToTalonsPos = -29000; //-33200; //-29800;
-
-    // // steps to get to next bar:
-    // public static final double hookReleasecurrentBar = -65000; //-52000; //-29800;
-
-    // // public static final double armToPunchNextBar = 97800; //118000;
-    // // public static final double hookToPunchNextBar = -330000;
-
-    // public static final double hookBelowNextBar = -220000;
-    // public static final double armReachPastNextBar = 160000; //140000;
-
-    // // note: position is beyond limit of the hook, need to pull right to limit switch
-    // public static final double hookPastNextBar = -350000; //-378000;// (hookMaxReachPos - 8000);
-
-    // public static final double armHugNextBar = 125000; // 120000;
-    // public static final double hookPullTalonsOffBar = -233000; //-270000;
-  }
+    static final double kIz = 0;
+    static final double kFF = .000156;
+    static final double kMaxOutput = 10;
+    static final double kMinOutput = -1;
+    static final double kMaxAccel = 1500;
+    static final double kMaxVel = 2000;
+    static final double MaxPRM = 5700;
+    }
 
   static final class ArmConstants { 
     // PID values
-    static final double kP = 0.4096;
-    static final double kI = 0.00;
+    static final double kP = 5e-5;
+    static final double kI = 1e-6;
     static final double kD = 0;
-    static final double kIz = 8000;
-    static final double kFF = 0;//.000015;
-    static final double kMaxOutput = 0.2;
-    static final double kMinOutput = -0.2;
+    static final double kIz = 0;
+    static final double kFF = .000156;
+    static final double kMaxOutput = 10;
+    static final double kMinOutput = -1;
+    static final double kMaxAccel = 1500;
+    static final double kMaxVel = 2000;
+    static final double MaxPRM = 5700;
   }
   static final class WristConstants { 
     // PID values
-    static final double kP = 0.4096;
-    static final double kI = 0.00;
+    static final double kP = 5e-5;
+    static final double kI = 1e-6;
     static final double kD = 0;
-    static final double kIz = 8000;
-    static final double kFF = 0;//.000015;
-    static final double kMaxOutput = 0.2;
-    static final double kMinOutput = -0.2;
+    static final double kIz = 0;
+    static final double kFF = .000156;
+    static final double kMaxOutput = 10;
+    static final double kMinOutput = -1;
+    static final double kMaxAccel = 1500;
+    static final double kMaxVel = 2000;
+    static final double MaxPRM = 5700;
   }
   static final class IntakeConstants { 
     // PID values
@@ -130,7 +105,7 @@ static final class ExtensionConstants {
     m_ExtensionMotor = new CANSparkMax(Motors.SKYHOOK_EXTENDER, MotorType.kBrushless);
     m_ExtensionMotor.restoreFactoryDefaults();
     m_ExtensionMotor.setIdleMode(IdleMode.kBrake);
-    m_ExtensionMotor.getEncoder().setPosition(ArmFlip.HOME);
+    m_ExtensionMotor.getEncoder().setPosition(0);
 
     // Reduce CAN bus traffic
     m_ExtensionMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
@@ -144,6 +119,9 @@ static final class ExtensionConstants {
     m_ExtensionPID.setIZone(ExtensionConstants.kIz);
     m_ExtensionPID.setFF(ExtensionConstants.kFF);
     m_ExtensionPID.setOutputRange(ExtensionConstants.kMinOutput, ExtensionConstants.kMaxOutput);
+    m_ExtensionPID.setSmartMotionMaxAccel(ExtensionConstants.kMaxAccel, 0);
+    m_ExtensionPID.setSmartMotionMaxVelocity(ExtensionConstants.kMaxVel, 0);
+    
 
     // Skyhook "Arm" to make it flip-flop
     m_ArmMotor = new CANSparkMax(Motors.SKYHOOK_ARM, MotorType.kBrushless);
@@ -163,6 +141,8 @@ static final class ExtensionConstants {
     m_ArmPID.setIZone(ArmConstants.kIz);
     m_ArmPID.setFF(ArmConstants.kFF);
     m_ArmPID.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
+    m_ArmPID.setSmartMotionMaxAccel(ArmConstants.kMaxAccel, 0);
+    m_ArmPID.setSmartMotionMaxVelocity(ArmConstants.kMaxVel, 0);
 
     // Wrist to bend the intake head
     m_WristMotor = new CANSparkMax(Motors.SKYHOOK_WRIST, MotorType.kBrushless);
@@ -182,6 +162,8 @@ static final class ExtensionConstants {
     m_WristPID.setIZone(WristConstants.kIz);
     m_WristPID.setFF(WristConstants.kFF);
     m_WristPID.setOutputRange(WristConstants.kMinOutput, WristConstants.kMaxOutput);
+    m_WristPID.setSmartMotionMaxAccel(WristConstants.kMaxAccel,0);
+    m_WristPID.setSmartMotionMaxVelocity(WristConstants.kMaxVel, 0);
 
     // intake motor
     m_IntakeMotor = new CANSparkMax(Motors.SKYHOOK_INTAKE, MotorType.kBrushless);
@@ -209,7 +191,7 @@ static final class ExtensionConstants {
     SmartDashboard.putNumber("SkyHookArm", GetArmPosition());
     SmartDashboard.putNumber("SkyHookExtension", GetExtensionPosition());
     SmartDashboard.putNumber("SkyHookWrist", GetWristPosition());
-    //SmartDashboard.putNumber("SkyHookExtension", GetExtensionPosition());
+    SmartDashboard.putNumber("SkyHookExtension", GetExtensionPosition());
 
     // TODO: put code here to prevent moving arm through robot if extension or wrist in unsafe position
     // ideally, the code will move the wrist & arm to safely pass through robot
@@ -301,7 +283,7 @@ static final class ExtensionConstants {
     m_IntakeCtrlType = ControlType.kVelocity;
     m_IntakeSetpoint = velocity;
    }
-   public void SetSmartMotion(double position){
+   public void SetIntakeSmartMotion(double position){
     m_IntakeCtrlType = ControlType.kSmartMotion;
     m_IntakeSetpoint = position;
    }
@@ -315,104 +297,5 @@ static final class ExtensionConstants {
    public double GetIntakeVelocity(){
     return m_IntakeMotor.getEncoder().getVelocity();
    }
-  
-  // public void setArmSensorPosition(double armPosition){
-  //   m_climberArm.setSelectedSensorPosition(armPosition);
-  // }
-
-  // public void setHookSensorPosition(double hookPosition){
-  //   m_climber.setSelectedSensorPosition(ExtensionConstants.armsStartingPos);
-  // }
-  
-  // public boolean AllTalonsHooked(){
-  //   return (LeftTalonHooked() && RightTalonHooked());
-  // }
-  // public boolean LeftTalonHooked(){
-  //   return (! m_talonHookLeft.get());
-  // }
-  // public boolean RightTalonHooked(){
-  //   return ( ! m_talonHookRight.get() );
-  // }
-
-  
-
-  // public boolean moveHookToPositionSuperFast(double setPoint){
-  //   m_climber.configClosedLoopPeakOutput(0, 1.0);
-
-  //   m_climber.set(ControlMode.Position, setPoint);
-  //   if (Math.abs(HookPosition() - setPoint) < 1000){
-  //     return true;
-  //   }
-
-  //   // if reaching past physical limit, use the limit switch to report
-  //   if (setPoint < ExtensionConstants.hookMaxReachPos && hookHitBackLimit()){ return true; }
-  //   if (setPoint > ExtensionConstants.hookStartingPos && hookHitForwardLimit() ){ return true; }
-
-  //   return false;
-  // }
-
-
-  // public void extendHook(){
-  //   //m_climber.set(ControlMode.Position, ClimberConstants.armExtendPos);
-  //   m_climber.set(ControlMode.PercentOutput, -ExtensionConstants.kMaxOutput_Slow);
-  // }
-
-  // public void pullHook(){
-  //   //m_climber.set(ControlMode.Position, ClimberConstants.armHomePos);
-  //   m_climber.set(ControlMode.PercentOutput, ExtensionConstants.kMaxOutput_Slow);
-  // }
-  
-  // public void stopHook(){
-  //   m_climber.set(ControlMode.PercentOutput, 0);
-  // }
-  // public double HookPosition(){
-  //   return m_climber.getSelectedSensorPosition();
-  // }
-  // public boolean hookHitForwardLimit(){
-  //   return ( m_climber.getSensorCollection().isFwdLimitSwitchClosed()==1);
-  // }
-
-  // public boolean hookHitBackLimit(){
-  //   return ( m_climber.getSensorCollection().isRevLimitSwitchClosed()==1);
-  // }
-
-
-
-  // public boolean moveArmToPosition(double setPoint){
-  //   m_climberArm.set(ControlMode.Position, setPoint);   
-  //   if (Math.abs(ArmPosition() - setPoint) < 2000){
-  //     return true;
-  //   }
-  //   // if reaching past physical limit, use the limit switch to report
-  //   if (setPoint > ExtensionConstants.armMaxReach && armHitForwardLimit()){ return true; }
-  //   if (setPoint < ExtensionConstants.armsStartingPos && armHitBackLimit() ){ return true; }
-
-  //   return false;
-  // }
-
-
-  //  public void reachArmBack(){
-  //   m_climberArm.set(ControlMode.PercentOutput, 0.3);
-  // }
-
-  // public void pullArmForward(){
-  //   m_climberArm.set(ControlMode.PercentOutput, -0.3);  
-  // }
-
-  // public boolean armHitForwardLimit(){
-  //   return ( m_climberArm.getSensorCollection().isFwdLimitSwitchClosed()==1);
-  // }
-
-  // public boolean armHitBackLimit(){
-  //   return ( m_climberArm.getSensorCollection().isRevLimitSwitchClosed()==1);
-  // }
-
-  // public void stopArm(){
-  //   m_climberArm.set(ControlMode.PercentOutput, 0);
-  // }
-
-  // public double ArmPosition(){
-  //   return m_climberArm.getSelectedSensorPosition();
-  // }
 
 }

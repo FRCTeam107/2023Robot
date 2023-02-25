@@ -64,11 +64,9 @@ public final class Constants {
                 public static final int WRIST_UP = 7;
                 public static final int WRIST_DOWN = 8;
 
-                public static final int LOWER_TREX_ARMS = 11;
-                public static final int RAISE_TREX_ARMS = 12;
-                public static final int CLOSE_TREX_ARMS = 13;
-                public static final int OPEN_TREX_ARMS = 14;
-                public static final int FEED_TREX_ARMS = 15;
+                public static final int SKYHOOK_EXTEND = 4;
+                public static final int SKYHOOK_RETRACT = 1;
+
         }
 
         //MOTORS
@@ -93,16 +91,8 @@ public final class Constants {
                 public static final int SKYHOOK_WRIST = 13;
                 public static final int SKYHOOK_INTAKE = 14;
                 //public static final int Intake_Left = 15;
-                public static final int SKYHOOK_EXTENDER = 16;
-                public static final int SKYHOOK_ARM = 17;
-
-
-                public static final int LEFT_UP_DOWN_MOTOR = 18;
-                public static final int RIGHT_UP_DOWN_MOTOR = 19;
-                public static final int LEFT_ELBOW_MOTOR = 20;
-                public static final int RIGHT_ELBOW_MOTOR = 21;
-                public static final int LEFT_FINGERTIPS_MOTOR = 22;
-                public static final int RIGHT_FINGERTIPS_MOTOR = 23;
+                public static final int SKYHOOK_EXTENDER = 18;
+                public static final int SKYHOOK_ARM = 16;
 
         }
 

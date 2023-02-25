@@ -19,9 +19,9 @@ public class SkyHook_MoveElevator extends CommandBase {
   private final SkyHook m_skyHook;
   private final double m_position;
 
-  public SkyHook_MoveElevator(SkyHook _skyHook, Double _position) {
+  public SkyHook_MoveElevator(SkyHook _skyHook, double extended) {
     m_skyHook = _skyHook;
-    m_position = _position;
+    m_position = extended;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_skyHook);
@@ -36,7 +36,8 @@ public class SkyHook_MoveElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_skyHook.SetArmPosition(m_position);
+    // m_skyHook.SetArmPosition(m_position);
+    m_skyHook.SetExtensionSmartMotion(m_position);
   }
 
   // Called once the command ends or is interrupted.
