@@ -30,14 +30,9 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ControllerJoystick;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FlightController;
-import frc.robot.commands.CaptureGamePiece;
-import frc.robot.commands.CloseTRexArms;
-import frc.robot.commands.CoughUpGamePiece;
-import frc.robot.commands.DownTRexArms;
-import frc.robot.commands.MovePancakeFlipper;
-import frc.robot.commands.MoveSkyHook;
-import frc.robot.commands.OpenTRexArms;
-import frc.robot.commands.RunIntakeSystem;
+import frc.robot.commands.SkyHook_MoveWrist;
+import frc.robot.commands.SkyHook_RunIntake;
+import frc.robot.commands.SkyHook_MoveArm;
 //import frc.robot.commands.ReplayFile;
 import frc.robot.commands.SetRobotOrientationOnField;
 //import frc.robot.commands.Shoot;
@@ -45,15 +40,12 @@ import frc.robot.commands.SetRobotOrientationOnField;
 import frc.robot.subsystems.DataRecorder;
 //import frc.robot.subsystems.Intake;
 import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.commands.UpTRexArms;
 //import frc.robot.commands.TransferToNextBar;
 //import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.LEDLights;
 import frc.robot.subsystems.Limelight;
 //import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrivetrain;
-import frc.robot.subsystems.TRexArms;
-import frc.robot.subsystems.PancakeFlipper;
 //import frc.robot.subsystems.VisionCamera;
 import frc.robot.subsystems.SkyHook;
 import frc.robot.subsystems.VisionCamera;
@@ -73,11 +65,9 @@ public class RobotContainer {
   // private final Joystick m_leftJoystick, m_rightJoystick, m_controllerJoystick;
   private final Joystick m_flightcontroller, m_controllerJoystick;
   private final SwerveDrivetrain m_Drivetrain;
-  private final TRexArms m_tRexArms;
   private final LEDLights m_LEDLights;
   //private final VisionCamera m_Camera;
   private final Limelight m_limelight;
-  private final PancakeFlipper m_pancakeFlipper;
   private final SkyHook m_skyHook;
   
   public DataRecorder m_DataRecorder = new DataRecorder();
@@ -103,10 +93,7 @@ public class RobotContainer {
      m_limelight = new Limelight();
 
     // m_DataRecorder = new DataRecorder();
-
-    m_tRexArms = new TRexArms();
-    m_pancakeFlipper = new PancakeFlipper();
-   
+    
      m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
     
     configureButtonBindings();
@@ -165,25 +152,21 @@ public class RobotContainer {
     JoystickButton btnEjectPickup = new JoystickButton(m_controllerJoystick, ControllerJoystick.EJECT_PICKUP);
 
     // JoystickButton btnFlipperPickup = new JoystickButton(m_flightcontroller, ControllerJoystick.RUN_FLIPPER_INTAKE);
-    JoystickButton btnFlipperUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.FLIPPER_UP);
-    JoystickButton btnFlipperDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.FLIPPER_DOWN);    
+    JoystickButton btnWristUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.WRIST_UP);
+    JoystickButton btnWristDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.WRIST_DOWN);    
 
     JoystickButton btnSkyhookBack = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_REACHBACK);
     JoystickButton btnSkyhookHome = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_GOHOME);    
     JoystickButton btnSkyhookForward = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_REACHFORWARD);    
 
     // // T-Rex Buttons
-    JoystickButton btnTrexArmDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.LOWER_TREX_ARMS);
-    JoystickButton btnTrexArmUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.RAISE_TREX_ARMS);
-    JoystickButton btnTrexClose = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLOSE_TREX_ARMS);
-    JoystickButton btnTrexOpen = new JoystickButton(m_controllerJoystick, ControllerJoystick.OPEN_TREX_ARMS);
+    // JoystickButton btnTrexArmDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.LOWER_TREX_ARMS);
+    // JoystickButton btnTrexArmUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.RAISE_TREX_ARMS);
+    // JoystickButton btnTrexClose = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLOSE_TREX_ARMS);
+    // JoystickButton btnTrexOpen = new JoystickButton(m_controllerJoystick, ControllerJoystick.OPEN_TREX_ARMS);
 
     //JoystickButton btnCameraToggle = new JoystickButton(m_controllerJoystick, ControllerJoystick.CAMERA_TOGGLE);
     JoystickButton btnResetDrivetrainOrientation =  new JoystickButton(m_controllerJoystick, ControllerJoystick.REORIENT_ROBOT);
-    // JoystickButton btnClimbManualMode = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLIMBER_MANUAL);
-    // JoystickButton btnActivateLimelight = new JoystickButton(m_flightcontroller, FlightController.ACTIVATE_LIMELIGHT);
-
-    // new JoystickButton(m_controllerJoystick,11).whileHeld(m_Intake::allowAdditionalMovement);
     
     btnResetDrivetrainOrientation.onTrue(new SetRobotOrientationOnField(m_Drivetrain, 0).andThen(m_Drivetrain::resetEncoders));
 
@@ -191,25 +174,30 @@ public class RobotContainer {
     // btnShoot.whileHeld(new Shoot(m_shooter, m_limelight,
     //             () -> m_controllerJoystick.getRawButton(ControllerJoystick.FORCE_READY) ,
     //             () -> m_controllerJoystick.getRawButton(ControllerJoystick.TURBO_SHOT) ));
-   
+    // btnTrexArmDown.whileTrue(new DownTRexArms(m_tRexArms));
+    // btnTrexArmUp.whileTrue(new UpTRexArms(m_tRexArms));
+    // btnTrexClose.whileTrue(new CloseTRexArms(m_tRexArms));
+    // btnTrexOpen.whileTrue(new OpenTRexArms(m_tRexArms));
+
+    //btnFlipperDown.whileTrue(new SkyHook_MoveWrist(m_pancakeFlipper, PancakeFlipper.FlipperPosition.PICKUP));
+    //btnFlipperUp.whileTrue(new SkyHook_MoveWrist(m_pancakeFlipper, PancakeFlipper.FlipperPosition.UP));
+
+    btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.5));
+    btnRunPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
+
+    btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
+    btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
 
-    // btnPickupEject.whileHeld(m_Intake::HeimlichManeuver);
-    // btnPickupEject.whenReleased(m_Intake::StopIntake);
-    btnTrexArmDown.whileTrue(new DownTRexArms(m_tRexArms));
-    btnTrexArmUp.whileTrue(new UpTRexArms(m_tRexArms));
-    btnTrexClose.whileTrue(new CloseTRexArms(m_tRexArms));
-    btnTrexOpen.whileTrue(new OpenTRexArms(m_tRexArms));
+    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, 0.1));
+    btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnFlipperDown.whileTrue(new MovePancakeFlipper(m_pancakeFlipper, PancakeFlipper.FlipperPosition.PICKUP));
-    btnFlipperUp.whileTrue(new MovePancakeFlipper(m_pancakeFlipper, PancakeFlipper.FlipperPosition.UP));
+    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, -0.1));
+    btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnRunPickup.whileTrue(new RunIntakeSystem(m_tRexArms, m_pancakeFlipper));
-    btnEjectPickup.whileTrue(new CoughUpGamePiece(m_tRexArms, m_pancakeFlipper));
-
-    btnSkyhookBack.onTrue(new MoveSkyHook(m_skyHook, SkyHook.ArmFlip.BACK));
-    btnSkyhookHome.onTrue(new MoveSkyHook(m_skyHook, SkyHook.ArmFlip.HOME));
-    btnSkyhookForward.onTrue(new MoveSkyHook(m_skyHook, SkyHook.ArmFlip.FORWARD));
+    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK));
+    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.HOME));
+    btnSkyhookForward.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.FORWARD));
 
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);

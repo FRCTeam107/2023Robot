@@ -7,40 +7,36 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
-
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TRexArms;
-import frc.robot.subsystems.TRexArms.ElbowMotorConstants;
+import frc.robot.subsystems.SkyHook;
 
-public class CloseTRexArms extends CommandBase {
+
+public class SkyHook_MoveElevator extends CommandBase {
   /**
-   * Creates new TREx Arms.
+   * Creates a new Shoot.`
    */
-  private final TRexArms m_tRexArms;
+  private final SkyHook m_skyHook;
+  private final double m_position;
 
-
-
- 
-  public CloseTRexArms(TRexArms _tRexArms) {
-    m_tRexArms = _tRexArms;
+  public SkyHook_MoveElevator(SkyHook _skyHook, Double _position) {
+    m_skyHook = _skyHook;
+    m_position = _position;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_tRexArms);
+    addRequirements(m_skyHook);
   }
 
     // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //m_Limelight.EnableVisionProcessing();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_tRexArms.runClapper(ElbowMotorConstants.inPos, -ElbowMotorConstants.inPos);
-    m_tRexArms.runTapper(0.5);
+    m_skyHook.SetArmPosition(m_position);
   }
 
   // Called once the command ends or is interrupted.
