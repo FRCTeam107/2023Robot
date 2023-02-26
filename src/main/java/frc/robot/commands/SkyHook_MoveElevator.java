@@ -36,7 +36,13 @@ public class SkyHook_MoveElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_skyHook.SetExtensionPower(m_position);
+    if (m_position == 0){
+      m_skyHook.SetExtensionPower(m_position);
+    }
+    else {
+    //m_skyHook.SetExtensionPower(m_position);
+      m_skyHook.SetExtensionPosition(m_position);
+    }
   }
 
   // Called once the command ends or is interrupted.

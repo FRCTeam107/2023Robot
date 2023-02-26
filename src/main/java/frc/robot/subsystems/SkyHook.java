@@ -49,8 +49,8 @@ static final class ExtensionConstants {
     static final double kD = 0;
     static final double kIz = 8000;
     static final double kFF = 0;//.000015;
-    static final double kMaxOutput = 0.05;
-    static final double kMinOutput = -0.05;
+    static final double kMaxOutput = 1;
+    static final double kMinOutput = -1;
   }
 
   static final class ArmConstants { 
@@ -65,11 +65,11 @@ static final class ExtensionConstants {
   }
   static final class WristConstants { 
     // PID values
-    static final double kP = 0.03;
+    static final double kP = 0.003;
     static final double kI = 0.00;
     static final double kD = 0;
-    static final double kIz = 8000;
-    static final double kFF = 0;//.000015;
+    static final double kIz = 1000;
+    static final double kFF = 0.05;//.000015;
     static final double kMaxOutput = 0.25;
     static final double kMinOutput = -0.25;
   }
@@ -243,11 +243,12 @@ static final class ExtensionConstants {
     // ideally, the code will move the wrist & arm to safely pass through robot
 
     m_ArmPID.setReference(m_ArmSetpoint, m_ArmCtrlType);
+   // SmartDashboard.putNumber("ExtensionSetTo", m_ExtensionSetpoint);
     m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
    
     SmartDashboard.putNumber("Wrist To", m_WristSetpoint);
     m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
-    //m_WristPID.setReference(m_WristSetpoint, m_WristCtrlType);
+    
     m_IntakeMotor.set(m_IntakeCtrlType, m_IntakeSetpoint);
     //m_IntakeMotor.set(ControlMode.PercentOutput, m_IntakeSetpoint)
     //m_IntakePID.setReference(m_IntakeSetpoint, m_IntakeCtrlType);
@@ -317,7 +318,6 @@ static final class ExtensionConstants {
    public void SetWristPower(double percent){
     m_WristCtrlType = ControlMode.PercentOutput; //ControlType.kDutyCycle;
     m_WristSetpoint = percent;
-    SmartDashboard.putNumber("WristPower", m_WristSetpoint);
    }
    public double GetWristPosition(){
     //return m_WristMotor.getEncoder().getPosition();

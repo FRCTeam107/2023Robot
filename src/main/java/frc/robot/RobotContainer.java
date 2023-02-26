@@ -189,19 +189,19 @@ public class RobotContainer {
     btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.5));
     btnRunPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
-    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, 0.75));
+    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, -100.0));
     btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
-    btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, -1.0));
+    btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, 100.0));
     btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
 
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
 
-    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, 0.1));
+    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, -1500.0));
     btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, -0.1));
+    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, -1000.0));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
     btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK));
