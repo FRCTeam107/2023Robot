@@ -25,13 +25,14 @@ public class SkyHook_MoveWrist extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_SkyHook);
    
+    //double val =  SmartDashboard.getNumber("WristSetpoint", 0.0);
+    //SmartDashboard.putNumber("WristSetpoint", val);
   }
 
     // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double val =  SmartDashboard.getNumber("WristSetpoint", 0.0);
-    SmartDashboard.putNumber("WristSetpoint", val);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,8 +43,8 @@ public class SkyHook_MoveWrist extends CommandBase {
       m_SkyHook.SetWristPower(0.0);
     }
     else {
-      double val = SmartDashboard.getNumber("WristSetpoint",0.0);
-      m_SkyHook.SetWristPosition(val); //m_position);
+      //double val = SmartDashboard.getNumber("WristSetpoint",0.0);
+      m_SkyHook.SetWristPosition(m_position);
     }
 
   }
@@ -57,6 +58,6 @@ public class SkyHook_MoveWrist extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
