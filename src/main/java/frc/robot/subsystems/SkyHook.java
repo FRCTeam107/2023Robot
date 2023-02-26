@@ -65,13 +65,13 @@ static final class ExtensionConstants {
   }
   static final class WristConstants { 
     // PID values
-    static final double kP = 0.4096;
+    static final double kP = 0.03;
     static final double kI = 0.00;
     static final double kD = 0;
     static final double kIz = 8000;
     static final double kFF = 0;//.000015;
-    static final double kMaxOutput = 0.2;
-    static final double kMinOutput = -0.2;
+    static final double kMaxOutput = 0.25;
+    static final double kMinOutput = -0.25;
   }
   static final class IntakeConstants { 
     // PID values
@@ -237,13 +237,15 @@ static final class ExtensionConstants {
     SmartDashboard.putNumber("SkyHookExtension", GetExtensionPosition());
     SmartDashboard.putNumber("SkyHookWrist", GetWristPosition());
     SmartDashboard.putNumber("SkyHookIntake", m_IntakeSetpoint);
-    //SmartDashboard.putNumber("SkyHookExtension", GetExtensionPosition());
+    SmartDashboard.putNumber("SkyHookExtension", GetExtensionPosition());
 
     // TODO: put code here to prevent moving arm through robot if extension or wrist in unsafe position
     // ideally, the code will move the wrist & arm to safely pass through robot
 
     m_ArmPID.setReference(m_ArmSetpoint, m_ArmCtrlType);
-    //m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
+    m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
+   
+    SmartDashboard.putNumber("Wrist To", m_WristSetpoint);
     m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
     //m_WristPID.setReference(m_WristSetpoint, m_WristCtrlType);
     m_IntakeMotor.set(m_IntakeCtrlType, m_IntakeSetpoint);
@@ -281,22 +283,22 @@ static final class ExtensionConstants {
     m_ExtensionSetpoint = position;
    }
    public void SetExtensionVelocity(double velocity){
-    m_ArmCtrlType = ControlType.kVelocity;
-    m_ArmSetpoint = velocity;
+    m_ExtensionCtrlType = ControlType.kVelocity;
+    m_ExtensionSetpoint = velocity;
    }
    public void SetExtensionSmartMotion(double position){
-    m_ArmCtrlType = ControlType.kSmartMotion;
-    m_ArmSetpoint = position;
+    m_ExtensionCtrlType = ControlType.kSmartMotion;
+    m_ExtensionSetpoint = position;
    }
    public void SetExtensionPower(double percent){
-    m_ArmCtrlType = ControlType.kDutyCycle;
-    m_ArmSetpoint = percent;
+    m_ExtensionCtrlType = ControlType.kDutyCycle;
+    m_ExtensionSetpoint = percent;
    }
    public double GetExtensionPosition(){
-    return m_ArmMotor.getEncoder().getPosition();
+    return m_ExtensionMotor.getEncoder().getPosition();
    }
    public double GetExtensionVelocity(){
-    return m_ArmMotor.getEncoder().getVelocity();
+    return m_ExtensionMotor.getEncoder().getVelocity();
    }
 
   // methods for Wrist motor   

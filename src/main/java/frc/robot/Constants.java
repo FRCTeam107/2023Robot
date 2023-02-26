@@ -53,8 +53,11 @@ public final class Constants {
 
         public class ControllerJoystick{
                 //public static final int SHOOT = 1;
+                public static final int EJECT_PICKUP = 1;
                 static final int RUN_PICKUP = 2;
-                public static final int EJECT_PICKUP = 3;
+                static final int EXTEND_ARM = 3;
+                static final int RETRACT_ARM = 4;
+
                 static final int REORIENT_ROBOT = 5;
 
                 static final int SKYHOOK_REACHBACK = 6;
@@ -110,18 +113,6 @@ public final class Constants {
                 // public static final int TALONHOOK_LEFT = 0;
                 // public static final int TALONHOOK_RIGHT = 1;
         }
-        
-        // SOLENOIDS
-        public class Solenoids{
-                // public static final int INTAKE_REVERSE = 0;
-                // public static final int INTAKE_FORWARD = 1;
-                // public static final int CLIMBER_LOWER = 2;
-                // public static final int CLIMBER_RAISE = 3;
-                // public static final int SHIFT_REVERSE = 4;
-                // public static final int SHIFT_FORWARD = 5;
-        }
-
-
 
         // Trajectory / Pathweaver constants
         public static final class DriveConstants {

@@ -33,6 +33,7 @@ import frc.robot.Constants.FlightController;
 import frc.robot.commands.SkyHook_MoveWrist;
 import frc.robot.commands.SkyHook_RunIntake;
 import frc.robot.commands.SkyHook_MoveArm;
+import frc.robot.commands.SkyHook_MoveElevator;
 //import frc.robot.commands.ReplayFile;
 import frc.robot.commands.SetRobotOrientationOnField;
 //import frc.robot.commands.Shoot;
@@ -151,6 +152,9 @@ public class RobotContainer {
     JoystickButton btnRunPickup = new JoystickButton(m_controllerJoystick, ControllerJoystick.RUN_PICKUP);
     JoystickButton btnEjectPickup = new JoystickButton(m_controllerJoystick, ControllerJoystick.EJECT_PICKUP);
 
+    JoystickButton btnExtendElevator = new JoystickButton(m_controllerJoystick, ControllerJoystick.EXTEND_ARM);
+    JoystickButton btnRetractElevator = new JoystickButton(m_controllerJoystick, ControllerJoystick.RETRACT_ARM);
+
     // JoystickButton btnFlipperPickup = new JoystickButton(m_flightcontroller, ControllerJoystick.RUN_FLIPPER_INTAKE);
     JoystickButton btnWristUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.WRIST_UP);
     JoystickButton btnWristDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.WRIST_DOWN);    
@@ -184,6 +188,11 @@ public class RobotContainer {
 
     btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.5));
     btnRunPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
+
+    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, 0.75));
+    btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
+    btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, -1.0));
+    btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
 
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));

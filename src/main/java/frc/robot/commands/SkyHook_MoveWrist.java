@@ -24,19 +24,28 @@ public class SkyHook_MoveWrist extends CommandBase {
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_SkyHook);
+   
   }
 
     // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //m_Limelight.EnableVisionProcessing();
+    double val =  SmartDashboard.getNumber("WristSetpoint", 0.0);
+    SmartDashboard.putNumber("WristSetpoint", val);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_SkyHook.SetWristPower(m_position);
-    // m_SkyHook.SetFlipperPos(m_position);
+    //m_SkyHook.SetWristPower(m_position);
+    if (m_position == 0){
+      m_SkyHook.SetWristPower(0.0);
+    }
+    else {
+      double val = SmartDashboard.getNumber("WristSetpoint",0.0);
+      m_SkyHook.SetWristPosition(val); //m_position);
+    }
+
   }
 
   // Called once the command ends or is interrupted.
