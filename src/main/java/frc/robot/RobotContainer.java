@@ -189,25 +189,29 @@ public class RobotContainer {
     btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.5));
     btnRunPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
-    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, -100.0));
+    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, -200.0));
     btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
-    btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, 100.0));
+    btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, 100.0));// almost home
     btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
 
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
 
-    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, -1500.0));
+    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, 1.0));
     btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, -1000.0));
+    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, 5600.0));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK));
-    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.HOME));
-    btnSkyhookForward.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.FORWARD));
+    //btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK, false));
+    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.HOME, false));
+    //btnSkyhookForward.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.FORWARD, false));
+    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, -2.3, true));
+    //btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
 
+    btnSkyhookBack.whileTrue(new SkyHook_MoveArm(m_skyHook, 2.3, true));
+    //btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
      //btnActivateLimelight.whenReleased(m_limelight::DisableVisionProcessing);

@@ -37,31 +37,31 @@ public class SkyHook extends SubsystemBase {
   private double m_ExtensionSetpoint, m_ArmSetpoint, m_WristSetpoint, m_IntakeSetpoint;
 
   public static final class ArmFlip{
-    public static final double BACK = 29;
+    public static final double BACK = 19;
     public static final double FORWARD = -12;
     public static final double HOME = 0;
     }
 
 static final class ExtensionConstants {
     // PID values
-    static final double kP = 0.4096;
+    static final double kP = 0.04;
     static final double kI = 0.00;
     static final double kD = 0;
-    static final double kIz = 8000;
-    static final double kFF = 0;//.000015;
+    static final double kIz = 80;
+    static final double kFF = 0.01;//.000015;
     static final double kMaxOutput = 1;
     static final double kMinOutput = -1;
   }
 
   static final class ArmConstants { 
     // PID values
-    static final double kP = 0.4096;
+    static final double kP = 0.03;
     static final double kI = 0.00;
     static final double kD = 0;
-    static final double kIz = 8000;
-    static final double kFF = 0;//.000015;
-    static final double kMaxOutput = 0.2;
-    static final double kMinOutput = -0.2;
+    static final double kIz = 0;
+    static final double kFF = 0.01;//.000015;
+    static final double kMaxOutput = 0.4;
+    static final double kMinOutput = -0.4;
   }
   static final class WristConstants { 
     // PID values
@@ -100,7 +100,7 @@ static final class ExtensionConstants {
     m_ExtensionMotor = new CANSparkMax(Motors.SKYHOOK_EXTENDER, MotorType.kBrushless);
     m_ExtensionMotor.restoreFactoryDefaults();
     m_ExtensionMotor.setIdleMode(IdleMode.kBrake);
-    m_ExtensionMotor.getEncoder().setPosition(ArmFlip.HOME);
+    m_ExtensionMotor.getEncoder().setPosition(0);
 
     // Reduce CAN bus traffic
     m_ExtensionMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
@@ -133,6 +133,7 @@ static final class ExtensionConstants {
     m_ArmPID.setIZone(ArmConstants.kIz);
     m_ArmPID.setFF(ArmConstants.kFF);
     m_ArmPID.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
+    m_ArmMotor.burnFlash();
 
     // Wrist to bend the intake head
     m_WristMotor = new WPI_TalonFX(Motors.SKYHOOK_WRIST);
@@ -242,8 +243,10 @@ static final class ExtensionConstants {
     // TODO: put code here to prevent moving arm through robot if extension or wrist in unsafe position
     // ideally, the code will move the wrist & arm to safely pass through robot
 
+    SmartDashboard.putNumber("Arm to", m_ArmSetpoint);
     m_ArmPID.setReference(m_ArmSetpoint, m_ArmCtrlType);
-   // SmartDashboard.putNumber("ExtensionSetTo", m_ExtensionSetpoint);
+
+   SmartDashboard.putNumber("ExtensionSetTo", m_ExtensionSetpoint);
     m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
    
     SmartDashboard.putNumber("Wrist To", m_WristSetpoint);
