@@ -7,7 +7,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
 
@@ -15,15 +15,15 @@ public class SkyHook_MoveWrist extends CommandBase {
   /**
    * Creates a new Shoot.`
    */
-  private final SkyHook m_SkyHook;
+  private final SkyHook m_Wrist;
   private final double m_position;
 
-  public SkyHook_MoveWrist(SkyHook _SkyHookFlipper, Double _position) {
-    m_SkyHook = _SkyHookFlipper;
+  public SkyHook_MoveWrist(SkyHook _Wrist, Double _position) {
+    m_Wrist = _Wrist;
     m_position = _position;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_SkyHook);
+    addRequirements(m_Wrist);
    
     //double val =  SmartDashboard.getNumber("WristSetpoint", 0.0);
     //SmartDashboard.putNumber("WristSetpoint", val);
@@ -40,11 +40,11 @@ public class SkyHook_MoveWrist extends CommandBase {
   public void execute() {
     //m_SkyHook.SetWristPower(m_position);
     if (m_position == 0){
-      m_SkyHook.SetWristPower(0.0);
+      m_Wrist.SetWristPower(0.0);
     }
     else {
       //double val = SmartDashboard.getNumber("WristSetpoint",0.0);
-      m_SkyHook.SetWristPosition(m_position);
+      m_Wrist.SetWristPosition(m_position);
     }
 
   }
