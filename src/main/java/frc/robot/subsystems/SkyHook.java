@@ -35,43 +35,59 @@ public class SkyHook extends SubsystemBase {
 
   private CANSparkMax.ControlType m_ExtensionCtrlType, m_ArmCtrlType;
   private double m_ExtensionSetpoint, m_ArmSetpoint, m_WristSetpoint, m_IntakeSetpoint;
+  private double m_ArmHoldSetpoint, m_ExtensionHoldSetpoint, m_WristHoldSetpoint;
 
-  public static final class ArmFlip{
-    public static final double BACK = 29;
+  public static final class ArmPositions{
+    static final double UPPERLIMIT = 20; // maximum value for position
+    public static final double BACK = 19;
     public static final double FORWARD = -12;
-    public static final double HOME = 0;
+    public static final double STARTPOSITION = -4.8;
+    static final double LOWERLIMIT = -20; // minimum value for position
     }
-
+  public static final class ExtensionPositions{
+    static final double UPPERLIMIT = 0; // actual limit (upper limit switch hit)
+    public static final double RETRACTED = -10; // advertised retracted position
+    static final double STARTPOSITION = -200;
+    public static final double EXTENDED = -200;
+    static final double LOWERLIMIT = -220; // fully extended position
+  }
+  public static final class WristPositions{
+    static final double UPPERLIMIT = 9000; // actual limit (upper limit switch hit)
+    public static final double RETRACTED = -8500; // advertised retracted position
+    static final double STARTPOSITION = 0;//-13000;
+    public static final double EXTENDED = 8500;
+    static final double LOWERLIMIT = -9000; // fully extended position
+  }
 static final class ExtensionConstants {
     // PID values
-    static final double kP = 0.4096;
+    static final double kP = 0.04;
     static final double kI = 0.00;
     static final double kD = 0;
-    static final double kIz = 8000;
-    static final double kFF = 0;//.000015;
-    static final double kMaxOutput = 0.05;
-    static final double kMinOutput = -0.05;
+    static final double kIz = 80;
+    static final double kFF = 0.01;//.000015;
+    static final double kMaxOutput = 1;
+    static final double kMinOutput = -1;
   }
 
   static final class ArmConstants { 
     // PID values
-    static final double kP = 0.4096;
+    static final double kP = 0.03;
     static final double kI = 0.00;
     static final double kD = 0;
-    static final double kIz = 8000;
-    static final double kFF = 0;//.000015;
-    static final double kMaxOutput = 0.2;
-    static final double kMinOutput = -0.2;
+    static final double kIz = 0;
+    static final double kFF = 0.01;//.000015;
+    static final double kMaxOutput = 0.4;
+    static final double kMinOutput = -0.4;
   }
   static final class WristConstants { 
     // PID values
-    static final double kP = 0.4096;
+    static final double kP = 0.03;
     static final double kI = 0.00;
     static final double kD = 0;
-    static final double kIz = 8000;
-    static final double kFF = 0;//.000015;
-    static final double kMaxOutput = 0.2;
-    static final double kMinOutput = -0.2;
+    static final double kIz = 0;
+    static final double kFF = 0.08;//.000015;
+    static final double kMaxOutput = 0.3;
+    static final double kMinOutput = -0.3;
   }
   static final class IntakeConstants { 
     // PID values
@@ -80,8 +96,8 @@ static final class ExtensionConstants {
     static final double kD = 0;
     static final double kIz = 8000;
     static final double kFF = 0;//.000015;
-    static final double kMaxOutput = 0.2;
-    static final double kMinOutput = -0.2;
+    static final double kMaxOutput = 1;
+    static final double kMinOutput = -1;
   }
 /**
    * Creates a new SkyHook.
@@ -100,7 +116,7 @@ static final class ExtensionConstants {
     m_ExtensionMotor = new CANSparkMax(Motors.SKYHOOK_EXTENDER, MotorType.kBrushless);
     m_ExtensionMotor.restoreFactoryDefaults();
     m_ExtensionMotor.setIdleMode(IdleMode.kBrake);
-    m_ExtensionMotor.getEncoder().setPosition(ArmFlip.HOME);
+    m_ExtensionMotor.getEncoder().setPosition(ExtensionPositions.STARTPOSITION);
 
     // Reduce CAN bus traffic
     m_ExtensionMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
@@ -115,11 +131,11 @@ static final class ExtensionConstants {
     m_ExtensionPID.setFF(ExtensionConstants.kFF);
     m_ExtensionPID.setOutputRange(ExtensionConstants.kMinOutput, ExtensionConstants.kMaxOutput);
 
-    // Skyhook "Arm" to make it flip-flop
+    // Skyhook "Arm" to make it flip-flop 
     m_ArmMotor = new CANSparkMax(Motors.SKYHOOK_ARM, MotorType.kBrushless);
     m_ArmMotor.restoreFactoryDefaults();
     m_ArmMotor.setIdleMode(IdleMode.kBrake);
-    m_ArmMotor.getEncoder().setPosition(0);
+    m_ArmMotor.getEncoder().setPosition(ArmPositions.STARTPOSITION);
 
     // reduce communication on CAN bus
     m_ArmMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
@@ -133,18 +149,18 @@ static final class ExtensionConstants {
     m_ArmPID.setIZone(ArmConstants.kIz);
     m_ArmPID.setFF(ArmConstants.kFF);
     m_ArmPID.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
+    m_ArmMotor.burnFlash();
 
     // Wrist to bend the intake head
     m_WristMotor = new WPI_TalonFX(Motors.SKYHOOK_WRIST);
     m_WristMotor.configFactoryDefault();
     m_WristMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 100);
     m_WristMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 100);
-    m_WristMotor.setSelectedSensorPosition(0);
+    m_WristMotor.setSelectedSensorPosition(WristPositions.STARTPOSITION);
     m_WristMotor.setNeutralMode(NeutralMode.Brake);
     // m_shootbottom.configClosedloopRamp(0.3);
     // m_shoottop.configClosedloopRamp(0.3);
 ;
-
     // setup PID closed-loop values
     // kP = 0.25; 
     // kI = 0.0005;
@@ -163,24 +179,6 @@ static final class ExtensionConstants {
     m_WristMotor.configPeakOutputForward(WristConstants.kMaxOutput);
     m_WristMotor.configPeakOutputReverse(WristConstants.kMinOutput);
 
-
-    // m_WristMotor = new CANSparkMax(Motors.SKYHOOK_WRIST, MotorType.kBrushless);
-    // m_WristMotor.restoreFactoryDefaults();
-    // m_WristMotor.setIdleMode(IdleMode.kBrake);
-    // m_WristMotor.getEncoder().setPosition(0);
-
-    // // reduce communication on CAN bus
-    // m_WristMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
-    // m_WristMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
-    // m_WristMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 100);
-
-    // m_WristPID = m_WristMotor.getPIDController();
-    // m_WristPID.setP(WristConstants.kP);
-    // m_WristPID.setI(WristConstants.kI);
-    // m_WristPID.setD(WristConstants.kD);
-    // m_WristPID.setIZone(WristConstants.kIz);
-    // m_WristPID.setFF(WristConstants.kFF);
-    // m_WristPID.setOutputRange(WristConstants.kMinOutput, WristConstants.kMaxOutput);
 
     // intake motor
     m_IntakeMotor = new WPI_TalonFX(Motors.SKYHOOK_INTAKE);
@@ -211,41 +209,48 @@ static final class ExtensionConstants {
     // m_IntakeMotor.configPeakOutputForward(IntakeConstants.kMaxOutput);
     // m_IntakeMotor.configPeakOutputReverse(IntakeConstants.kMinOutput);
 
-    // m_IntakeMotor = new CANSparkMax(Motors.SKYHOOK_INTAKE, MotorType.kBrushless);
-    // m_IntakeMotor.restoreFactoryDefaults();
-    // m_IntakeMotor.setIdleMode(IdleMode.kBrake);
-    // m_IntakeMotor.getEncoder().setPosition(0);
-    // // reduce communication on CAN bus
-    // m_IntakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
-    // m_IntakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
-    // m_IntakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 100);
-
-    // m_IntakePID = m_IntakeMotor.getPIDController();
-    // m_IntakePID.setP(IntakeConstants.kP);
-    // m_IntakePID.setI(IntakeConstants.kI);
-    // m_IntakePID.setD(IntakeConstants.kD);
-    // m_IntakePID.setIZone(IntakeConstants.kIz);
-    // m_IntakePID.setFF(IntakeConstants.kFF);
-    // m_IntakePID.setOutputRange(IntakeConstants.kMinOutput, IntakeConstants.kMaxOutput);
   }
 
   @Override
   public void periodic() {
+    if (m_ArmCtrlType == ControlType.kPosition || m_ArmCtrlType==ControlType.kSmartMotion){
+      m_ArmHoldSetpoint = m_ArmSetpoint;
+    }
+    else {
+      m_ArmHoldSetpoint = GetArmPosition();
+    }
+    if (m_ExtensionCtrlType == ControlType.kPosition || m_ExtensionCtrlType==ControlType.kSmartMotion){
+      m_ExtensionHoldSetpoint = m_ExtensionSetpoint;
+    }
+    // else {
+    //   m_ExtensionHoldSetpoint = GetExtensionPosition();
+    // }
+    if (m_WristCtrlType == ControlMode.Position || m_WristCtrlType==ControlMode.MotionMagic ){
+      m_WristHoldSetpoint = m_WristSetpoint;
+    }
+    // else {
+    //   m_WristHoldSetpoint = GetWristPosition();
+    // }    
     // This method will be called once per scheduler run
     // output values that show on driver screen dashboard, or are used in LED lights
-    SmartDashboard.putNumber("SkyHookArm", GetArmPosition());
-    SmartDashboard.putNumber("SkyHookExtension", GetExtensionPosition());
-    SmartDashboard.putNumber("SkyHookWrist", GetWristPosition());
-    SmartDashboard.putNumber("SkyHookIntake", m_IntakeSetpoint);
-    //SmartDashboard.putNumber("SkyHookExtension", GetExtensionPosition());
+    SmartDashboard.putNumber("Arm.Position", GetArmPosition());
+    SmartDashboard.putNumber("Arm.Setpoint", m_ArmSetpoint);
+    SmartDashboard.putNumber("Arm.HoldSetpoint", m_ArmHoldSetpoint);
+    SmartDashboard.putNumber("Extension.Position", GetExtensionPosition());
+    SmartDashboard.putNumber("Extension.Setpoint", m_ExtensionSetpoint);
+    SmartDashboard.putNumber("Extension.HoldSetpoint", m_ExtensionHoldSetpoint);
+    SmartDashboard.putNumber("Wrist.Position", GetWristPosition());
+    SmartDashboard.putNumber("Wrist.Setpoint", m_WristSetpoint);
+    SmartDashboard.putNumber("Wrist.HoldSetpoint", m_WristHoldSetpoint);
+    //SmartDashboard.putNumber("Intake.Setpoint", m_IntakeSetpoint);
 
     // TODO: put code here to prevent moving arm through robot if extension or wrist in unsafe position
     // ideally, the code will move the wrist & arm to safely pass through robot
 
+    SmartDashboard.putNumber("Arm to", m_ArmSetpoint);
     m_ArmPID.setReference(m_ArmSetpoint, m_ArmCtrlType);
-    //m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
+    m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
     m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
-    //m_WristPID.setReference(m_WristSetpoint, m_WristCtrlType);
     m_IntakeMotor.set(m_IntakeCtrlType, m_IntakeSetpoint);
     //m_IntakeMotor.set(ControlMode.PercentOutput, m_IntakeSetpoint)
     //m_IntakePID.setReference(m_IntakeSetpoint, m_IntakeCtrlType);
@@ -253,6 +258,9 @@ static final class ExtensionConstants {
 
   // methods for Arm motor
   public void SetArmPosition(double position){
+    if (position < ArmPositions.LOWERLIMIT) {position = ArmPositions.LOWERLIMIT;}
+    if (position > ArmPositions.UPPERLIMIT) {position = ArmPositions.UPPERLIMIT;}
+
     m_ArmCtrlType = ControlType.kPosition;
     m_ArmSetpoint = position;
    }
@@ -261,6 +269,9 @@ static final class ExtensionConstants {
     m_ArmSetpoint = velocity;
    }
    public void SetArmSmartMotion(double position){
+    if (position < ArmPositions.LOWERLIMIT) {position = ArmPositions.LOWERLIMIT;}
+    if (position > ArmPositions.UPPERLIMIT) {position = ArmPositions.UPPERLIMIT;}
+
     m_ArmCtrlType = ControlType.kSmartMotion;
     m_ArmSetpoint = position;
    }
@@ -274,29 +285,36 @@ static final class ExtensionConstants {
    public double GetArmVelocity(){
     return m_ArmMotor.getEncoder().getVelocity();
    }
+   public double GetArmHoldSetpoint(){
+    return m_ArmHoldSetpoint;
+   }
    
   // methods for Extension motor
    public void SetExtensionPosition(double position){
+    if (position < ExtensionPositions.LOWERLIMIT){ position= ExtensionPositions.LOWERLIMIT; }
+    if (position > ExtensionPositions.UPPERLIMIT) { position = ExtensionPositions.UPPERLIMIT; }
     m_ExtensionCtrlType = ControlType.kPosition;
     m_ExtensionSetpoint = position;
    }
    public void SetExtensionVelocity(double velocity){
-    m_ArmCtrlType = ControlType.kVelocity;
-    m_ArmSetpoint = velocity;
+    m_ExtensionCtrlType = ControlType.kVelocity;
+    m_ExtensionSetpoint = velocity;
    }
    public void SetExtensionSmartMotion(double position){
-    m_ArmCtrlType = ControlType.kSmartMotion;
-    m_ArmSetpoint = position;
+    if (position < ExtensionPositions.LOWERLIMIT){ position= ExtensionPositions.LOWERLIMIT; }
+    if (position > ExtensionPositions.UPPERLIMIT) { position = ExtensionPositions.UPPERLIMIT; }
+    m_ExtensionCtrlType = ControlType.kSmartMotion;
+    m_ExtensionSetpoint = position;
    }
    public void SetExtensionPower(double percent){
-    m_ArmCtrlType = ControlType.kDutyCycle;
-    m_ArmSetpoint = percent;
+    m_ExtensionCtrlType = ControlType.kDutyCycle;
+    m_ExtensionSetpoint = percent;
    }
    public double GetExtensionPosition(){
-    return m_ArmMotor.getEncoder().getPosition();
+    return m_ExtensionMotor.getEncoder().getPosition();
    }
    public double GetExtensionVelocity(){
-    return m_ArmMotor.getEncoder().getVelocity();
+    return m_ExtensionMotor.getEncoder().getVelocity();
    }
 
   // methods for Wrist motor   
@@ -315,7 +333,6 @@ static final class ExtensionConstants {
    public void SetWristPower(double percent){
     m_WristCtrlType = ControlMode.PercentOutput; //ControlType.kDutyCycle;
     m_WristSetpoint = percent;
-    SmartDashboard.putNumber("WristPower", m_WristSetpoint);
    }
    public double GetWristPosition(){
     //return m_WristMotor.getEncoder().getPosition();
@@ -351,104 +368,4 @@ static final class ExtensionConstants {
     //return m_IntakeMotor.getEncoder().getVelocity();
     return m_IntakeMotor.getSelectedSensorVelocity();
    }
-  
-  // public void setArmSensorPosition(double armPosition){
-  //   m_climberArm.setSelectedSensorPosition(armPosition);
-  // }
-
-  // public void setHookSensorPosition(double hookPosition){
-  //   m_climber.setSelectedSensorPosition(ExtensionConstants.armsStartingPos);
-  // }
-  
-  // public boolean AllTalonsHooked(){
-  //   return (LeftTalonHooked() && RightTalonHooked());
-  // }
-  // public boolean LeftTalonHooked(){
-  //   return (! m_talonHookLeft.get());
-  // }
-  // public boolean RightTalonHooked(){
-  //   return ( ! m_talonHookRight.get() );
-  // }
-
-  
-
-  // public boolean moveHookToPositionSuperFast(double setPoint){
-  //   m_climber.configClosedLoopPeakOutput(0, 1.0);
-
-  //   m_climber.set(ControlMode.Position, setPoint);
-  //   if (Math.abs(HookPosition() - setPoint) < 1000){
-  //     return true;
-  //   }
-
-  //   // if reaching past physical limit, use the limit switch to report
-  //   if (setPoint < ExtensionConstants.hookMaxReachPos && hookHitBackLimit()){ return true; }
-  //   if (setPoint > ExtensionConstants.hookStartingPos && hookHitForwardLimit() ){ return true; }
-
-  //   return false;
-  // }
-
-
-  // public void extendHook(){
-  //   //m_climber.set(ControlMode.Position, ClimberConstants.armExtendPos);
-  //   m_climber.set(ControlMode.PercentOutput, -ExtensionConstants.kMaxOutput_Slow);
-  // }
-
-  // public void pullHook(){
-  //   //m_climber.set(ControlMode.Position, ClimberConstants.armHomePos);
-  //   m_climber.set(ControlMode.PercentOutput, ExtensionConstants.kMaxOutput_Slow);
-  // }
-  
-  // public void stopHook(){
-  //   m_climber.set(ControlMode.PercentOutput, 0);
-  // }
-  // public double HookPosition(){
-  //   return m_climber.getSelectedSensorPosition();
-  // }
-  // public boolean hookHitForwardLimit(){
-  //   return ( m_climber.getSensorCollection().isFwdLimitSwitchClosed()==1);
-  // }
-
-  // public boolean hookHitBackLimit(){
-  //   return ( m_climber.getSensorCollection().isRevLimitSwitchClosed()==1);
-  // }
-
-
-
-  // public boolean moveArmToPosition(double setPoint){
-  //   m_climberArm.set(ControlMode.Position, setPoint);   
-  //   if (Math.abs(ArmPosition() - setPoint) < 2000){
-  //     return true;
-  //   }
-  //   // if reaching past physical limit, use the limit switch to report
-  //   if (setPoint > ExtensionConstants.armMaxReach && armHitForwardLimit()){ return true; }
-  //   if (setPoint < ExtensionConstants.armsStartingPos && armHitBackLimit() ){ return true; }
-
-  //   return false;
-  // }
-
-
-  //  public void reachArmBack(){
-  //   m_climberArm.set(ControlMode.PercentOutput, 0.3);
-  // }
-
-  // public void pullArmForward(){
-  //   m_climberArm.set(ControlMode.PercentOutput, -0.3);  
-  // }
-
-  // public boolean armHitForwardLimit(){
-  //   return ( m_climberArm.getSensorCollection().isFwdLimitSwitchClosed()==1);
-  // }
-
-  // public boolean armHitBackLimit(){
-  //   return ( m_climberArm.getSensorCollection().isRevLimitSwitchClosed()==1);
-  // }
-
-  // public void stopArm(){
-  //   m_climberArm.set(ControlMode.PercentOutput, 0);
-  // }
-
-  // public double ArmPosition(){
-  //   return m_climberArm.getSelectedSensorPosition();
-  // }
-
 }

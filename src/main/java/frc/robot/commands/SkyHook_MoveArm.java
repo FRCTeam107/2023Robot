@@ -17,11 +17,13 @@ public class SkyHook_MoveArm extends CommandBase {
    * Creates a new Shoot.`
    */
   private final SkyHook m_skyHook;
-  private final double m_position;
+  private final double m_setPoint;
+  private boolean m_incrementMove;
 
-  public SkyHook_MoveArm(SkyHook _skyHook, Double _position) {
+  public SkyHook_MoveArm(SkyHook _skyHook, Double _position, boolean _incrementalMovement) {
     m_skyHook = _skyHook;
-    m_position = _position;
+    m_setPoint = _position;
+    m_incrementMove = _incrementalMovement;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_skyHook);
@@ -36,7 +38,22 @@ public class SkyHook_MoveArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_skyHook.SetArmPosition(m_position);
+    if (m_setPoint == 0){
+     m_skyHook.SetArmPower(m_setPoint);
+     //m_skyHook.SetArmVelocity(m_setPoint);
+    }
+    else if (m_incrementMove){
+      // increment or decrement position, but not checking limits here
+      // allow the SkyHook subsystem to manage the limit checks
+        double newPosition  = m_skyHook.GetArmHoldSetpoint() + m_setPoint;
+        m_skyHook.SetArmPosition(newPosition);
+        //m_skyHook.SetArmPower(m_setPoint);
+    }
+    else {
+      m_skyHook.SetArmPosition(m_setPoint);
+      //m_skyHook.SetArmSmartMotion(m_position);
+    }
+
   }
 
   // Called once the command ends or is interrupted.
@@ -48,6 +65,6 @@ public class SkyHook_MoveArm extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

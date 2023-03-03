@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.nio.channels.WritableByteChannel;
 import java.util.List;
 
 import com.ctre.phoenix.CANifier.PWMChannel;
@@ -33,6 +34,7 @@ import frc.robot.Constants.FlightController;
 import frc.robot.commands.SkyHook_MoveWrist;
 import frc.robot.commands.SkyHook_RunIntake;
 import frc.robot.commands.SkyHook_MoveArm;
+import frc.robot.commands.SkyHook_MoveElevator;
 //import frc.robot.commands.ReplayFile;
 import frc.robot.commands.SetRobotOrientationOnField;
 //import frc.robot.commands.Shoot;
@@ -54,6 +56,7 @@ import frc.robot.subsystems.VisionCamera;
 //import frc.robot.commands.ReachForTheBar;
 //import frc.robot.commands.PullUpOntoTalonHooks;
 //import frc.robot.commands.RunClimberManually;
+import frc.robot.subsystems.SkyHook.WristPositions;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -151,6 +154,9 @@ public class RobotContainer {
     JoystickButton btnRunPickup = new JoystickButton(m_controllerJoystick, ControllerJoystick.RUN_PICKUP);
     JoystickButton btnEjectPickup = new JoystickButton(m_controllerJoystick, ControllerJoystick.EJECT_PICKUP);
 
+    JoystickButton btnExtendElevator = new JoystickButton(m_controllerJoystick, ControllerJoystick.EXTEND_ARM);
+    JoystickButton btnRetractElevator = new JoystickButton(m_controllerJoystick, ControllerJoystick.RETRACT_ARM);
+
     // JoystickButton btnFlipperPickup = new JoystickButton(m_flightcontroller, ControllerJoystick.RUN_FLIPPER_INTAKE);
     JoystickButton btnWristUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.WRIST_UP);
     JoystickButton btnWristDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.WRIST_DOWN);    
@@ -185,20 +191,29 @@ public class RobotContainer {
     btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.5));
     btnRunPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
+    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.EXTENDED)); //-200.0));
+    btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
+    btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.RETRACTED)); // 100.0));// almost home
+    btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
+
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
 
-    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, 0.1));
+    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.EXTENDED));
     btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, -0.1));
+    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.RETRACTED));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK));
-    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.HOME));
-    btnSkyhookForward.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.FORWARD));
+    //btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK, false));
+    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmPositions.STARTPOSITION, false));
+    //btnSkyhookForward.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.FORWARD, false));
+    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, -2.1, true));
+    //btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
 
+    btnSkyhookBack.whileTrue(new SkyHook_MoveArm(m_skyHook, 2.3, true));
+    //btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
      //btnActivateLimelight.whenReleased(m_limelight::DisableVisionProcessing);
