@@ -41,17 +41,23 @@ public class SkyHook extends SubsystemBase {
     static final double UPPERLIMIT = 20; // maximum value for position
     public static final double BACK = 19;
     public static final double FORWARD = -12;
-    public static final double STARTPOSITION = 0;
+    public static final double STARTPOSITION = -4.8;
     static final double LOWERLIMIT = -20; // minimum value for position
     }
   public static final class ExtensionPositions{
     static final double UPPERLIMIT = 0; // actual limit (upper limit switch hit)
     public static final double RETRACTED = -10; // advertised retracted position
-    static final double STARTPOSITION = -124;
+    static final double STARTPOSITION = -200;
     public static final double EXTENDED = -200;
     static final double LOWERLIMIT = -220; // fully extended position
   }
-
+  public static final class WristPositions{
+    static final double UPPERLIMIT = 9000; // actual limit (upper limit switch hit)
+    public static final double RETRACTED = -8500; // advertised retracted position
+    static final double STARTPOSITION = 0;//-13000;
+    public static final double EXTENDED = 8500;
+    static final double LOWERLIMIT = -9000; // fully extended position
+  }
 static final class ExtensionConstants {
     // PID values
     static final double kP = 0.04;
@@ -80,8 +86,8 @@ static final class ExtensionConstants {
     static final double kD = 0;
     static final double kIz = 0;
     static final double kFF = 0.08;//.000015;
-    static final double kMaxOutput = 0.5;
-    static final double kMinOutput = -0.5;
+    static final double kMaxOutput = 0.3;
+    static final double kMinOutput = -0.3;
   }
   static final class IntakeConstants { 
     // PID values
@@ -125,7 +131,7 @@ static final class ExtensionConstants {
     m_ExtensionPID.setFF(ExtensionConstants.kFF);
     m_ExtensionPID.setOutputRange(ExtensionConstants.kMinOutput, ExtensionConstants.kMaxOutput);
 
-    // Skyhook "Arm" to make it flip-flop
+    // Skyhook "Arm" to make it flip-flop 
     m_ArmMotor = new CANSparkMax(Motors.SKYHOOK_ARM, MotorType.kBrushless);
     m_ArmMotor.restoreFactoryDefaults();
     m_ArmMotor.setIdleMode(IdleMode.kBrake);
@@ -150,12 +156,11 @@ static final class ExtensionConstants {
     m_WristMotor.configFactoryDefault();
     m_WristMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 100);
     m_WristMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 100);
-    m_WristMotor.setSelectedSensorPosition(0);
+    m_WristMotor.setSelectedSensorPosition(WristPositions.STARTPOSITION);
     m_WristMotor.setNeutralMode(NeutralMode.Brake);
     // m_shootbottom.configClosedloopRamp(0.3);
     // m_shoottop.configClosedloopRamp(0.3);
 ;
-
     // setup PID closed-loop values
     // kP = 0.25; 
     // kI = 0.0005;

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.nio.channels.WritableByteChannel;
 import java.util.List;
 
 import com.ctre.phoenix.CANifier.PWMChannel;
@@ -55,6 +56,7 @@ import frc.robot.subsystems.VisionCamera;
 //import frc.robot.commands.ReachForTheBar;
 //import frc.robot.commands.PullUpOntoTalonHooks;
 //import frc.robot.commands.RunClimberManually;
+import frc.robot.subsystems.SkyHook.WristPositions;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -198,10 +200,10 @@ public class RobotContainer {
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
 
-    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, 1.0));
+    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.EXTENDED));
     btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, 15000.0));
+    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.RETRACTED));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
     //btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK, false));
