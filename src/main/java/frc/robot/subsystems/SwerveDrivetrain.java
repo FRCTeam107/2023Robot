@@ -79,7 +79,6 @@ public class SwerveDrivetrain extends SubsystemBase {
 
     m_odometry = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, 
        m_gyro.getRotation2d(), getModulePositions());
-   
   }
 
   public SwerveModulePosition[] getModulePositions(){
@@ -124,6 +123,9 @@ public class SwerveDrivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.kMaxSpeedMetersPerSecond);
     //SwerveDriveKinematics.normalizeWheelSpeeds(states, kMaxSpeed);
     SmartDashboard.putNumber("gyro Angle", m_gyro.getAngle());
+    SmartDashboard.putNumber("gyro Roll", m_gyro.getRoll());
+    SmartDashboard.putNumber("gyro Pitch", m_gyro.getPitch());
+
     for (int i = 0; i < states.length; i++) {
       SwerveModuleMK3 module = modules[i];
       SwerveModuleState state = states[i];
