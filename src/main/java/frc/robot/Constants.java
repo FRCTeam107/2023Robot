@@ -69,6 +69,7 @@ public final class Constants {
 
                 public static final int SKYHOOK_EXTEND = 4;
                 public static final int SKYHOOK_RETRACT = 1;
+                public static final int AUTO_BALANCE = 16;
 
         }
 

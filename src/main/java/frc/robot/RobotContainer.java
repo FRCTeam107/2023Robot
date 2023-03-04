@@ -35,6 +35,7 @@ import frc.robot.commands.SkyHook_MoveWrist;
 import frc.robot.commands.SkyHook_RunIntake;
 import frc.robot.commands.SkyHook_MoveArm;
 import frc.robot.commands.SkyHook_MoveElevator;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ReplayFile;
 //import frc.robot.commands.ReplayFile;
 import frc.robot.commands.SetRobotOrientationOnField;
@@ -99,6 +100,7 @@ public class RobotContainer {
     m_DataRecorder = new DataRecorder();
     
     m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
+    //m_Drivetrain.setDefaultCommand(new AutoBalance(m_Drivetrain));
     
     configureButtonBindings();
 
@@ -153,6 +155,9 @@ public class RobotContainer {
     JoystickButton btnSkyhookBack = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_REACHBACK);
     JoystickButton btnSkyhookHome = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_GOHOME);    
     JoystickButton btnSkyhookForward = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_REACHFORWARD);    
+
+    JoystickButton btnAutoBalance = new JoystickButton(m_controllerJoystick, ControllerJoystick.AUTO_BALANCE);    
+    btnAutoBalance.whileTrue(new AutoBalance(m_Drivetrain));
 
     // // T-Rex Buttons
     // JoystickButton btnTrexArmDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.LOWER_TREX_ARMS);
