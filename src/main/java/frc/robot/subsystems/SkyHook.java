@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
+import frc.robot.subsystems.DataRecorder.datapoint;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -71,13 +72,15 @@ static final class ExtensionConstants {
 
   static final class ArmConstants { 
     // PID values
-    static final double kP = 0.03;
-    static final double kI = 0.00;
+    static final double kP = 0.0005;//0.03;
+    static final double kI = 0.00001;
     static final double kD = 0;
     static final double kIz = 0;
-    static final double kFF = 0.01;//.000015;
-    static final double kMaxOutput = 0.4;
-    static final double kMinOutput = -0.4;
+    static final double kFF = 0.000156;//.000015;
+    static final double kMaxOutput = 0.5;
+    static final double kMinOutput = -0.5;
+    static final double kMaxVelocity = 16000;
+    static final double kMaxAccel = 800;
   }
   static final class WristConstants { 
     // PID values
@@ -94,7 +97,7 @@ static final class ExtensionConstants {
     static final double kP = 0.4096;
     static final double kI = 0.00;
     static final double kD = 0;
-    static final double kIz = 8000;
+    static final double kIz = 0;
     static final double kFF = 0;//.000015;
     static final double kMaxOutput = 1;
     static final double kMinOutput = -1;
@@ -117,6 +120,7 @@ static final class ExtensionConstants {
     m_ExtensionMotor.restoreFactoryDefaults();
     m_ExtensionMotor.setIdleMode(IdleMode.kBrake);
     m_ExtensionMotor.getEncoder().setPosition(ExtensionPositions.STARTPOSITION);
+    m_ExtensionMotor.setSmartCurrentLimit(20);
 
     // Reduce CAN bus traffic
     m_ExtensionMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
@@ -136,6 +140,7 @@ static final class ExtensionConstants {
     m_ArmMotor.restoreFactoryDefaults();
     m_ArmMotor.setIdleMode(IdleMode.kBrake);
     m_ArmMotor.getEncoder().setPosition(ArmPositions.STARTPOSITION);
+    m_ArmMotor.setSmartCurrentLimit(20);
 
     // reduce communication on CAN bus
     m_ArmMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
@@ -148,6 +153,8 @@ static final class ExtensionConstants {
     m_ArmPID.setD(ArmConstants.kD);
     m_ArmPID.setIZone(ArmConstants.kIz);
     m_ArmPID.setFF(ArmConstants.kFF);
+    m_ArmPID.setSmartMotionMaxAccel(ArmConstants.kMaxAccel, 0);
+    m_ArmPID.setSmartMotionMaxVelocity(ArmConstants.kMaxVelocity, 0);
     m_ArmPID.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
     m_ArmMotor.burnFlash();
 
@@ -233,6 +240,12 @@ static final class ExtensionConstants {
     // }    
     // This method will be called once per scheduler run
     // output values that show on driver screen dashboard, or are used in LED lights
+
+    SmartDashboard.putNumber("dataRecorder." + datapoint.ArmPosition, m_ArmSetpoint);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.ExtensionPosition, m_ExtensionSetpoint);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.WristPosition, m_WristSetpoint);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeSpeed, m_IntakeSetpoint);
+
     SmartDashboard.putNumber("Arm.Position", GetArmPosition());
     SmartDashboard.putNumber("Arm.Setpoint", m_ArmSetpoint);
     SmartDashboard.putNumber("Arm.HoldSetpoint", m_ArmHoldSetpoint);

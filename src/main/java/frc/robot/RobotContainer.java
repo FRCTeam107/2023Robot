@@ -35,6 +35,7 @@ import frc.robot.commands.SkyHook_MoveWrist;
 import frc.robot.commands.SkyHook_RunIntake;
 import frc.robot.commands.SkyHook_MoveArm;
 import frc.robot.commands.SkyHook_MoveElevator;
+import frc.robot.commands.ReplayFile;
 //import frc.robot.commands.ReplayFile;
 import frc.robot.commands.SetRobotOrientationOnField;
 //import frc.robot.commands.Shoot;
@@ -93,19 +94,19 @@ public class RobotContainer {
     m_LEDLights = new LEDLights();
     m_Drivetrain  = new SwerveDrivetrain(0);  // begin assuming no field offset angle of robot (facing straight "north")
 
-     m_limelight = new Limelight();
+    m_limelight = new Limelight();
 
-    // m_DataRecorder = new DataRecorder();
+    m_DataRecorder = new DataRecorder();
     
-     m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
+    m_Drivetrain.setDefaultCommand(new SwerveDriveCommand(m_Drivetrain, m_flightcontroller, m_limelight, m_LEDLights));
     
     configureButtonBindings();
 
     // Add commands to the autonomous command chooser
-    // Command TwoBall_Right = new SequentialCommandGroup(
-    //   new SetRobotOrientationOnField(m_Drivetrain, 82.54),
-    //   new ReplayFile(m_Drivetrain, m_Intake, m_shooter, m_limelight, m_DataRecorder, "twoball-right.csv")
-    //   );
+    Command SimpleTest = new SequentialCommandGroup(
+      new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleTest.csv")
+      );
 
     // Command TwoBall_Center = new SequentialCommandGroup(
     //   new SetRobotOrientationOnField(m_Drivetrain, 0),
@@ -119,23 +120,11 @@ public class RobotContainer {
     //   new SetRobotOrientationOnField(m_Drivetrain, -165)   
     //   );
     
-    // Command ThreeBall_Right = new SequentialCommandGroup(
-    //     new SetRobotOrientationOnField(m_Drivetrain, 82.54),
-    //     new ReplayFile(m_Drivetrain, m_Intake, m_shooter, m_limelight, m_DataRecorder, "3Ball-1FAST.csv")
-    //     // new ParallelCommandGroup(
-    //     //   new ClimberResetToHome(m_climber),
-    //     //   new ReplayFile(m_Drivetrain, m_Intake, m_shooter, m_DataRecorder, "3Ball-1FAST.csv")
-    //     //   )   
-    //     );
-      
-    // Command ThreeBall_RunForrest = new SequentialCommandGroup(
-    //       new SetRobotOrientationOnField(m_Drivetrain, 82.54),
-    //       new ReplayFile(m_Drivetrain, m_Intake, m_shooter, m_limelight, m_DataRecorder, "3Ball-RUN.csv")
-    //       );
+
 
     m_chooser = new SendableChooser<>();
     //m_chooser.addOption("Original", ORIGgetAutonomousCommand() );
-    // m_chooser.addOption("2-Ball RIGHT", TwoBall_Right);
+    m_chooser.addOption("SimpleTest", SimpleTest);
     // m_chooser.addOption("2-Ball CENTER", TwoBall_Center);
     // m_chooser.addOption("2-Ball LEFT", TwoBall_Left);
     // m_chooser.addOption("3-Ball RIGHT", ThreeBall_Right);
@@ -191,14 +180,13 @@ public class RobotContainer {
     btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.5));
     btnRunPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
+    btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
+    btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
+    
     btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.EXTENDED)); //-200.0));
     btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
     btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.RETRACTED)); // 100.0));// almost home
     btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
-
-    btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
-    btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
-
 
     btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.EXTENDED));
     btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));

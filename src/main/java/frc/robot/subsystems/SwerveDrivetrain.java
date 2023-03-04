@@ -102,10 +102,10 @@ public class SwerveDrivetrain extends SubsystemBase {
     //   //m_gyro.reset(); //recalibrates gyro offset
     //   zeroHeading(0); // assume manual re-calibrating pointing straight 'north' on field
     // }
-    // SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_X, xSpeed);
-    // SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_Y, ySpeed);
-    // SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_Z, rot);
-    // SmartDashboard.putNumber("dataRecorder." + datapoint.GyroAngle, m_gyro.getAngle());
+    SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_X, xSpeed);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_Y, ySpeed);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_Z, rot);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.GyroAngle, m_gyro.getAngle());
 
     // SmartDashboard.putNumber("dataRecorder." + datapoint.frontLeftDistance, m_frontLeft.getDistance());
     // SmartDashboard.putNumber("dataRecorder." + datapoint.frontLeftVelocity, m_frontLeft.getVelocity());
