@@ -53,6 +53,7 @@ import frc.robot.subsystems.SwerveDrivetrain;
 //import frc.robot.subsystems.VisionCamera;
 import frc.robot.subsystems.SkyHook;
 import frc.robot.subsystems.VisionCamera;
+import frc.robot.subsystems.SkyHook.ArmPositions;
 //import frc.robot.commands.ClimberResetToHome;
 //import frc.robot.commands.DismountFirstBar;
 //import frc.robot.commands.ReachForTheBar;
@@ -200,15 +201,18 @@ public class RobotContainer {
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
     //btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK, false));
-    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmPositions.STARTPOSITION, false));
+    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, 1.0, false));
     //btnSkyhookForward.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.FORWARD, false));
-    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, -2.1, true));
-    //btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
+    //btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, -2.1, true));
+    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.FORWARD, false));
+    btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
 
-    btnSkyhookBack.whileTrue(new SkyHook_MoveArm(m_skyHook, 2.3, true));
-    //btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
+    //btnSkyhookBack.whileTrue(new SkyHook_MoveArm(m_skyHook, 2.3, true));
+    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.BACK, false));
+    btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
+     
      //btnActivateLimelight.whenReleased(m_limelight::DisableVisionProcessing);
     }
 

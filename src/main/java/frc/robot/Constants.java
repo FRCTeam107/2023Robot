@@ -96,7 +96,7 @@ public final class Constants {
                 public static final int SKYHOOK_INTAKE = 14;
                 public static final int SKYHOOK_EXTENDER = 16;
                 public static final int SKYHOOK_ARM = 17;
-
+                public static final int SKYHOOK_ARM2 = 18;
         }
 
         // DIO Ports
@@ -122,8 +122,8 @@ public final class Constants {
                     //(kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
             
                     // Distance between front and back wheels on robot
-                private static double kWheelBase = Units.inchesToMeters(16);
-                private static double kTrackWidth = Units.inchesToMeters(30);
+                private static double kWheelBase = Units.inchesToMeters(18);
+                private static double kTrackWidth = Units.inchesToMeters(20);
 
                 public static final SwerveDriveKinematics kDriveKinematics =
                         new SwerveDriveKinematics(
