@@ -66,7 +66,7 @@ public class SwerveModuleMK3 {
     driveTalonFXConfiguration.slot0.kF = kDriveF;
  
     driveMotor.configAllSettings(driveTalonFXConfiguration);
-    driveMotor.setNeutralMode(NeutralMode.Coast);
+    driveMotor.setNeutralMode(NeutralMode.Brake);
     driveMotor.configOpenloopRamp(0.9);
     driveMotor.configClosedloopRamp(0.9);
 
