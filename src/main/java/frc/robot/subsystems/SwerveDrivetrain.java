@@ -41,7 +41,7 @@ public class SwerveDrivetrain extends SubsystemBase {
   // angle offsets for rotation motors
   // reducing the angle will adjust in counter-clockwise direction
   
-  // //COMPETITION ROBOT SETTINGS
+  //COMPETITION ROBOT SETTINGS
   public static double frontLeftOffset = 80;//89.9;
   public static double frontRightOffset = 159;//281.9;
   public static double backLeftOffset = 110;//116.9;
@@ -79,7 +79,6 @@ public class SwerveDrivetrain extends SubsystemBase {
 
     m_odometry = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, 
        m_gyro.getRotation2d(), getModulePositions());
-   
   }
 
   public SwerveModulePosition[] getModulePositions(){
@@ -102,10 +101,10 @@ public class SwerveDrivetrain extends SubsystemBase {
     //   //m_gyro.reset(); //recalibrates gyro offset
     //   zeroHeading(0); // assume manual re-calibrating pointing straight 'north' on field
     // }
-    // SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_X, xSpeed);
-    // SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_Y, ySpeed);
-    // SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_Z, rot);
-    // SmartDashboard.putNumber("dataRecorder." + datapoint.GyroAngle, m_gyro.getAngle());
+    SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_X, xSpeed);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_Y, ySpeed);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.Drive_Z, rot);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.GyroAngle, m_gyro.getAngle());
 
     // SmartDashboard.putNumber("dataRecorder." + datapoint.frontLeftDistance, m_frontLeft.getDistance());
     // SmartDashboard.putNumber("dataRecorder." + datapoint.frontLeftVelocity, m_frontLeft.getVelocity());
@@ -124,6 +123,9 @@ public class SwerveDrivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.kMaxSpeedMetersPerSecond);
     //SwerveDriveKinematics.normalizeWheelSpeeds(states, kMaxSpeed);
     SmartDashboard.putNumber("gyro Angle", m_gyro.getAngle());
+    SmartDashboard.putNumber("gyro Roll", m_gyro.getRoll());
+    SmartDashboard.putNumber("gyro Pitch", m_gyro.getPitch());
+
     for (int i = 0; i < states.length; i++) {
       SwerveModuleMK3 module = modules[i];
       SwerveModuleState state = states[i];
@@ -202,7 +204,12 @@ public class SwerveDrivetrain extends SubsystemBase {
     public double getAngle() {
       return m_gyro.getAngle();
     }
-
+    public double getPitch() {
+      return m_gyro.getPitch();
+    }
+    public double getRoll() {
+      return m_gyro.getRoll();
+    }
     /**
      * Returns the heading of the robot.
      *

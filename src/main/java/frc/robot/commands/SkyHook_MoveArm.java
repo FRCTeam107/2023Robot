@@ -50,8 +50,8 @@ public class SkyHook_MoveArm extends CommandBase {
         //m_skyHook.SetArmPower(m_setPoint);
     }
     else {
-      m_skyHook.SetArmPosition(m_setPoint);
-      //m_skyHook.SetArmSmartMotion(m_position);
+      //m_skyHook.SetArmPosition(m_setPoint);
+      m_skyHook.SetArmSmartMotion(m_setPoint);
     }
 
   }

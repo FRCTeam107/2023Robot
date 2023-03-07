@@ -23,15 +23,16 @@ public class DataRecorder extends SubsystemBase {
 
   public class datapoint{
     // first entry is timestamp in milliseconds
+    public static final int RunTimestamp = 0;
     public static final int Drive_X = 1;
     public static final int Drive_Y = 2;
     public static final int Drive_Z = 3;
     public static final int GyroAngle = 4;
-    public static final int IntakeIsExtended = 5;
-    public static final int IntakeMotorSpeed = 6;
-    public static final int ShooterTop = 7;
-    public static final int ShooterBottom = 8;
-    public static final int KickerSpeed = 9;
+    public static final int ArmPosition = 5;
+    public static final int ExtensionPosition = 6;
+    public static final int WristPosition = 7;
+    public static final int IntakeSpeed = 8;
+    public static final int unused9 = 9;
     public static final int frontLeftDistance = 10;
     public static final int frontLeftVelocity = 11;
     public static final int frontRightDistance = 12;
@@ -43,7 +44,7 @@ public class DataRecorder extends SubsystemBase {
     }
 
   
-  private double[] blankvalues = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+  private double[] blankvalues = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
   private double[] datavalues = blankvalues; // same number of datapoints from  list above
 
   //private FileInputStream in = null;
@@ -77,11 +78,11 @@ public class DataRecorder extends SubsystemBase {
       datavalues[datapoint.Drive_Y] = SmartDashboard.getNumber("dataRecorder." + datapoint.Drive_Y, 0);
       datavalues[datapoint.Drive_Z] = SmartDashboard.getNumber("dataRecorder." + datapoint.Drive_Z, 0);
       datavalues[datapoint.GyroAngle] = SmartDashboard.getNumber("dataRecorder." + datapoint.GyroAngle, 0);
-      datavalues[datapoint.ShooterBottom] = SmartDashboard.getNumber("dataRecorder." + datapoint.ShooterBottom, 0);
-      datavalues[datapoint.ShooterTop] = SmartDashboard.getNumber("dataRecorder." + datapoint.ShooterTop, 0);
-      datavalues[datapoint.IntakeIsExtended] = SmartDashboard.getNumber("dataRecorder." + datapoint.IntakeIsExtended, 0);
-      datavalues[datapoint.IntakeMotorSpeed] = SmartDashboard.getNumber("dataRecorder." + datapoint.IntakeMotorSpeed, 0);
-      datavalues[datapoint.KickerSpeed] = SmartDashboard.getNumber("dataRecorder." + datapoint.KickerSpeed, 0);
+      datavalues[datapoint.ArmPosition] = SmartDashboard.getNumber("dataRecorder." + datapoint.ArmPosition, 0);
+      datavalues[datapoint.ExtensionPosition] = SmartDashboard.getNumber("dataRecorder." + datapoint.ExtensionPosition, 0);
+      datavalues[datapoint.WristPosition] = SmartDashboard.getNumber("dataRecorder." + datapoint.WristPosition, 0);
+      datavalues[datapoint.IntakeSpeed] = SmartDashboard.getNumber("dataRecorder." + datapoint.IntakeSpeed, 0);
+      datavalues[datapoint.unused9] = SmartDashboard.getNumber("dataRecorder." + datapoint.unused9, 0);
 
       datavalues[datapoint.frontLeftDistance] = SmartDashboard.getNumber("dataRecorder." + datapoint.frontLeftDistance, 0);
       datavalues[datapoint.frontLeftVelocity] = SmartDashboard.getNumber("dataRecorder." + datapoint.frontLeftVelocity, 0);
