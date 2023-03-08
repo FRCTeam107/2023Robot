@@ -46,7 +46,7 @@ public class SkyHook extends SubsystemBase {
   //   }
   public static final class ArmPositions{
       static final double UPPERLIMIT = 65000; // maximum value for position
-      public static final double BACK = 60000;
+      public static final double BACK = 61000;
       public static final double FORWARD = -45000;
       public static final double STARTPOSITION = 0;
       static final double LOWERLIMIT = -50000; // minimum value for position
@@ -113,6 +113,8 @@ static final class ExtensionConstants {
    */
   public SkyHook() {
     super();
+    SmartDashboard.putNumber("Arm To", 0.0);
+    SmartDashboard.putNumber("Wrist To", 0.0);
 
     m_ExtensionCtrlType = ControlType.kDutyCycle;
     m_ArmCtrlType = ControlMode.PercentOutput;
@@ -271,20 +273,20 @@ static final class ExtensionConstants {
     SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeSpeed, m_IntakeSetpoint);
 
     SmartDashboard.putNumber("Arm.Position", GetArmPosition());
-    SmartDashboard.putNumber("Arm.Setpoint", m_ArmSetpoint);
-    SmartDashboard.putNumber("Arm.HoldSetpoint", m_ArmLastPosition);
+    //SmartDashboard.putNumber("Arm.Setpoint", m_ArmSetpoint);
+    //SmartDashboard.putNumber("Arm.HoldSetpoint", m_ArmLastPosition);
     SmartDashboard.putNumber("Extension.Position", GetExtensionPosition());
-    SmartDashboard.putNumber("Extension.Setpoint", m_ExtensionSetpoint);
+    //SmartDashboard.putNumber("Extension.Setpoint", m_ExtensionSetpoint);
     //SmartDashboard.putNumber("Extension.HoldSetpoint", m_ExtensionHoldSetpoint);
     SmartDashboard.putNumber("Wrist.Position", GetWristPosition());
-    SmartDashboard.putNumber("Wrist.Setpoint", m_WristSetpoint);
+    //SmartDashboard.putNumber("Wrist.Setpoint", m_WristSetpoint);
     //SmartDashboard.putNumber("Wrist.HoldSetpoint", m_WristHoldSetpoint);
     //SmartDashboard.putNumber("Intake.Setpoint", m_IntakeSetpoint);
 
     // TODO: put code here to prevent moving arm through robot if extension or wrist in unsafe position
     // ideally, the code will move the wrist & arm to safely pass through robot
 
-    SmartDashboard.putNumber("Arm to", m_ArmSetpoint);
+    //SmartDashboard.getNumber("Arm to", m_ArmSetpoint);
    //m_ArmPID.setReference(m_ArmSetpoint, m_ArmCtrlType);
     
     m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
@@ -308,6 +310,9 @@ static final class ExtensionConstants {
     m_ArmSetpoint = velocity;
    }
    public void SetArmSmartMotion(double position){
+
+    position = SmartDashboard.getNumber("Arm To", position);
+    
     if (position < ArmPositions.LOWERLIMIT) {position = ArmPositions.LOWERLIMIT;}
     if (position > ArmPositions.UPPERLIMIT) {position = ArmPositions.UPPERLIMIT;}
 
@@ -359,6 +364,7 @@ static final class ExtensionConstants {
 
   // methods for Wrist motor   
    public void SetWristPosition(double position){
+    position = SmartDashboard.getNumber("Wrist To", position);
     m_WristCtrlType = ControlMode.Position;// ControlType.kPosition;
     m_WristSetpoint = position;
    }
