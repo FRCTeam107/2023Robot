@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
+import frc.robot.subsystems.SkyHook.ArmPositions;
 
 
 public class SkyHook_MoveArm extends CommandBase {
@@ -50,8 +51,7 @@ public class SkyHook_MoveArm extends CommandBase {
         //m_skyHook.SetArmPower(m_setPoint);
     }
     else {
-      //m_skyHook.SetArmPosition(m_setPoint);
-      m_skyHook.SetArmSmartMotion(m_setPoint);
+       m_skyHook.SetArmSmartMotion(m_setPoint);
     }
 
   }

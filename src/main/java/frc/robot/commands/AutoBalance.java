@@ -39,13 +39,13 @@ public class AutoBalance extends CommandBase {
     double checkGyro = 0;
 
     checkGyro = m_drivetrain.getRoll();
-    if (Math.abs(checkGyro) > 3 ) {
-      BalanceCorrection = checkGyro * 0.15;
+    if (Math.abs(checkGyro) > 9 ) {
+      BalanceCorrection = checkGyro * 0.01;
     }
     else {
        checkGyro = m_drivetrain.getPitch();
-       if (Math.abs(checkGyro) > 3 ) {
-          BalanceCorrection = checkGyro * 0.15;
+       if (Math.abs(checkGyro) > 9 ) {
+          BalanceCorrection = checkGyro * 0.01;
        }
       }
 
@@ -65,5 +65,11 @@ public class AutoBalance extends CommandBase {
       m_drivetrain.drive(xSpeed, 0.0, 0.0, true);//, calibrate);
      }
 
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+      return false;
   }
 }
