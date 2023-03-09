@@ -7,22 +7,22 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Motors;
-import frc.robot.subsystems.DataRecorder.datapoint;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Motors;
+import frc.robot.subsystems.DataRecorder.datapoint;
 
 public class SkyHook extends SubsystemBase {
 
@@ -35,7 +35,7 @@ public class SkyHook extends SubsystemBase {
   private CANSparkMax.ControlType m_ExtensionCtrlType;
 
   private double m_ExtensionSetpoint, m_ArmSetpoint, m_WristSetpoint, m_IntakeSetpoint;
-  private double m_ArmLastPosition;//, m_ExtensionHoldSetpoint, m_WristHoldSetpoint;
+  //private double m_ArmLastPosition;//, m_ExtensionHoldSetpoint, m_WristHoldSetpoint;
 
   // public static final class ArmPositions{
   //   static final double UPPERLIMIT = 20; // maximum value for position
@@ -47,13 +47,16 @@ public class SkyHook extends SubsystemBase {
   public static final class ArmPositions{
       static final double UPPERLIMIT = 65000; // maximum value for position
       public static final double BACK = 61000;
-      public static final double FORWARD = -45000;
+      static final double UNSAFEPOSITIONMAX = 40000; // upper point where not safe to extend elevator, and wrist must fold up
       public static final double STARTPOSITION = 0;
+      static final double UNSAFEPOSITIONMIN= -30000; // lower point where not safe to extend elevator, and wrist must fold up
+      public static final double FORWARD = -45000;
       static final double LOWERLIMIT = -50000; // minimum value for position
       }
   public static final class ExtensionPositions{
     static final double UPPERLIMIT = 0; // actual limit (upper limit switch hit)
     public static final double RETRACTED = -5; // advertised retracted position
+    static final double SAFELYRETRACTEDMIN = -10; // safe enough to pass through robot
     static final double STARTPOSITION = -85;
     public static final double EXTENDED = -100;
     static final double LOWERLIMIT = -120; // fully extended position
@@ -195,14 +198,6 @@ static final class ExtensionConstants {
     // m_shoottop.configClosedloopRamp(0.3);
 ;
     // setup PID closed-loop values
-    // kP = 0.25; 
-    // kI = 0.0005;
-    // kD = 0.0001; 
-    // kIz = 8000; 
-    // kFF = 0;//.000015; 
-    // kMaxOutput = 1; 
-    // kMinOutput = -1;
-    // maxRPM = 5700;
     m_WristMotor.config_kP(0, WristConstants.kP);
     m_WristMotor.config_kI(0, WristConstants.kI);
     m_WristMotor.config_kD(0, WristConstants.kD);
@@ -225,14 +220,6 @@ static final class ExtensionConstants {
 ;
 
     // setup PID closed-loop values
-    // kP = 0.25; 
-    // kI = 0.0005;
-    // kD = 0.0001; 
-    // kIz = 8000; 
-    // kFF = 0;//.000015; 
-    // kMaxOutput = 1; 
-    // kMinOutput = -1;
-    // maxRPM = 5700;
     m_IntakeMotor.config_kP(0, IntakeConstants.kP);
     m_IntakeMotor.config_kI(0, IntakeConstants.kI);
     m_IntakeMotor.config_kD(0, IntakeConstants.kD);
@@ -246,12 +233,21 @@ static final class ExtensionConstants {
 
   @Override
   public void periodic() {
-    if (m_ArmCtrlType == ControlMode.Position || m_ArmCtrlType==ControlMode.MotionMagic){
-      m_ArmLastPosition = m_ArmSetpoint;
-    }
-    else {
-      m_ArmLastPosition = GetArmPosition();
-    }
+       // This method will be called once per scheduler run
+    // output values that show on driver screen dashboard, or are used in LED lights
+
+    // output numbers for record-and-playback system
+    SmartDashboard.putNumber("dataRecorder." + datapoint.ArmPosition, m_ArmSetpoint);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.ExtensionPosition, m_ExtensionSetpoint);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.WristPosition, m_WristSetpoint);
+    SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeSpeed, m_IntakeSetpoint);
+
+    // if (m_ArmCtrlType == ControlMode.Position || m_ArmCtrlType==ControlMode.MotionMagic){
+    //   m_ArmLastPosition = m_ArmSetpoint;
+    // }
+    // else {
+    //   m_ArmLastPosition = GetArmPosition();
+    // }
     // if (m_ExtensionCtrlType == ControlType.kPosition || m_ExtensionCtrlType==ControlType.kSmartMotion){
     //   m_ExtensionHoldSetpoint = m_ExtensionSetpoint;
     // }
@@ -264,13 +260,7 @@ static final class ExtensionConstants {
     // else {
     //   m_WristHoldSetpoint = GetWristPosition();
     // }    
-    // This method will be called once per scheduler run
-    // output values that show on driver screen dashboard, or are used in LED lights
-
-    SmartDashboard.putNumber("dataRecorder." + datapoint.ArmPosition, m_ArmSetpoint);
-    SmartDashboard.putNumber("dataRecorder." + datapoint.ExtensionPosition, m_ExtensionSetpoint);
-    SmartDashboard.putNumber("dataRecorder." + datapoint.WristPosition, m_WristSetpoint);
-    SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeSpeed, m_IntakeSetpoint);
+ 
 
     SmartDashboard.putNumber("Arm.Position", GetArmPosition());
     //SmartDashboard.putNumber("Arm.Setpoint", m_ArmSetpoint);
@@ -283,16 +273,43 @@ static final class ExtensionConstants {
     //SmartDashboard.putNumber("Wrist.HoldSetpoint", m_WristHoldSetpoint);
     //SmartDashboard.putNumber("Intake.Setpoint", m_IntakeSetpoint);
 
-    // TODO: put code here to prevent moving arm through robot if extension or wrist in unsafe position
+    // TODO: safety code  to prevent moving arm through robot if extension or wrist in unsafe position
+
+    // only allow arm to move when extention arm is within safe extension point
     // ideally, the code will move the wrist & arm to safely pass through robot
+    
+    // intake motor is harmless, do whatever the driver wants
+    m_IntakeMotor.set(m_IntakeCtrlType, m_IntakeSetpoint);
+    
+    if (GetExtensionPosition() <= ExtensionPositions.SAFELYRETRACTEDMIN){
+      m_ArmMotor.set(m_ArmCtrlType, m_ArmSetpoint);
+    }
+
+    if (ArmInSafeZone()){ // arm is in a safe position, extension and wrist move as requested
+      m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
+      m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
+    }
+    else { // do special things to keep extension and wrist from crashing
+      // extension arm may only retract if arm is in unsafe zone 
+      if (m_ExtensionSetpoint <= ExtensionPositions.SAFELYRETRACTEDMIN){
+        m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
+      }
+
+      //TODO, figure out where it is safest to put wrist 
+      // especially important for robot in starting configuration
+      // if (GetWristPosition() < WristPositions.STARTPOSITION) {
+      //    m_WristMotor.set(ControlMode.Position, WristPositions.RETRACTED);
+      //  }
+      // else {
+      //   m_WristMotor.set(ControlMode.Position, WristPositions.EXTENDED);
+      // }
+    }
+    
 
     //SmartDashboard.getNumber("Arm to", m_ArmSetpoint);
    //m_ArmPID.setReference(m_ArmSetpoint, m_ArmCtrlType);
     
-    m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
-    m_ArmMotor.set(m_ArmCtrlType, m_ArmSetpoint);
-    m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
-    m_IntakeMotor.set(m_IntakeCtrlType, m_IntakeSetpoint);
+
     //m_IntakeMotor.set(ControlMode.PercentOutput, m_IntakeSetpoint)
     //m_IntakePID.setReference(m_IntakeSetpoint, m_IntakeCtrlType);
   }
@@ -330,9 +347,14 @@ static final class ExtensionConstants {
     return 0;
     //return m_ArmMotor.getEncoder().getVelocity();
    }
-   public double GetArmHoldSetpoint(){
-    return m_ArmLastPosition;
+
+   public boolean ArmInSafeZone(){
+    // check the arm position to determine if it in a "safe range" where the elevator and wrist can move
+    return (GetArmPosition() < ArmPositions.UNSAFEPOSITIONMIN || GetArmPosition() > ArmPositions.UNSAFEPOSITIONMAX);
    }
+  //  public double GetArmHoldSetpoint(){
+  //   return m_ArmLastPosition;
+  //  }
    
   // methods for Extension motor
    public void SetExtensionPosition(double position){
