@@ -42,16 +42,16 @@ public class SwerveDrivetrain extends SubsystemBase {
   // reducing the angle will adjust in counter-clockwise direction
   
   //COMPETITION ROBOT SETTINGS
-  public static double frontLeftOffset = 80;//89.9;
-  public static double frontRightOffset = 159;//281.9;
-  public static double backLeftOffset = 110;//116.9;
-  public static double backRightOffset = 172;//304.8;
+  // public static double frontLeftOffset = 80;//89.9;
+  // public static double frontRightOffset = 159;//281.9;
+  // public static double backLeftOffset = 110;//116.9;
+  // public static double backRightOffset = 172;//304.8;
 
   // PRACTICE ROBOT SETTINGS
-  // public static double frontLeftOffset = 117;//89.9;
-  // public static double frontRightOffset = 21;//281.9;
-  // public static double backLeftOffset = 130;//116.9;
-  // public static double backRightOffset = 190;//304.8;
+  public static double frontLeftOffset = 210;//89.9;
+  public static double frontRightOffset = 21;//281.9;
+  public static double backLeftOffset = 130;//116.9;
+  public static double backRightOffset = 190;//304.8;
 
 
   public static AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -197,6 +197,13 @@ public class SwerveDrivetrain extends SubsystemBase {
       m_gyro.reset();
       m_gyro.setAngleAdjustment(fieldOffsetAngle);
     } 
+
+    public void xFormat(){
+      m_frontLeft.setWheelLock(Rotation2d.fromDegrees(35));
+      m_frontRight.setWheelLock(Rotation2d.fromDegrees(-70));
+      m_rearLeft.setWheelLock(Rotation2d.fromDegrees(-35));
+      m_rearRight.setWheelLock(Rotation2d.fromDegrees(70));   
+    }
   
     /**
      * Returns the angle heading of the robot.

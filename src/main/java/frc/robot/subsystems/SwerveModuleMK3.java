@@ -66,7 +66,7 @@ public class SwerveModuleMK3 {
     driveTalonFXConfiguration.slot0.kF = kDriveF;
  
     driveMotor.configAllSettings(driveTalonFXConfiguration);
-    driveMotor.setNeutralMode(NeutralMode.Coast);
+    driveMotor.setNeutralMode(NeutralMode.Brake);
     driveMotor.configOpenloopRamp(0.9);
     driveMotor.configClosedloopRamp(0.9);
 
@@ -128,6 +128,18 @@ public class SwerveModuleMK3 {
   
   //  return new SwerveModuleState( driveMotor.getSelectedSensorVelocity(), new Rotation2d(m_turningEncoder.get()));
   }
+
+  public void setWheelLock(Rotation2d desiredAngle){
+    Rotation2d currentRotation = getAngle();
+    Rotation2d rotationDelta = desiredAngle.minus(currentRotation);
+    double deltaTicks = (rotationDelta.getDegrees() / 360) * kEncoderTicksPerRotation;
+    // Convert the CANCoder from it's position reading back to ticks
+    double currentTicks = canCoder.getPosition() / canCoder.configGetFeedbackCoefficient();
+    double desiredTicks = currentTicks + deltaTicks;
+    driveMotor.set(TalonFXControlMode.Velocity, 0);
+    angleMotor.set(TalonFXControlMode.Position, desiredTicks);
+  }
+
 
   /**
    * Set the speed + rotation of the swerve module from a SwerveModuleState object
