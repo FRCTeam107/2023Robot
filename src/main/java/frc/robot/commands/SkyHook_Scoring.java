@@ -44,11 +44,10 @@ public class SkyHook_Scoring extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_skyHook.SetArmPosition(m_armSetPoint);
-    m_skyHook.SetExtensionPosition(m_armSetPoint);
-    m_skyHook.SetWristPosition(m_armSetPoint);
-    m_skyHook.SetIntakePower(m_armSetPoint);
-
+    m_skyHook.SetArmSmartMotion(m_armSetPoint);
+    m_skyHook.SetExtensionPosition(m_extensionSetPoint);
+    m_skyHook.SetWristPosition(m_wristSetPoint);
+    m_skyHook.SetIntakePower(m_intakeSpeed);
   }
 
   // Called once the command ends or is interrupted.

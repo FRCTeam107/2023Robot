@@ -55,6 +55,7 @@ import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SkyHook;
 import frc.robot.subsystems.VisionCamera;
 import frc.robot.subsystems.SkyHook.ArmPositions;
+import frc.robot.subsystems.SkyHook.ExtensionPositions;
 //import frc.robot.commands.ClimberResetToHome;
 //import frc.robot.commands.DismountFirstBar;
 //import frc.robot.commands.ReachForTheBar;
@@ -208,20 +209,21 @@ public class RobotContainer {
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
     //btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK, false));
-    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, 1.0, false));
+    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, 1.0));
     //btnSkyhookForward.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.FORWARD, false));
     //btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, -2.1, true));
-    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.FORWARD, false));
-    btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
+    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.BACK));
+    btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0));
 
     //btnSkyhookBack.whileTrue(new SkyHook_MoveArm(m_skyHook, 2.3, true));
-    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.GROUNDPICKUP, false));
-    btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
+    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.GROUNDPICKUP));
+    btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
-    btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
-    btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
-    btnTopFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
+    btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP
+        , ExtensionPositions.GROUNDPICKUP, WristPositions.GROUNDPICKUP, 0d));
+    // btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
+    // btnTopFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
 
 
      

@@ -130,8 +130,8 @@ static final class ExtensionConstants {
     SmartDashboard.putNumber("Arm To", var);
     var = SmartDashboard.getNumber("Wrist To", 0.0);
     SmartDashboard.putNumber("Wrist To", var);
-    // var = SmartDashboard.getNumber("Extension To", 0.0);
-    // SmartDashboard.putNumber("Extension To", var);
+    var = SmartDashboard.getNumber("Extension To", 0.0);
+    SmartDashboard.putNumber("Extension To", var);
 
     m_ExtensionCtrlType = ControlType.kDutyCycle;
     m_ArmCtrlType = ControlMode.PercentOutput;
@@ -256,26 +256,6 @@ static final class ExtensionConstants {
     SmartDashboard.putNumber("dataRecorder." + datapoint.WristPosition, m_WristSetpoint);
     SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeSpeed, m_IntakeSetpoint);
 
-    // if (m_ArmCtrlType == ControlMode.Position || m_ArmCtrlType==ControlMode.MotionMagic){
-    //   m_ArmLastPosition = m_ArmSetpoint;
-    // }
-    // else {
-    //   m_ArmLastPosition = GetArmPosition();
-    // }
-    // if (m_ExtensionCtrlType == ControlType.kPosition || m_ExtensionCtrlType==ControlType.kSmartMotion){
-    //   m_ExtensionHoldSetpoint = m_ExtensionSetpoint;
-    // }
-    // // else {
-    // //   m_ExtensionHoldSetpoint = GetExtensionPosition();
-    // // }
-    // if (m_WristCtrlType == ControlMode.Position || m_WristCtrlType==ControlMode.MotionMagic ){
-    //   m_WristHoldSetpoint = m_WristSetpoint;
-    // }
-    // else {
-    //   m_WristHoldSetpoint = GetWristPosition();
-    // }    
- 
-
     SmartDashboard.putNumber("Arm.Position", GetArmPosition());
     SmartDashboard.putBoolean("ArmInSafeZone", ArmInSafeZone());
     //SmartDashboard.putNumber("Arm.Setpoint", m_ArmSetpoint);
@@ -301,19 +281,34 @@ static final class ExtensionConstants {
       m_ArmMotor.set(m_ArmCtrlType, m_ArmSetpoint);
     }
     else {
-      // only allow arm to move when extension is retracted to safe point of retraction
+      // allow arm to move when extension is retracted to safe point of retraction
       // and setpoint in safe range or set to 0 (don't move)
       if (GetExtensionPosition() >= ExtensionPositions.SAFEPOSITIONMIN 
       && ( m_ExtensionSetpoint >= ExtensionPositions.SAFESETPOINTMIN
             || m_ExtensionSetpoint == 0) ){
         m_ArmMotor.set(m_ArmCtrlType, m_ArmSetpoint);
       }
+
+      // allow arm to move if requested position is in same "safe zone" as it is in currently
+      // @this. we can move the arm
+      if (ArmInSameZoneAsRequested()){
+        m_ArmMotor.set(m_ArmCtrlType, m_ArmSetpoint);
+      }
     }
 
-    // if arm is in safe zone, allow wrist and extension to move as requested
+    // if arm is in safe zone, allow wrist to move as requested
+    if (ArmInSafeZone()){ // arm is in a safe position, extension and wrist move as requested
+       m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
+    }
+    else {
+      //TODO:  figure out how to protect the wrist
+      m_WristMotor.set(ControlMode.PercentOutput, 0);
+    }
+
+
+    // if arm is in safe zone, allow extension to move as requested
     if (ArmInSafeZone()){ // arm is in a safe position, extension and wrist move as requested
       m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
-      m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
     }
     else {
       //always allow 0% power to Extension
@@ -330,15 +325,7 @@ static final class ExtensionConstants {
           SmartDashboard.putNumber("Unsafe Ext Move", -999.0);
         }
       }
-
-      //always allow 0% power to Wrist
-      if (m_WristCtrlType == ControlMode.PercentOutput && m_WristSetpoint==0) {
-        m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
-      }
-
-    }
-
-      
+    }      
       
       //TODO, figure out where it is safest to put wrist 
       // especially important for robot in starting configuration
@@ -360,20 +347,21 @@ static final class ExtensionConstants {
   }
 
   // methods for Arm motor
-  public void SetArmPosition(double position){
-    if (position < ArmPositions.LOWERLIMIT) {position = ArmPositions.LOWERLIMIT;}
-    if (position > ArmPositions.UPPERLIMIT) {position = ArmPositions.UPPERLIMIT;}
+  // public void SetArmPosition(double position){
+  //   if (position < ArmPositions.LOWERLIMIT) {position = ArmPositions.LOWERLIMIT;}
+  //   if (position > ArmPositions.UPPERLIMIT) {position = ArmPositions.UPPERLIMIT;}
 
-    m_ArmCtrlType = ControlMode.Position;
-    m_ArmSetpoint = position;
-   }
-   public void SetArmVelocity(double velocity){
-    m_ArmCtrlType = ControlMode.Velocity;
-    m_ArmSetpoint = velocity;
-   }
+  //   m_ArmCtrlType = ControlMode.Position;
+  //   m_ArmSetpoint = position;
+  //  }
+  //  public void SetArmVelocity(double velocity){
+  //   m_ArmCtrlType = ControlMode.Velocity;
+  //   m_ArmSetpoint = velocity;
+  //  }
    public void SetArmSmartMotion(double position){
 
-    //position = SmartDashboard.getNumber("Arm To", position);
+    double chk = SmartDashboard.getNumber("Arm To", position);
+    if (chk  != 0) { position = chk; }
     
     if (position < ArmPositions.LOWERLIMIT) {position = ArmPositions.LOWERLIMIT;}
     if (position > ArmPositions.UPPERLIMIT) {position = ArmPositions.UPPERLIMIT;}
@@ -401,29 +389,45 @@ static final class ExtensionConstants {
 
     return (GetArmPosition() < ArmPositions.UNSAFEPOSITIONMIN || GetArmPosition() > ArmPositions.UNSAFEPOSITIONMAX);
    }
+
+   private boolean ArmInSameZoneAsRequested(){
+      if (m_ArmSetpoint < ArmPositions.UNSAFEPOSITIONMIN 
+      && GetArmPosition() < ArmPositions.UNSAFEPOSITIONMIN){
+            return true;
+      }
+
+      if (m_ArmSetpoint > ArmPositions.UNSAFEPOSITIONMAX 
+      && GetArmPosition() > ArmPositions.UNSAFEPOSITIONMAX){
+        return true;
+      }
+
+      return false;
+   }
+
   //  public double GetArmHoldSetpoint(){
   //   return m_ArmLastPosition;
   //  }
    
   // methods for Extension motor
    public void SetExtensionPosition(double position){
-    //position = SmartDashboard.getNumber("Extension To", position);
+    double chk = SmartDashboard.getNumber("Extension To", position);
+    if (chk  != 0) { position = chk; }
     
     if (position < ExtensionPositions.LOWERLIMIT){ position= ExtensionPositions.LOWERLIMIT; }
     if (position > ExtensionPositions.UPPERLIMIT) { position = ExtensionPositions.UPPERLIMIT; }
     m_ExtensionCtrlType = ControlType.kPosition;
     m_ExtensionSetpoint = position;
    }
-   public void SetExtensionVelocity(double velocity){
-    m_ExtensionCtrlType = ControlType.kVelocity;
-    m_ExtensionSetpoint = velocity;
-   }
-   public void SetExtensionSmartMotion(double position){
-    if (position < ExtensionPositions.LOWERLIMIT){ position= ExtensionPositions.LOWERLIMIT; }
-    if (position > ExtensionPositions.UPPERLIMIT) { position = ExtensionPositions.UPPERLIMIT; }
-    m_ExtensionCtrlType = ControlType.kSmartMotion;
-    m_ExtensionSetpoint = position;
-   }
+  //  public void SetExtensionVelocity(double velocity){
+  //   m_ExtensionCtrlType = ControlType.kVelocity;
+  //   m_ExtensionSetpoint = velocity;
+  //  }
+  //  public void SetExtensionSmartMotion(double position){
+  //   if (position < ExtensionPositions.LOWERLIMIT){ position= ExtensionPositions.LOWERLIMIT; }
+  //   if (position > ExtensionPositions.UPPERLIMIT) { position = ExtensionPositions.UPPERLIMIT; }
+  //   m_ExtensionCtrlType = ControlType.kSmartMotion;
+  //   m_ExtensionSetpoint = position;
+  //  }
    public void SetExtensionPower(double percent){
     m_ExtensionCtrlType = ControlType.kDutyCycle;
     m_ExtensionSetpoint = percent;
@@ -437,18 +441,20 @@ static final class ExtensionConstants {
 
   // methods for Wrist motor   
    public void SetWristPosition(double position){
-    position = SmartDashboard.getNumber("Wrist To", position);
+    double chk = SmartDashboard.getNumber("Wrist To", position);
+    if (chk  != 0) { position = chk; }
+
     m_WristCtrlType = ControlMode.Position;// ControlType.kPosition;
     m_WristSetpoint = position;
    }
-   public void SetWristVelocity(double velocity){
-    m_WristCtrlType = ControlMode.Velocity;// ControlType.kVelocity;
-    m_WristSetpoint = velocity;
-   }
-   public void SetWristSmartMotion(double position){
-    m_WristCtrlType = ControlMode.MotionMagic; //ControlType.kSmartMotion;
-    m_WristSetpoint = position;
-   }
+  //  public void SetWristVelocity(double velocity){
+  //   m_WristCtrlType = ControlMode.Velocity;// ControlType.kVelocity;
+  //   m_WristSetpoint = velocity;
+  //  }
+  //  public void SetWristSmartMotion(double position){
+  //   m_WristCtrlType = ControlMode.MotionMagic; //ControlType.kSmartMotion;
+  //   m_WristSetpoint = position;
+  //  }
    public void SetWristPower(double percent){
     m_WristCtrlType = ControlMode.PercentOutput; //ControlType.kDutyCycle;
     m_WristSetpoint = percent;
