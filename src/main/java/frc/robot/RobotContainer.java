@@ -111,6 +111,13 @@ public class RobotContainer {
       new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleTest.csv")
       );
 
+
+          // Add commands to the autonomous command chooser
+    Command hannahTest = new SequentialCommandGroup(
+      new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "hannah.csv")
+      );
+
     // Command TwoBall_Center = new SequentialCommandGroup(
     //   new SetRobotOrientationOnField(m_Drivetrain, 0),
     //   new ReplayFile(m_Drivetrain, m_Intake, m_shooter, m_limelight, m_DataRecorder, "Center2Ball.csv"),
@@ -128,6 +135,7 @@ public class RobotContainer {
     m_chooser = new SendableChooser<>();
     //m_chooser.addOption("Original", ORIGgetAutonomousCommand() );
     m_chooser.addOption("SimpleTest", SimpleTest);
+    m_chooser.addOption("hannahTest", hannahTest);
     // m_chooser.addOption("2-Ball CENTER", TwoBall_Center);
     // m_chooser.addOption("2-Ball LEFT", TwoBall_Left);
     // m_chooser.addOption("3-Ball RIGHT", ThreeBall_Right);
