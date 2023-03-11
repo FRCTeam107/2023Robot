@@ -47,35 +47,44 @@ public class SkyHook extends SubsystemBase {
   //   static final double LOWERLIMIT = -20; // minimum value for position
   //   }
   public static final class ArmPositions{
-      static final double UPPERLIMIT = 135000; // maximum value for position
-      public static final double BACK = 117000;
-      static final double UNSAFEPOSITIONMAX = 1000; // upper point where not safe to extend elevator, and wrist must fold up
+      static final double UPPERLIMIT = 265000; // maximum value for position
+      public static final double BACK = 61000;
+      static final double UNSAFEPOSITIONMAX = 40000; // upper point where not safe to extend elevator, and wrist must fold up
       public static final double STARTPOSITION = 0;
-      public static final double GROUNDPICKUP = 2000;
       static final double UNSAFEPOSITIONMIN= -30000; // lower point where not safe to extend elevator, and wrist must fold up
       public static final double FORWARD = -45000;
       static final double LOWERLIMIT = -50000; // minimum value for position
+      public static final double SCORELOWFRONT = 0;
+      public static final double SCOREMIDFRONT = 0;
+      public static final double SCORETOPFRONT = 0;
+
       }
   public static final class ExtensionPositions{
-    static final double UPPERLIMIT = 53;  //0; // actual limit (upper limit switch hit)
-    public static final double RETRACTED = 50;//-5; // advertised retracted position
+    static final double UPPERLIMIT = 54;  //0; // actual limit (upper limit switch hit)
+    public static final double RETRACTED = 53;//-5; // advertised retracted position
     //static final double SAFELYRETRACTEDMIN = 55;//-10; // safe enough to pass through robot
     static final double STARTPOSITION = 0;//-85;
-    public static final double GROUNDPICKUP = 13;
     public static final double EXTENDED = -91;//-100;
     static final double LOWERLIMIT = -98; // fully extended position
 
     //encoder position doesn't match setpoint for some reason
-    static final double SAFESETPOINTMIN = 48;
-    static final double SAFEPOSITIONMIN = 63; //setpoint=48
+    static final double SAFESETPOINTMIN = 50;
+    static final double SAFEPOSITIONMIN = 65; //setpoint=50
+
+    public static final double SCORELOWFRONT = 0;
+    public static final double SCOREMIDFRONT = 0;
+    public static final double SCORETOPFRONT = 0;
   }
   public static final class WristPositions{
     static final double UPPERLIMIT = 0; //9000; // actual limit (upper limit switch hit)
     public static final double RETRACTED = 2;//-8600; // advertised retracted position
     static final double STARTPOSITION = 0;//-9000;//-13000;
-    public static final double GROUNDPICKUP = 300;
     public static final double EXTENDED = 17000;//8600;
     static final double LOWERLIMIT = 0;//-9000; // fully extended position
+
+    public static final double SCORELOWFRONT = 0;
+    public static final double SCOREMIDFRONT = 0;
+    public static final double SCORETOPFRONT = 0;
   }
 static final class ExtensionConstants {
     // PID values
@@ -130,8 +139,8 @@ static final class ExtensionConstants {
     SmartDashboard.putNumber("Arm To", var);
     var = SmartDashboard.getNumber("Wrist To", 0.0);
     SmartDashboard.putNumber("Wrist To", var);
-    // var = SmartDashboard.getNumber("Extension To", 0.0);
-    // SmartDashboard.putNumber("Extension To", var);
+    var = SmartDashboard.getNumber("Extension To", 0.0);
+    SmartDashboard.putNumber("Extension To", var);
 
     m_ExtensionCtrlType = ControlType.kDutyCycle;
     m_ArmCtrlType = ControlMode.PercentOutput;
@@ -310,36 +319,16 @@ static final class ExtensionConstants {
       }
     }
 
-    // if arm is in safe zone, allow wrist and extension to move as requested
-    if (ArmInSafeZone()){ // arm is in a safe position, extension and wrist move as requested
+  //  if (ArmInSafeZone()){ // arm is in a safe position, extension and wrist move as requested
       m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
       m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
-    }
-    else {
-      //always allow 0% power to Extension
-      if (m_ExtensionCtrlType == ControlType.kDutyCycle && m_ExtensionSetpoint==0) {
-        m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
-      }
-      else { // do special things to keep extension and wrist from crashing
-        // extension arm may only retract if arm is in unsafe zone
-        if (m_ExtensionSetpoint >= ExtensionPositions.SAFESETPOINTMIN ){
-          SmartDashboard.putNumber("Unsafe Ext Move", m_ExtensionSetpoint);
-          m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
-        }
-        else {
-          SmartDashboard.putNumber("Unsafe Ext Move", -999.0);
-        }
-      }
+    // }
+    // else { // do special things to keep extension and wrist from crashing
+    //   // extension arm may only retract if arm is in unsafe zone 
+    //   if (m_ExtensionSetpoint <= ExtensionPositions.SAFELYRETRACTEDMIN){
+    //     m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
+    //   }
 
-      //always allow 0% power to Wrist
-      if (m_WristCtrlType == ControlMode.PercentOutput && m_WristSetpoint==0) {
-        m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
-      }
-
-    }
-
-      
-      
       //TODO, figure out where it is safest to put wrist 
       // especially important for robot in starting configuration
       // if (GetWristPosition() < WristPositions.STARTPOSITION) {
@@ -348,7 +337,7 @@ static final class ExtensionConstants {
       // else {
       //   m_WristMotor.set(ControlMode.Position, WristPositions.EXTENDED);
       // }
-  
+    //}
     
 
     //SmartDashboard.getNumber("Arm to", m_ArmSetpoint);
@@ -373,7 +362,7 @@ static final class ExtensionConstants {
    }
    public void SetArmSmartMotion(double position){
 
-    //position = SmartDashboard.getNumber("Arm To", position);
+    position = SmartDashboard.getNumber("Arm To", position);
     
     if (position < ArmPositions.LOWERLIMIT) {position = ArmPositions.LOWERLIMIT;}
     if (position > ArmPositions.UPPERLIMIT) {position = ArmPositions.UPPERLIMIT;}
@@ -394,11 +383,6 @@ static final class ExtensionConstants {
 
    public boolean ArmInSafeZone(){
     // check the arm position to determine if it in a "safe range" where the elevator and wrist can move
-    
-    //double position = GetArmPosition();
-    // never safe if moving
-    if (GetArmVelocity() > 0.01) { return false; }
-
     return (GetArmPosition() < ArmPositions.UNSAFEPOSITIONMIN || GetArmPosition() > ArmPositions.UNSAFEPOSITIONMAX);
    }
   //  public double GetArmHoldSetpoint(){

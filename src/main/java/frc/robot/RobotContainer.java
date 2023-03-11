@@ -33,6 +33,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FlightController;
 import frc.robot.commands.SkyHook_MoveWrist;
 import frc.robot.commands.SkyHook_RunIntake;
+import frc.robot.commands.SkyHook_Scoring;
 import frc.robot.commands.SkyHook_MoveArm;
 import frc.robot.commands.SkyHook_MoveElevator;
 import frc.robot.commands.AutoBalance;
@@ -54,6 +55,7 @@ import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SkyHook;
 import frc.robot.subsystems.VisionCamera;
 import frc.robot.subsystems.SkyHook.ArmPositions;
+import frc.robot.subsystems.SkyHook.ExtensionPositions;
 //import frc.robot.commands.ClimberResetToHome;
 //import frc.robot.commands.DismountFirstBar;
 //import frc.robot.commands.ReachForTheBar;
@@ -168,11 +170,9 @@ public class RobotContainer {
     JoystickButton btnAutoBalance = new JoystickButton(m_controllerJoystick, ControllerJoystick.AUTO_BALANCE);    
     btnAutoBalance.whileTrue(new AutoBalance(m_Drivetrain));
 
-    // // T-Rex Buttons
-    // JoystickButton btnTrexArmDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.LOWER_TREX_ARMS);
-    // JoystickButton btnTrexArmUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.RAISE_TREX_ARMS);
-    // JoystickButton btnTrexClose = new JoystickButton(m_controllerJoystick, ControllerJoystick.CLOSE_TREX_ARMS);
-    // JoystickButton btnTrexOpen = new JoystickButton(m_controllerJoystick, ControllerJoystick.OPEN_TREX_ARMS);
+    JoystickButton btnLowFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_LOWFRONT);
+    JoystickButton btnMidFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_MIDFRONT);
+    JoystickButton btnTopFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_TOPFRONT);
 
     //JoystickButton btnCameraToggle = new JoystickButton(m_controllerJoystick, ControllerJoystick.CAMERA_TOGGLE);
     JoystickButton btnResetDrivetrainOrientation =  new JoystickButton(m_controllerJoystick, ControllerJoystick.REORIENT_ROBOT);
@@ -197,7 +197,7 @@ public class RobotContainer {
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
     
-    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.GROUNDPICKUP)); //-200.0));
+    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.EXTENDED)); //-200.0));
     btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
     btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.RETRACTED)); // 100.0));// almost home
     btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
@@ -205,7 +205,7 @@ public class RobotContainer {
     btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.EXTENDED));
     btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.GROUNDPICKUP));
+    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.RETRACTED));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
     //btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK, false));
@@ -216,10 +216,15 @@ public class RobotContainer {
     btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
 
     //btnSkyhookBack.whileTrue(new SkyHook_MoveArm(m_skyHook, 2.3, true));
-    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.GROUNDPICKUP, false));
+    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.BACK, false));
     btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
+    btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.SCORELOWFRONT, ExtensionPositions.SCORELOWFRONT, WristPositions.SCORELOWFRONT, 0.0));
+    btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.SCOREMIDFRONT, ExtensionPositions.SCOREMIDFRONT, WristPositions.SCOREMIDFRONT, 0.0));
+    btnTopFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.SCORETOPFRONT, ExtensionPositions.SCORETOPFRONT, WristPositions.SCORETOPFRONT, 0.0));
+
+
      
      //btnActivateLimelight.whenReleased(m_limelight::DisableVisionProcessing);
     }
