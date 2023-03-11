@@ -219,9 +219,9 @@ public class RobotContainer {
     btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
-    btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook, null, null, null, null));
-    btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook, null, null, null, null));
-    btnTopFront.onTrue(new SkyHook_Scoring(m_skyHook, null, null, null, null));
+    btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
+    btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
+    btnTopFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
 
 
      
