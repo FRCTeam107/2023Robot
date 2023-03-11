@@ -57,8 +57,8 @@ public class SkyHook extends SubsystemBase {
       static final double LOWERLIMIT = -50000; // minimum value for position
       }
   public static final class ExtensionPositions{
-    static final double UPPERLIMIT = 53;  //0; // actual limit (upper limit switch hit)
-    public static final double RETRACTED = 50;//-5; // advertised retracted position
+    static final double UPPERLIMIT = 51;  //0; // actual limit (upper limit switch hit)
+    public static final double RETRACTED = 49;//-5; // advertised retracted position
     //static final double SAFELYRETRACTEDMIN = 55;//-10; // safe enough to pass through robot
     static final double STARTPOSITION = 0;//-85;
     public static final double GROUNDPICKUP = 13;
@@ -66,8 +66,8 @@ public class SkyHook extends SubsystemBase {
     static final double LOWERLIMIT = -98; // fully extended position
 
     //encoder position doesn't match setpoint for some reason
-    static final double SAFESETPOINTMIN = 48;
-    static final double SAFEPOSITIONMIN = 63; //setpoint=48
+    static final double SAFESETPOINTMIN = 47;
+    static final double SAFEPOSITIONMIN = 61; //setpoint=48
   }
   public static final class WristPositions{
     static final double UPPERLIMIT = 0; //9000; // actual limit (upper limit switch hit)
