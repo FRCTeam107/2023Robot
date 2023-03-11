@@ -46,7 +46,7 @@ public class SkyHook_MoveArm extends CommandBase {
     else if (m_incrementMove){
       // increment or decrement position, but not checking limits here
       // allow the SkyHook subsystem to manage the limit checks
-        double newPosition  = m_skyHook.GetArmHoldSetpoint() + m_setPoint;
+        double newPosition  = 0;//m_skyHook.GetArmHoldSetpoint() + m_setPoint;
         m_skyHook.SetArmPosition(newPosition);
         //m_skyHook.SetArmPower(m_setPoint);
     }

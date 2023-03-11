@@ -111,6 +111,13 @@ public class RobotContainer {
       new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleTest.csv")
       );
 
+
+          // Add commands to the autonomous command chooser
+    Command hannahTest = new SequentialCommandGroup(
+      new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "hannah.csv")
+      );
+
     // Command TwoBall_Center = new SequentialCommandGroup(
     //   new SetRobotOrientationOnField(m_Drivetrain, 0),
     //   new ReplayFile(m_Drivetrain, m_Intake, m_shooter, m_limelight, m_DataRecorder, "Center2Ball.csv"),
@@ -128,6 +135,7 @@ public class RobotContainer {
     m_chooser = new SendableChooser<>();
     //m_chooser.addOption("Original", ORIGgetAutonomousCommand() );
     m_chooser.addOption("SimpleTest", SimpleTest);
+    m_chooser.addOption("hannahTest", hannahTest);
     // m_chooser.addOption("2-Ball CENTER", TwoBall_Center);
     // m_chooser.addOption("2-Ball LEFT", TwoBall_Left);
     // m_chooser.addOption("3-Ball RIGHT", ThreeBall_Right);
@@ -189,7 +197,7 @@ public class RobotContainer {
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
     
-    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.EXTENDED)); //-200.0));
+    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.GROUNDPICKUP)); //-200.0));
     btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
     btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.RETRACTED)); // 100.0));// almost home
     btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
@@ -197,7 +205,7 @@ public class RobotContainer {
     btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.EXTENDED));
     btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.RETRACTED));
+    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.GROUNDPICKUP));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
     //btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK, false));
@@ -208,7 +216,7 @@ public class RobotContainer {
     btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
 
     //btnSkyhookBack.whileTrue(new SkyHook_MoveArm(m_skyHook, 2.3, true));
-    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.BACK, false));
+    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.GROUNDPICKUP, false));
     btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
