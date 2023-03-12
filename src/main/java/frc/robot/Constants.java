@@ -71,11 +71,11 @@ public final class Constants {
                 public static final int SKYHOOK_RETRACT = 1;
                 public static final int AUTO_BALANCE = 16;
 
-                public static final int SCORE_LOWFRONT = 10;
-                public static final int SCORE_MIDFRONT = 11;
-                public static final int SCORE_TOPFRONT = 12;
-
-
+                public static final int SCORE_LOWFRONT = 11;
+                public static final int SCORE_MIDFRONT = 12;
+                public static final int SCORE_TOPFRONT = 13;
+                public static final int GROUNDPICKUP_FRONT = 14;
+                public static final int FEEDERPICKUP_FRONT = 14;
         }
 
         //MOTORS

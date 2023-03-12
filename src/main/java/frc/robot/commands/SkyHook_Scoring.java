@@ -21,14 +21,14 @@ public class SkyHook_Scoring extends CommandBase {
   private final double m_armSetPoint;
   private final double m_extensionSetPoint;
   private final double m_wristSetPoint;
-  private final double m_intakeSpeed;
+  //private final double m_intakeSpeed;
 
-  public SkyHook_Scoring(SkyHook _skyHook, Double _armPosition, Double _extensionPosition, Double _wristPosition, Double _intakeSpeed) {
+  public SkyHook_Scoring(SkyHook _skyHook, Double _armPosition, Double _extensionPosition, Double _wristPosition) {
     m_skyHook = _skyHook;
     m_armSetPoint = _armPosition;
     m_extensionSetPoint = _extensionPosition;
     m_wristSetPoint = _wristPosition;
-    m_intakeSpeed = _intakeSpeed;
+    //m_intakeSpeed = _intakeSpeed;
 
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -44,10 +44,11 @@ public class SkyHook_Scoring extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putNumber("SkyHookScoring.Arm", m_armSetPoint);
     m_skyHook.SetArmSmartMotion(m_armSetPoint);
     m_skyHook.SetExtensionPosition(m_extensionSetPoint);
     m_skyHook.SetWristPosition(m_wristSetPoint);
-    m_skyHook.SetIntakePower(m_intakeSpeed);
+    //m_skyHook.SetIntakePower(m_intakeSpeed);
   }
 
   // Called once the command ends or is interrupted.
