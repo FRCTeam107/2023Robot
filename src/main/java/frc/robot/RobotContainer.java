@@ -199,7 +199,7 @@ public class RobotContainer {
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
     
-    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.GROUNDPICKU_FRONT)); //-200.0));
+    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.GROUNDPICKUP_FRONT)); //-200.0));
     btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
     btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.RETRACTED)); // 100.0));// almost home
     btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
@@ -224,7 +224,7 @@ public class RobotContainer {
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
 
     btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT
-        , ExtensionPositions.GROUNDPICKU_FRONT, WristPositions.GROUNDPICKUP_FRONT));
+        , ExtensionPositions.GROUNDPICKUP_FRONT, WristPositions.GROUNDPICKUP_FRONT));
 
     btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER2SCORE_FRONT
       , ExtensionPositions.TIER2SCORE_FRONT, WristPositions.TIER2SCORE_FRONT));
@@ -233,7 +233,7 @@ public class RobotContainer {
       , ExtensionPositions.TIER3SCORE_FRONT, WristPositions.TIER2SCORE_FRONT));
 
     btnGroundPickupFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT
-      , ExtensionPositions.GROUNDPICKU_FRONT, WristPositions.GROUNDPICKUP_FRONT));
+      , ExtensionPositions.GROUNDPICKUP_FRONT, WristPositions.GROUNDPICKUP_FRONT));
 
     btnFeederPickupFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.FEEDERPICKUP_FRONT
       , ExtensionPositions.FEEDERPICKUP_FRONT, WristPositions.FEEDERPICKUP_FRONT));

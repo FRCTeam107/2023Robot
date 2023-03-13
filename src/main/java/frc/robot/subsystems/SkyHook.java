@@ -68,7 +68,7 @@ public class SkyHook extends SubsystemBase {
     static final double STARTPOSITION = 0;//-85;
     public static final double EXTENDED = -100;//-100;
     static final double EXTENDLIMIT = -115; // fully extended position
-    public static final double GROUNDPICKU_FRONT = 13;
+    public static final double GROUNDPICKUP_FRONT = 13;
     public static final double FEEDERPICKUP_FRONT = RETRACTED;
     public static final double GROUNDSCORE_FRONT = 5;
     public static final double TIER2SCORE_FRONT = -10;
