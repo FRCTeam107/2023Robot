@@ -19,12 +19,10 @@ public class SkyHook_MoveArm extends CommandBase {
    */
   private final SkyHook m_skyHook;
   private final double m_setPoint;
-  private boolean m_incrementMove;
 
-  public SkyHook_MoveArm(SkyHook _skyHook, Double _position, boolean _incrementalMovement) {
+  public SkyHook_MoveArm(SkyHook _skyHook, Double _position) {
     m_skyHook = _skyHook;
     m_setPoint = _position;
-    m_incrementMove = _incrementalMovement;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_skyHook);
@@ -42,13 +40,6 @@ public class SkyHook_MoveArm extends CommandBase {
     if (m_setPoint == 0){
      m_skyHook.SetArmPower(m_setPoint);
      //m_skyHook.SetArmVelocity(m_setPoint);
-    }
-    else if (m_incrementMove){
-      // increment or decrement position, but not checking limits here
-      // allow the SkyHook subsystem to manage the limit checks
-        double newPosition  = 0;//m_skyHook.GetArmHoldSetpoint() + m_setPoint;
-        m_skyHook.SetArmPosition(newPosition);
-        //m_skyHook.SetArmPower(m_setPoint);
     }
     else {
        m_skyHook.SetArmSmartMotion(m_setPoint);

@@ -55,6 +55,7 @@ import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SkyHook;
 import frc.robot.subsystems.VisionCamera;
 import frc.robot.subsystems.SkyHook.ArmPositions;
+import frc.robot.subsystems.SkyHook.ExtensionPositions;
 //import frc.robot.commands.ClimberResetToHome;
 //import frc.robot.commands.DismountFirstBar;
 //import frc.robot.commands.ReachForTheBar;
@@ -172,6 +173,8 @@ public class RobotContainer {
     JoystickButton btnLowFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_LOWFRONT);
     JoystickButton btnMidFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_MIDFRONT);
     JoystickButton btnTopFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_TOPFRONT);
+    JoystickButton btnGroundPickupFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.GROUNDPICKUP_FRONT);
+    JoystickButton btnFeederPickupFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.FEEDERPICKUP_FRONT);
 
     //JoystickButton btnCameraToggle = new JoystickButton(m_controllerJoystick, ControllerJoystick.CAMERA_TOGGLE);
     JoystickButton btnResetDrivetrainOrientation =  new JoystickButton(m_controllerJoystick, ControllerJoystick.REORIENT_ROBOT);
@@ -196,36 +199,45 @@ public class RobotContainer {
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
     
-    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.GROUNDPICKUP)); //-200.0));
+    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.GROUNDPICKUP_FRONT)); //-200.0));
     btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
     btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.RETRACTED)); // 100.0));// almost home
     btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
 
-    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.EXTENDED));
+    btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.BACKFOLDUP));
     btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.GROUNDPICKUP));
+    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.GROUNDPICKUP_FRONT));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
     //btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK, false));
-    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, 1.0, false));
+    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, 1.0));
     //btnSkyhookForward.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.FORWARD, false));
     //btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, -2.1, true));
-    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.FORWARD, false));
-    btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
+    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.FULLFORWARD));
+    btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0));
 
     //btnSkyhookBack.whileTrue(new SkyHook_MoveArm(m_skyHook, 2.3, true));
-    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.GROUNDPICKUP, false));
-    btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0, false));
+    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT));
+    btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
-    btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
-    btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
-    btnTopFront.onTrue(new SkyHook_Scoring(m_skyHook,null, null, null, null));
 
+    btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT
+        , ExtensionPositions.GROUNDPICKUP_FRONT, WristPositions.GROUNDPICKUP_FRONT));
 
-     
-     //btnActivateLimelight.whenReleased(m_limelight::DisableVisionProcessing);
+    btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER2SCORE_FRONT
+      , ExtensionPositions.TIER2SCORE_FRONT, WristPositions.TIER2SCORE_FRONT));
+
+    btnTopFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER3SCORE_FRONT
+      , ExtensionPositions.TIER3SCORE_FRONT, WristPositions.TIER2SCORE_FRONT));
+
+    btnGroundPickupFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT
+      , ExtensionPositions.GROUNDPICKUP_FRONT, WristPositions.GROUNDPICKUP_FRONT));
+
+    btnFeederPickupFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.FEEDERPICKUP_FRONT
+      , ExtensionPositions.FEEDERPICKUP_FRONT, WristPositions.FEEDERPICKUP_FRONT));
+      //btnActivateLimelight.whenReleased(m_limelight::DisableVisionProcessing);
     }
 
       /**

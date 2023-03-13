@@ -42,16 +42,16 @@ public class SwerveDrivetrain extends SubsystemBase {
   // reducing the angle will adjust in counter-clockwise direction
   
   //COMPETITION ROBOT SETTINGS
-  // public static double frontLeftOffset = 80;//89.9;
-  // public static double frontRightOffset = 159;//281.9;
-  // public static double backLeftOffset = 110;//116.9;
-  // public static double backRightOffset = 172;//304.8;
+  public static double frontLeftOffset = 80;//89.9;
+  public static double frontRightOffset = 159;//281.9;
+  public static double backLeftOffset = 110;//116.9;
+  public static double backRightOffset = 172;//304.8;
 
   // PRACTICE ROBOT SETTINGS
-  public static double frontLeftOffset = 115;//89.9;
-  public static double frontRightOffset = 21;//281.9;
-  public static double backLeftOffset = 130;//116.9;
-  public static double backRightOffset = 190;//304.8;
+  // public static double frontLeftOffset = 115;//89.9;
+  // public static double frontRightOffset = 21;//281.9;
+  // public static double backLeftOffset = 130;//116.9;
+  // public static double backRightOffset = 190;//304.8;
 
 
   public static AHRS m_gyro = new AHRS(SPI.Port.kMXP);
