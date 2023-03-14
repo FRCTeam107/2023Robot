@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
@@ -42,11 +43,15 @@ public class SkyHook_MoveWrist extends CommandBase {
     if (m_position == 0){
       m_Wrist.SetWristPower(0.0);
     }
-    else {
-      //double val = SmartDashboard.getNumber("WristSetpoint",0.0);
-      m_Wrist.SetWristPosition(m_position);
+    else {    
+      double chk = SmartDashboard.getNumber("Wrist To", 0);
+      if (chk  != 0) { 
+        m_Wrist.SetWristPosition(chk); 
+      }
+      else {
+        m_Wrist.SetWristPosition(m_position);
+      }
     }
-
   }
 
   // Called once the command ends or is interrupted.

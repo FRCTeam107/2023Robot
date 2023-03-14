@@ -75,7 +75,7 @@ public final class Constants {
                 public static final int SCORE_MIDFRONT = 12;
                 public static final int SCORE_TOPFRONT = 13;
                 public static final int GROUNDPICKUP_FRONT = 14;
-                public static final int FEEDERPICKUP_FRONT = 14;
+                public static final int FEEDERPICKUP_FRONT = 15;
         }
 
         //MOTORS

@@ -39,12 +39,16 @@ public class SkyHook_MoveArm extends CommandBase {
   public void execute() {
     if (m_setPoint == 0){
      m_skyHook.SetArmPower(m_setPoint);
-     //m_skyHook.SetArmVelocity(m_setPoint);
     }
     else {
-       m_skyHook.SetArmSmartMotion(m_setPoint);
+      double chk = SmartDashboard.getNumber("Arm To", 0);
+      if (chk  != 0) { 
+        m_skyHook.SetArmSmartMotion(chk); 
+      }
+      else {
+        m_skyHook.SetArmSmartMotion(m_setPoint);
+      }
     }
-
   }
 
   // Called once the command ends or is interrupted.

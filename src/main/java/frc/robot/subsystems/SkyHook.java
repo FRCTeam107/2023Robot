@@ -53,7 +53,7 @@ public class SkyHook extends SubsystemBase {
       public static final double STARTPOSITION = 0;
       static final double UNSAFEPOSITIONMIN= -30000; // lower point where not safe to extend elevator, and wrist must fold up
       public static final double FULLBACK = -45000;
-      static final double MAXBACKLIMIT = -50000; // minimum value for position
+      static final double MAXBACKLIMIT = -250000; // minimum value for position
 
       public static final double GROUNDPICKUP_FRONT = 2000;
       public static final double FEEDERPICKUP_FRONT = 60000;
@@ -138,13 +138,16 @@ static final class ExtensionConstants {
    */
   public SkyHook() {
     super();
-    // double var;
-    // var = SmartDashboard.getNumber("Arm To", 0.0);
-    // SmartDashboard.putNumber("Arm To", var);
-    // var = SmartDashboard.getNumber("Wrist To", 0.0);
-    // SmartDashboard.putNumber("Wrist To", var);
-    // var = SmartDashboard.getNumber("Extension To", 0.0);
-    // SmartDashboard.putNumber("Extension To", var);
+
+    // these smart dashboard values allow manual adjustments to setpoints
+    // when using the related SkyHook_MoveXXXXX commands 
+    double var;
+    var = SmartDashboard.getNumber("Arm To", 0.0);
+    SmartDashboard.putNumber("Arm To", var);
+    var = SmartDashboard.getNumber("Wrist To", 0.0);
+    SmartDashboard.putNumber("Wrist To", var);
+    var = SmartDashboard.getNumber("Extension To", 0.0);
+    SmartDashboard.putNumber("Extension To", var);
 
     m_ExtensionCtrlType = ControlType.kDutyCycle;
     m_ArmCtrlType = ControlMode.PercentOutput;
@@ -354,10 +357,6 @@ static final class ExtensionConstants {
   //   m_ArmSetpoint = velocity;
   //  }
    public void SetArmSmartMotion(double position){
-
-    // double chk = SmartDashboard.getNumber("Arm To", position);
-    // if (chk  != 0) { position = chk; }
-    
     if (position < ArmPositions.MAXBACKLIMIT) {position = ArmPositions.MAXBACKLIMIT;}
     if (position > ArmPositions.MAXFORWARDLIMIT) {position = ArmPositions.MAXFORWARDLIMIT;}
 
@@ -414,10 +413,7 @@ static final class ExtensionConstants {
   //  }
    
   // methods for Extension motor
-   public void SetExtensionPosition(double position){
-    // double chk = SmartDashboard.getNumber("Extension To", position);
-    // if (chk  != 0) { position = chk; }
-    
+   public void SetExtensionPosition(double position){   
     if (position < ExtensionPositions.EXTENDLIMIT){ position= ExtensionPositions.EXTENDLIMIT; }
     if (position > ExtensionPositions.RETRACTLIMIT) { position = ExtensionPositions.RETRACTLIMIT; }
     m_ExtensionCtrlType = ControlType.kPosition;
@@ -446,8 +442,6 @@ static final class ExtensionConstants {
 
   // methods for Wrist motor   
    public void SetWristPosition(double position){
-    // double chk = SmartDashboard.getNumber("Wrist To", position);
-    // if (chk  != 0) { position = chk; }
 
     m_WristCtrlType = ControlMode.Position;// ControlType.kPosition;
     m_WristSetpoint = position;
