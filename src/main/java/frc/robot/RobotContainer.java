@@ -110,16 +110,15 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Add commands to the autonomous command chooser
-    Command SimpleTest = new SequentialCommandGroup(
+    Command FeederTest = new SequentialCommandGroup(
       new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleTest.csv")
+      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Feeder.csv")
       );
 
-
           // Add commands to the autonomous command chooser
-    Command hannahTest = new SequentialCommandGroup(
+    Command BackScore = new SequentialCommandGroup(
       new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "hannah.csv")
+      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "scoreback.csv")
       );
 
 
@@ -148,6 +147,8 @@ public class RobotContainer {
     m_chooser.addOption("SimpleTest", SimpleTest);
     m_chooser.addOption("hannahTest", hannahTest);
     m_chooser.addOption("mattTest", mattTest);
+    m_chooser.addOption("Feeder", FeederTest);
+    m_chooser.addOption("ScoreBack", BackScore);
     // m_chooser.addOption("2-Ball CENTER", TwoBall_Center);
     // m_chooser.addOption("2-Ball LEFT", TwoBall_Left);
     // m_chooser.addOption("3-Ball RIGHT", ThreeBall_Right);
