@@ -37,8 +37,10 @@ public class SkyHook_MoveElevator extends CommandBase {
   public void execute() {
     if (m_position == 0){
       m_skyHook.SetExtensionPower(m_position);
+      m_skyHook.setManualControlMode(false);
     }
     else {
+      m_skyHook.setManualControlMode(true);
       double chk = SmartDashboard.getNumber("Extension To", 0);
       if (chk  != 0) { 
         m_skyHook.SetExtensionPosition(chk); 

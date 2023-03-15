@@ -44,7 +44,8 @@ public class SkyHook_Scoring extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("SkyHookScoring.Arm", m_armSetPoint);
+    m_skyHook.setManualControlMode(false);
+    
     m_skyHook.SetArmSmartMotion(m_armSetPoint);
     m_skyHook.SetExtensionPosition(m_extensionSetPoint);
     m_skyHook.SetWristPosition(m_wristSetPoint);

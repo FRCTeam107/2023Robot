@@ -31,8 +31,8 @@ public class SkyHook extends SubsystemBase {
   private final CANSparkMax m_ExtensionMotor;
   private final WPI_TalonFX m_WristMotor, m_IntakeMotor, m_ArmMotor, m_ArmMotor2;
   private ControlMode m_WristCtrlType, m_IntakeCtrlType, m_ArmCtrlType;
+  private boolean inManualControlMode = false;
 
-  
   private final SparkMaxPIDController m_ExtensionPID;
   private CANSparkMax.ControlType m_ExtensionCtrlType;
 
@@ -52,14 +52,18 @@ public class SkyHook extends SubsystemBase {
       static final double UNSAFEPOSITIONMAX = 1000; // upper point where not safe to extend elevator, and wrist must fold up
       public static final double STARTPOSITION = 0;
       static final double UNSAFEPOSITIONMIN= -30000; // lower point where not safe to extend elevator, and wrist must fold up
-      public static final double FULLBACK = -45000;
-      static final double MAXBACKLIMIT = -250000; // minimum value for position
+      public static final double FULLBACK = -150000;
+      static final double MAXBACKLIMIT = -170000; // minimum value for position
 
       public static final double GROUNDPICKUP_FRONT = 2000;
+      public static final double DRIVING = 2000;
       public static final double FEEDERPICKUP_FRONT = 60000;
       public static final double GROUNDSCORE_FRONT = 2000;
       public static final double TIER2SCORE_FRONT = 115000;
       public static final double TIER3SCORE_FRONT = 135000;
+
+      public static final double TIER2SCORE_BACK = -135000;
+      public static final double TIER3SCORE_BACK = -150000;
       }
   public static final class ExtensionPositions{
     static final double RETRACTLIMIT = 51;  //0; // actual limit (upper limit switch hit)
@@ -69,10 +73,14 @@ public class SkyHook extends SubsystemBase {
     public static final double EXTENDED = -100;//-100;
     static final double EXTENDLIMIT = -115; // fully extended position
     public static final double GROUNDPICKUP_FRONT = 13;
+    public static final double DRIVING = RETRACTED;
     public static final double FEEDERPICKUP_FRONT = RETRACTED;
     public static final double GROUNDSCORE_FRONT = 5;
     public static final double TIER2SCORE_FRONT = -10;
     public static final double TIER3SCORE_FRONT = -115;
+
+    public static final double TIER2SCORE_BACK = 20;
+    public static final double TIER3SCORE_BACK = -115;
 
     //encoder position doesn't match setpoint for some reason
     static final double SAFESETPOINTMIN = 47;
@@ -80,15 +88,19 @@ public class SkyHook extends SubsystemBase {
   }
   public static final class WristPositions{
     static final double MINLIMIT = -1500; //9000; // actual limit (upper limit switch hit)
-    public static final double FRONTFOLDUP = 2;//-8600; // advertised retracted position
+    public static final double FRONTFOLDUP = -1900;//-8600; // advertised retracted position
     static final double STARTPOSITION = 0;//-9000;//-13000;
-    public static final double BACKFOLDUP = 16000;
+    public static final double BACKFOLDUP = 17000;
     static final double MAXLIMIT = 16500;//-9000; // fully extended position
     public static final double GROUNDPICKUP_FRONT = 300;
+    public static final double DRIVING = 10;
     public static final double FEEDERPICKUP_FRONT = 1000;
     public static final double GROUNDSCORE_FRONT = -1000;
     public static final double TIER2SCORE_FRONT = 10500;
     public static final double TIER3SCORE_FRONT = 11000;
+
+    public static final double TIER2SCORE_BACK = 8000;
+    public static final double TIER3SCORE_BACK = 8000;
   }
 static final class ExtensionConstants {
     // PID values
@@ -291,6 +303,7 @@ static final class ExtensionConstants {
     
     // intake motor is harmless, do whatever the driver wants
     m_IntakeMotor.set(m_IntakeCtrlType, m_IntakeSetpoint);
+
     //always allow 0% power to Extension
     if (m_ExtensionCtrlType == ControlType.kDutyCycle && m_ExtensionSetpoint==0) {
       m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
@@ -303,7 +316,19 @@ static final class ExtensionConstants {
     
     // if arm must move, we need wrist bent and extention retracted
     String msg = "";
-    if (ArmWantsToMove()){
+    if (inManualControlMode){
+      // manual mode, do almost whatever the driver wants, as long as it's one at a time
+      if (m_ArmSetpoint==0 && m_WristSetpoint==0){
+        m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
+      }
+      if (m_ArmSetpoint==0 && m_ExtensionSetpoint == 0) {
+        m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
+      }
+      if (m_ExtensionSetpoint == 0 && m_WristSetpoint == 0) {
+        m_ArmMotor.set(m_ArmCtrlType, m_ArmSetpoint);
+      }
+    }
+    else if (ArmWantsToMove()){
       msg="Arm Must Move";
       m_ExtensionPID.setReference(ExtensionPositions.RETRACTED, ControlType.kPosition);
       // if extension is safely retracted, move wrist
@@ -314,7 +339,7 @@ static final class ExtensionConstants {
         //if (GetArmPosition())
         m_WristMotor.set(ControlMode.Position, WristPositions.FRONTFOLDUP);
         // if wrist near desired position, then move arm!
-        if (Math.abs(GetWristPosition() - targetPosition) < 2000){
+        if (Math.abs(GetWristPosition() - targetPosition) < 2500){
           msg += ", bent OK . moving arm!";
           m_ArmMotor.set(m_ArmCtrlType, m_ArmSetpoint);
         }
@@ -325,7 +350,7 @@ static final class ExtensionConstants {
 
     else { // arm is where we want it, extend and bend wrist as requestd
       msg = "Arm is set, Let 'er rip, tater chip";
-      m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
+      //m_ExtensionPID.setReference(m_ExtensionSetpoint, m_ExtensionCtrlType);
       // allow extension to retract even if arm not in safe zone
       if (ArmInSafeZone() 
       || (m_ExtensionSetpoint >= ExtensionPositions.SAFESETPOINTMIN )){
@@ -341,7 +366,17 @@ static final class ExtensionConstants {
     }
    
     SmartDashboard.putString("ArmSafe", msg);
+  }
 
+  public void setManualControlMode(boolean _ManualControlMode){
+    m_ArmCtrlType = ControlMode.PercentOutput;
+    m_ArmSetpoint = 0;
+    m_ExtensionCtrlType = ControlType.kDutyCycle;
+    m_ExtensionSetpoint = 0;
+    m_WristCtrlType = ControlMode.PercentOutput;
+    m_WristSetpoint = 0;
+    
+    inManualControlMode = _ManualControlMode;
   }
 
   // methods for Arm motor
@@ -442,6 +477,8 @@ static final class ExtensionConstants {
 
   // methods for Wrist motor   
    public void SetWristPosition(double position){
+    if (position < WristPositions.MINLIMIT){ position= WristPositions.MINLIMIT; }
+    if (position > WristPositions.MAXLIMIT) { position = WristPositions.MAXLIMIT; }
 
     m_WristCtrlType = ControlMode.Position;// ControlType.kPosition;
     m_WristSetpoint = position;

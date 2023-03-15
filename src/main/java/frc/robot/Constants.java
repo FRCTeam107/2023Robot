@@ -34,6 +34,7 @@ public final class Constants {
                 public static final int DRIVE_Z_AXIS = 0;
                 
                 public static final int ACTIVATE_LIMELIGHT = 1;
+                static final int REORIENT_ROBOT = 5;
                 //public static final int CLIMBER_MANUAL = 4;
                 public static final int AIM_BY_LIMELIGHT = 13;
                 // // public static final int JOYSTICK_FIVE = 5;
@@ -55,27 +56,28 @@ public final class Constants {
                 //public static final int SHOOT = 1;
                 public static final int EJECT_PICKUP = 1;
                 static final int RUN_PICKUP = 2;
-                static final int EXTEND_ARM = 3;
-                static final int RETRACT_ARM = 4;
+                static final int EXTEND_ELEVATOR = 3;
+                static final int RETRACT_ELEVATOR = 4;
 
-                static final int REORIENT_ROBOT = 5;
-
-                static final int SKYHOOK_REACHBACK = 6;
-                static final int SKYHOOK_REACHFORWARD = 9;
-                static final int SKYHOOK_GOHOME = 10;
-                
                 public static final int WRIST_UP = 7;
                 public static final int WRIST_DOWN = 8;
 
                 public static final int SKYHOOK_EXTEND = 4;
                 public static final int SKYHOOK_RETRACT = 1;
-                public static final int AUTO_BALANCE = 16;
+
+                static final int SKYHOOK_REACHBACK = 6;
+                static final int SKYHOOK_REACHFORWARD = 9;
+                static final int SKYHOOK_DRIVING = 10;
+                
+                public static final int SCORE_BACK = 5;
 
                 public static final int SCORE_LOWFRONT = 11;
                 public static final int SCORE_MIDFRONT = 12;
                 public static final int SCORE_TOPFRONT = 13;
                 public static final int GROUNDPICKUP_FRONT = 14;
                 public static final int FEEDERPICKUP_FRONT = 15;
+
+                public static final int AUTO_BALANCE = 16;
         }
 
         //MOTORS

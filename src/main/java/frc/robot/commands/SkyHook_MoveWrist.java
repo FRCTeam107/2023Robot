@@ -42,8 +42,10 @@ public class SkyHook_MoveWrist extends CommandBase {
     //m_SkyHook.SetWristPower(m_position);
     if (m_position == 0){
       m_Wrist.SetWristPower(0.0);
+      m_Wrist.setManualControlMode(false);
     }
-    else {    
+    else {
+      m_Wrist.setManualControlMode(true);
       double chk = SmartDashboard.getNumber("Wrist To", 0);
       if (chk  != 0) { 
         m_Wrist.SetWristPosition(chk); 
