@@ -46,6 +46,7 @@ import frc.robot.commands.SetRobotOrientationOnField;
 import frc.robot.subsystems.DataRecorder;
 //import frc.robot.subsystems.Intake;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.XFactor;
 //import frc.robot.commands.TransferToNextBar;
 //import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.LEDLights;
@@ -121,6 +122,13 @@ public class RobotContainer {
       new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "hannah.csv")
       );
 
+
+      Command mattTest = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "mattTest.csv"),
+        new XFactor(m_Drivetrain)
+        );
+
     // Command TwoBall_Center = new SequentialCommandGroup(
     //   new SetRobotOrientationOnField(m_Drivetrain, 0),
     //   new ReplayFile(m_Drivetrain, m_Intake, m_shooter, m_limelight, m_DataRecorder, "Center2Ball.csv"),
@@ -139,6 +147,7 @@ public class RobotContainer {
     //m_chooser.addOption("Original", ORIGgetAutonomousCommand() );
     m_chooser.addOption("SimpleTest", SimpleTest);
     m_chooser.addOption("hannahTest", hannahTest);
+    m_chooser.addOption("mattTest", mattTest);
     // m_chooser.addOption("2-Ball CENTER", TwoBall_Center);
     // m_chooser.addOption("2-Ball LEFT", TwoBall_Left);
     // m_chooser.addOption("3-Ball RIGHT", ThreeBall_Right);
@@ -170,8 +179,9 @@ public class RobotContainer {
     JoystickButton btnSkyhookBack = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_REACHBACK);
     JoystickButton btnSkyhookForward = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_REACHFORWARD);    
 
-    JoystickButton btnAutoBalance = new JoystickButton(m_controllerJoystick, ControllerJoystick.AUTO_BALANCE);    
-    btnAutoBalance.whileTrue(new AutoBalance(m_Drivetrain));
+    JoystickButton btnXFactor = new JoystickButton(m_controllerJoystick, ControllerJoystick.AUTO_BALANCE);
+
+    btnXFactor.whileTrue(new XFactor(m_Drivetrain));
     JoystickButton btnSkyhookDriving = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_DRIVING);    
     
     JoystickButton btnLowFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_LOWFRONT);
