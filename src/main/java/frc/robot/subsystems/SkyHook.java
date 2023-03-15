@@ -52,7 +52,7 @@ public class SkyHook extends SubsystemBase {
       static final double UNSAFEPOSITIONMAX = 1000; // upper point where not safe to extend elevator, and wrist must fold up
       public static final double STARTPOSITION = 0;
       static final double UNSAFEPOSITIONMIN= -30000; // lower point where not safe to extend elevator, and wrist must fold up
-      public static final double FULLBACK = -150000;
+      public static final double FULLBACK = -165000;
       static final double MAXBACKLIMIT = -170000; // minimum value for position
 
       public static final double GROUNDPICKUP_FRONT = 2000;
@@ -63,7 +63,7 @@ public class SkyHook extends SubsystemBase {
       public static final double TIER3SCORE_FRONT = 135000;
 
       public static final double TIER2SCORE_BACK = -135000;
-      public static final double TIER3SCORE_BACK = -150000;
+      public static final double TIER3SCORE_BACK = -155000;
       }
   public static final class ExtensionPositions{
     static final double RETRACTLIMIT = 51;  //0; // actual limit (upper limit switch hit)
@@ -80,7 +80,7 @@ public class SkyHook extends SubsystemBase {
     public static final double TIER3SCORE_FRONT = -115;
 
     public static final double TIER2SCORE_BACK = 20;
-    public static final double TIER3SCORE_BACK = -115;
+    public static final double TIER3SCORE_BACK = -110;
 
     //encoder position doesn't match setpoint for some reason
     static final double SAFESETPOINTMIN = 47;

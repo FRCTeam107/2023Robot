@@ -107,13 +107,13 @@ public class ReplayFile extends CommandBase {
     m_drivetrain.drive(X_Drive, Y_Strafe, Z_Rotate, true);
 
     // move stuff on the SkyHook
-    // if (replayRow[datapoint.ArmPosition] != 0){
-    //   m_SkyHook.SetArmPosition(replayRow[datapoint.ArmPosition]);
-    // }
+    if (replayRow[datapoint.ArmPosition] != 0){
+      m_SkyHook.SetArmSmartMotion(replayRow[datapoint.ArmPosition]);
+    }
 
-    // if (replayRow[datapoint.ExtensionPosition] != 0){
-    //   m_SkyHook.SetExtensionPosition(replayRow[datapoint.ExtensionPosition]);
-    // }
+    if (replayRow[datapoint.ExtensionPosition] != 0){
+      m_SkyHook.SetExtensionPosition(replayRow[datapoint.ExtensionPosition]);
+    }
 
     if (replayRow[datapoint.WristPosition] != 0){
       m_SkyHook.SetWristPosition(replayRow[datapoint.WristPosition]);
