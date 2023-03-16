@@ -109,12 +109,17 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Add commands to the autonomous command chooser
-    Command FeederTest = new SequentialCommandGroup(
+    Command TwoCubeOverCable = new SequentialCommandGroup(
       new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Feeder.csv")
+      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "2cubeOverCable.csv")
       );
 
-          // Add commands to the autonomous command chooser
+      Command CenterCubeBalance = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+        //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "CenterCubeBalance.csv")
+        );
+        
+      // Add commands to the autonomous command chooser
     Command BackScore = new SequentialCommandGroup(
       new SetRobotOrientationOnField(m_Drivetrain, 0.0),
       new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "scoreback.csv")
@@ -136,7 +141,8 @@ public class RobotContainer {
 
     m_chooser = new SendableChooser<>();
     //m_chooser.addOption("Original", ORIGgetAutonomousCommand() );
-    m_chooser.addOption("Feeder", FeederTest);
+    m_chooser.addOption("TwoCubeOverCable", TwoCubeOverCable);
+    m_chooser.addOption("CenterCubeBalance", CenterCubeBalance);
     m_chooser.addOption("ScoreBack", BackScore);
     // m_chooser.addOption("2-Ball CENTER", TwoBall_Center);
     // m_chooser.addOption("2-Ball LEFT", TwoBall_Left);
@@ -173,7 +179,7 @@ public class RobotContainer {
     btnAutoBalance.whileTrue(new AutoBalance(m_Drivetrain));
     JoystickButton btnSkyhookDriving = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_DRIVING);    
     
-    JoystickButton btnLowFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_LOWFRONT);
+    //JoystickButton btnLowFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_LOWFRONT);
     JoystickButton btnMidFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_MIDFRONT);
     JoystickButton btnTopFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_TOPFRONT);
     JoystickButton btnGroundPickupFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.GROUNDPICKUP_FRONT);
@@ -230,8 +236,8 @@ public class RobotContainer {
     btnSkyhookDriving.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.DRIVING
     , ExtensionPositions.DRIVING, WristPositions.DRIVING));
     
-    btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT
-        , ExtensionPositions.GROUNDPICKUP_FRONT, WristPositions.GROUNDPICKUP_FRONT));
+    // btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT
+    //     , ExtensionPositions.GROUNDPICKUP_FRONT, WristPositions.GROUNDPICKUP_FRONT));
 
     btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER2SCORE_FRONT
       , ExtensionPositions.TIER2SCORE_FRONT, WristPositions.TIER2SCORE_FRONT));

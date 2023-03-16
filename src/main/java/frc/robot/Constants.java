@@ -56,28 +56,31 @@ public final class Constants {
                 //public static final int SHOOT = 1;
                 public static final int EJECT_PICKUP = 1;
                 static final int RUN_PICKUP = 2;
-                static final int EXTEND_ELEVATOR = 3;
-                static final int RETRACT_ELEVATOR = 4;
 
-                public static final int WRIST_UP = 7;
-                public static final int WRIST_DOWN = 8;
+                static final int SKYHOOK_DRIVING = 3;
+                public static final int GROUNDPICKUP_FRONT = 4;
 
-                public static final int SKYHOOK_EXTEND = 4;
-                public static final int SKYHOOK_RETRACT = 1;
+                public static final int SCORE_TOPFRONT = 5;
+                public static final int SCORE_MIDFRONT = 6;
+                public static final int FEEDERPICKUP_FRONT = 7;
+
+                public static final int AUTO_BALANCE = 8;
+                
+                public static final int SCORE_BACK = 9;
+                public static final int SCORE_BACKTIER3 = 10;
 
                 static final int SKYHOOK_REACHBACK = 6;
                 static final int SKYHOOK_REACHFORWARD = 9;
-                static final int SKYHOOK_DRIVING = 10;
-                
-                public static final int SCORE_BACK = 5;
 
-                public static final int SCORE_LOWFRONT = 11;
-                public static final int SCORE_MIDFRONT = 12;
-                public static final int SCORE_TOPFRONT = 13;
-                public static final int GROUNDPICKUP_FRONT = 14;
-                public static final int FEEDERPICKUP_FRONT = 15;
+                public static final int WRIST_UP = 11;
+                public static final int WRIST_DOWN = 16;
 
-                public static final int AUTO_BALANCE = 16;
+                static final int EXTEND_ELEVATOR = 12;
+                public static final int SKYHOOK_EXTEND = 13;
+                public static final int SKYHOOK_RETRACT = 14;
+                static final int RETRACT_ELEVATOR = 15;
+  
+                //public static final int SCORE_LOWFRONT = 11; 
         }
 
         //MOTORS

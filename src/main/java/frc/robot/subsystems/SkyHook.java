@@ -92,7 +92,7 @@ public class SkyHook extends SubsystemBase {
     static final double STARTPOSITION = 0;//-9000;//-13000;
     public static final double BACKFOLDUP = 17000;
     static final double MAXLIMIT = 16500;//-9000; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 300;
+    public static final double GROUNDPICKUP_FRONT = 3000;
     public static final double DRIVING = 10;
     public static final double FEEDERPICKUP_FRONT = 1000;
     public static final double GROUNDSCORE_FRONT = -1000;
@@ -122,8 +122,8 @@ static final class ExtensionConstants {
     static final double kFF = 0.05;//.000015;
     static final double kMaxOutput = 1;
     static final double kMinOutput = -1;
-    static final double kCruiseVelocity = 32000;
-    static final double kMaxAccel = 12000;
+    static final double kCruiseVelocity = 40000;
+    static final double kMaxAccel = 16000;
   }
   static final class WristConstants { 
     // PID values
