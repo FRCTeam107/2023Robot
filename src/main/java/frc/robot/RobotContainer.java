@@ -209,7 +209,7 @@ public class RobotContainer {
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
     
-    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.GROUNDPICKUP_FRONT)); //-200.0));
+    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.EXTENDED)); //-200.0));
     btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
     btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.RETRACTED)); // 100.0));// almost home
     btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
@@ -243,7 +243,7 @@ public class RobotContainer {
       , ExtensionPositions.TIER2SCORE_FRONT, WristPositions.TIER2SCORE_FRONT));
 
     btnTopFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER3SCORE_FRONT
-      , ExtensionPositions.TIER3SCORE_FRONT, WristPositions.TIER2SCORE_FRONT));
+      , ExtensionPositions.TIER3SCORE_FRONT, WristPositions.TIER3SCORE_FRONT));
 
     btnScoreBack.onTrue(new SkyHook_ScoreBack(m_skyHook));
 
