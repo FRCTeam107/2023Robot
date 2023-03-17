@@ -41,17 +41,17 @@ public class SwerveDrivetrain extends SubsystemBase {
   // angle offsets for rotation motors
   // reducing the angle will adjust in counter-clockwise direction
   
-  //COMPETITION ROBOT SETTINGS
-  // public static double frontLeftOffset = 80;//89.9;
-  // public static double frontRightOffset = 159;//281.9;
-  // public static double backLeftOffset = 110;//116.9;
-  // public static double backRightOffset = 172;//304.8;
+  // //COMPETITION ROBOT SETTINGS
+  public static double frontLeftOffset = 80;//89.9;
+  public static double frontRightOffset = 159;//281.9;
+  public static double backLeftOffset = 110;//116.9;
+  public static double backRightOffset = 172;//304.8;
 
   // PRACTICE ROBOT SETTINGS
-  public static double frontLeftOffset = 210;//89.9;
-  public static double frontRightOffset = 21;//281.9;
-  public static double backLeftOffset = 130;//116.9;
-  public static double backRightOffset = 190;//304.8;
+  // public static double frontLeftOffset = 115;//89.9;
+  // public static double frontRightOffset = 21;//281.9;
+  // public static double backLeftOffset = 130;//116.9;
+  // public static double backRightOffset = 190;//304.8;
 
 
   public static AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -122,9 +122,9 @@ public class SwerveDrivetrain extends SubsystemBase {
           : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.kMaxSpeedMetersPerSecond);
     //SwerveDriveKinematics.normalizeWheelSpeeds(states, kMaxSpeed);
-    SmartDashboard.putNumber("gyro Angle", m_gyro.getAngle());
-    SmartDashboard.putNumber("gyro Roll", m_gyro.getRoll());
-    SmartDashboard.putNumber("gyro Pitch", m_gyro.getPitch());
+    // SmartDashboard.putNumber("gyro Angle", m_gyro.getAngle());
+    // SmartDashboard.putNumber("gyro Roll", m_gyro.getRoll());
+    // SmartDashboard.putNumber("gyro Pitch", m_gyro.getPitch());
 
     for (int i = 0; i < states.length; i++) {
       SwerveModuleMK3 module = modules[i];
@@ -138,10 +138,10 @@ public class SwerveDrivetrain extends SubsystemBase {
   @Override
   public void periodic() {
 
-    SmartDashboard.putNumber("Front-left", m_frontLeft.getRawAngle());
-    SmartDashboard.putNumber("Front-right", m_frontRight.getRawAngle());
-    SmartDashboard.putNumber("Rear-left", m_rearLeft.getRawAngle());
-    SmartDashboard.putNumber("Rear-right", m_rearRight.getRawAngle());
+    // SmartDashboard.putNumber("Front-left", m_frontLeft.getRawAngle());
+    // SmartDashboard.putNumber("Front-right", m_frontRight.getRawAngle());
+    // SmartDashboard.putNumber("Rear-left", m_rearLeft.getRawAngle());
+    // SmartDashboard.putNumber("Rear-right", m_rearRight.getRawAngle());
     // This method will be called once per scheduler run
     // Update the odometry in the periodic block
     m_odometry.update(  m_gyro.getRotation2d(), getModulePositions()      );

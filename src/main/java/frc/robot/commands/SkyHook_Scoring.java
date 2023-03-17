@@ -13,16 +13,23 @@ import frc.robot.subsystems.SkyHook;
 import frc.robot.subsystems.SkyHook.ArmPositions;
 
 
-public class SkyHook_MoveArm extends CommandBase {
+public class SkyHook_Scoring extends CommandBase {
   /**
    * Creates a new Shoot.`
    */
   private final SkyHook m_skyHook;
-  private final double m_setPoint;
+  private final double m_armSetPoint;
+  private final double m_extensionSetPoint;
+  private final double m_wristSetPoint;
+  //private final double m_intakeSpeed;
 
-  public SkyHook_MoveArm(SkyHook _skyHook, Double _position) {
+  public SkyHook_Scoring(SkyHook _skyHook, Double _armPosition, Double _extensionPosition, Double _wristPosition) {
     m_skyHook = _skyHook;
-    m_setPoint = _position;
+    m_armSetPoint = _armPosition;
+    m_extensionSetPoint = _extensionPosition;
+    m_wristSetPoint = _wristPosition;
+    //m_intakeSpeed = _intakeSpeed;
+
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_skyHook);
@@ -37,20 +44,12 @@ public class SkyHook_MoveArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_setPoint == 0){
-     m_skyHook.SetArmPower(m_setPoint);
-     m_skyHook.setManualControlMode(false);
-    }
-    else {
-      m_skyHook.setManualControlMode(true);
-      double chk = SmartDashboard.getNumber("Arm To", 0);
-      if (chk  != 0) { 
-        m_skyHook.SetArmSmartMotion(chk); 
-      }
-      else {
-        m_skyHook.SetArmSmartMotion(m_setPoint);
-      }
-    }
+    m_skyHook.setManualControlMode(false);
+    
+    m_skyHook.SetArmSmartMotion(m_armSetPoint);
+    m_skyHook.SetExtensionPosition(m_extensionSetPoint);
+    m_skyHook.SetWristPosition(m_wristSetPoint);
+    //m_skyHook.SetIntakePower(m_intakeSpeed);
   }
 
   // Called once the command ends or is interrupted.
