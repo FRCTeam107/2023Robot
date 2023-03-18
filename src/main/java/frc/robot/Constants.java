@@ -34,7 +34,10 @@ public final class Constants {
                 public static final int DRIVE_Z_AXIS = 0;
                 
                 public static final int ACTIVATE_LIMELIGHT = 1;
-                static final int REORIENT_ROBOT = 5;
+                static final int REORIENT_ROBOT = 16;
+                static final int SPIN_180 = 13;
+                public static final int AUTO_BALANCE = 6;
+
                 //public static final int CLIMBER_MANUAL = 4;
                 public static final int AIM_BY_LIMELIGHT = 13;
                 // // public static final int JOYSTICK_FIVE = 5;
@@ -64,8 +67,8 @@ public final class Constants {
                 public static final int SCORE_MIDFRONT = 6;
                 public static final int FEEDERPICKUP_FRONT = 7;
 
-                public static final int AUTO_BALANCE = 8;
-                
+                public static final int UPRIGHTCONE_FRONT = 8;
+
                 public static final int SCORE_BACK = 9;
                 public static final int SCORE_BACKTIER3 = 10;
 
