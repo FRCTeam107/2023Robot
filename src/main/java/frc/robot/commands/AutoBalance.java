@@ -40,35 +40,35 @@ public class AutoBalance extends CommandBase {
   @Override
   public void execute() {
 
-    double BalanceCorrection = 0;
     double checkGyro = 0;
-    double multiplier;
-
-    if (Math.abs(m_drivetrain.getAngle() % 360) <= 90){
-      multiplier = -0.006;
-    }
-    else {
-      multiplier = 0.006;
-    }
-
+    double multiplier = 0.006;
+    double maxCorrection = 0.09;
+    double rollCorrection = 0, pitchCorrection = 0;
 
     checkGyro = m_drivetrain.getRoll();
     if (Math.abs(checkGyro) > 6 ) {
-      BalanceCorrection = checkGyro * multiplier;
+      rollCorrection = checkGyro * multiplier; 
+      if (m_drivetrain.getYaw()<0){ rollCorrection *= -1; }
     }
-    else {
-       checkGyro = m_drivetrain.getPitch();
-       if (Math.abs(checkGyro) > 6 ) {
-          BalanceCorrection = checkGyro * multiplier;
-       }
-      }
 
-    if (BalanceCorrection < -0.07) {BalanceCorrection = -0.07; }
-    if (BalanceCorrection > 0.07) {BalanceCorrection = 0.07; }
+    checkGyro = m_drivetrain.getPitch();
+    if (Math.abs(checkGyro) > 6 ) {
+      pitchCorrection = checkGyro * multiplier;
+      if (Math.abs(m_drivetrain.getYaw()) < 90) {pitchCorrection *= -1; }
+    }
 
-    SmartDashboard.putNumber("Gyro Roll", m_drivetrain.getRoll());
-    SmartDashboard.putNumber("Gyro Pitch", m_drivetrain.getPitch());
-    SmartDashboard.putNumber("BalanceCorrection", BalanceCorrection);
+    double BalanceCorrection = rollCorrection + pitchCorrection;
+    if (Math.abs(BalanceCorrection) > maxCorrection){
+      BalanceCorrection = Math.copySign(maxCorrection, BalanceCorrection);
+    }
+    // if (BalanceCorrection < -0.1) {BalanceCorrection = -0.1; }
+    // if (BalanceCorrection > 0.1) {BalanceCorrection = 0.1; }
+
+    // SmartDashboard.putNumber("Gyro Yaw", m_drivetrain.getYaw());
+    // SmartDashboard.putNumber("Gyro Angle", m_drivetrain.getAngle());
+    // SmartDashboard.putNumber("Gyro Roll", m_drivetrain.getRoll());
+    // SmartDashboard.putNumber("Gyro Pitch", m_drivetrain.getPitch());
+    // SmartDashboard.putNumber("BalanceCorrection", BalanceCorrection);
     //  SmartDashboard.putNumber("BalanceTimeout", balanceWaittimeout);
 
      if (Math.abs(BalanceCorrection) < 0.02){
@@ -80,8 +80,8 @@ public class AutoBalance extends CommandBase {
       if (balanceWaittimeout <= 0){
         double balanceSpeed = xspeedLimiter.calculate(BalanceCorrection)
               * DriveConstants.kMaxSpeedMetersPerSecond;
-        switchBackCounter = (switchBackCounter + 1) % 150;
-        if (switchBackCounter < 75){
+        switchBackCounter = (switchBackCounter + 1) % 120;
+        if (switchBackCounter < 60){
           m_drivetrain.drive(balanceSpeed, balanceSpeed/0.9, 0.0, true);//, calibrate);
         }
         else {
