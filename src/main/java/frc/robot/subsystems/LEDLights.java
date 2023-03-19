@@ -27,7 +27,7 @@ public class LEDLights extends SubsystemBase {
   @Override
   public void periodic() {
     countdownTimer --;
-SmartDashboard.putNumber("LEDTimout", countdownTimer);
+//SmartDashboard.putNumber("LEDTimout", countdownTimer);
     if (DriverStation.isAutonomous()){
        m_LEDLights.set(0.69); //Yellow
       return;
@@ -71,6 +71,10 @@ SmartDashboard.putNumber("LEDTimout", countdownTimer);
   
   }
 
+  public void resetLights(){
+    countdownTimer = -1;
+  }
+
   public void lightsGreen(Integer timeout){
     m_LEDLights.set(0.75);
     countdownTimer = timeout;
@@ -82,12 +86,12 @@ SmartDashboard.putNumber("LEDTimout", countdownTimer);
 
   public void lightsYellow(){
     m_LEDLights.set(0.69);
-    countdownTimer = 150;
+    countdownTimer = 1000;
   }
 
   public void lightsPurple(){
     m_LEDLights.set(0.91);
-    countdownTimer = 150;
+    countdownTimer = 1000;
   }
 
   // public void lightsBlinkRed(){

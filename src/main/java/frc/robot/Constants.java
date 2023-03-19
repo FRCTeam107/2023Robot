@@ -38,6 +38,9 @@ public final class Constants {
                 static final int SPIN_180 = 13;
                 public static final int AUTO_BALANCE = 6;
 
+                static final int WANT_A_CONE = 4;
+                static final int WANT_A_CUBE = 5;
+
                 //public static final int CLIMBER_MANUAL = 4;
                 public static final int AIM_BY_LIMELIGHT = 13;
                 // // public static final int JOYSTICK_FIVE = 5;

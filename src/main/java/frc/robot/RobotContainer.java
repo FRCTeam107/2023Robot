@@ -37,6 +37,7 @@ import frc.robot.commands.SkyHook_Scoring;
 import frc.robot.commands.SkyHook_MoveArm;
 import frc.robot.commands.SkyHook_MoveElevator;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.LED_ColorSet;
 import frc.robot.commands.ReplayFile;
 //import frc.robot.commands.ReplayFile;
 import frc.robot.commands.SetRobotOrientationOnField;
@@ -187,6 +188,13 @@ public class RobotContainer {
     JoystickButton btnAutoBalance = new JoystickButton(m_flightcontroller, FlightController.AUTO_BALANCE);    
     btnAutoBalance.whileTrue(new AutoBalance(m_Drivetrain));
 
+    JoystickButton btnWantACone = new JoystickButton(m_flightcontroller, FlightController.WANT_A_CONE);
+    btnWantACone.onTrue(new LED_ColorSet(m_LEDLights, "Cone"));
+    btnWantACone.onFalse(new LED_ColorSet(m_LEDLights, "nothing"));
+
+    JoystickButton btnWantACube = new JoystickButton(m_flightcontroller, FlightController.WANT_A_CUBE); 
+    btnWantACube.onTrue(new LED_ColorSet(m_LEDLights, "Cube"));
+    btnWantACube.onFalse(new LED_ColorSet(m_LEDLights, "nothing"));
 
     // JoystickButton btnPickupIntake = new JoystickButton(m_flightcontroller, ControllerJoystick.PICKUP_INTAKE);
     JoystickButton btnRunPickup = new JoystickButton(m_controllerJoystick, ControllerJoystick.RUN_PICKUP);
