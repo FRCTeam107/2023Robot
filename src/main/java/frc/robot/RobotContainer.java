@@ -18,7 +18,6 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,10 +32,12 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FlightController;
 import frc.robot.commands.SkyHook_MoveWrist;
 import frc.robot.commands.SkyHook_RunIntake;
+import frc.robot.commands.SkyHook_ScoreBack;
 import frc.robot.commands.SkyHook_Scoring;
 import frc.robot.commands.SkyHook_MoveArm;
 import frc.robot.commands.SkyHook_MoveElevator;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.LED_ColorSet;
 import frc.robot.commands.ReplayFile;
 //import frc.robot.commands.ReplayFile;
 import frc.robot.commands.SetRobotOrientationOnField;
@@ -108,41 +109,71 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Add commands to the autonomous command chooser
-    Command SimpleTest = new SequentialCommandGroup(
-      new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleTest.csv")
-      );
-
-
-          // Add commands to the autonomous command chooser
-    Command hannahTest = new SequentialCommandGroup(
-      new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-      new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "hannah.csv")
-      );
-
-    // Command TwoBall_Center = new SequentialCommandGroup(
-    //   new SetRobotOrientationOnField(m_Drivetrain, 0),
-    //   new ReplayFile(m_Drivetrain, m_Intake, m_shooter, m_limelight, m_DataRecorder, "Center2Ball.csv"),
-    //   new SetRobotOrientationOnField(m_Drivetrain, 160)   
+    // Command TwoCubeOverCable = new SequentialCommandGroup(
+    //   new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+    //   new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "2cubeOverCable.csv")
     //   );
-  
-    // Command TwoBall_Left = new SequentialCommandGroup(
-    //   new SetRobotOrientationOnField(m_Drivetrain, -0.02),
-    //   new ReplayFile(m_Drivetrain, m_Intake, m_shooter, m_limelight, m_DataRecorder, "twoball-c.csv"),
-    //   new SetRobotOrientationOnField(m_Drivetrain, -165)   
-    //   );
-    
+    Command TwoCubeBump = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeMid.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "2cubeOverCable.csv")
+        );
+    Command CenterCubeBalance = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "CenterDriveToBalance.csv"),
+        new AutoBalance(m_Drivetrain)
+        //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "cubebal.csv")
+        );
 
+    Command CenterConeBalance = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ConeDriveToBalance.csv"),
+        new AutoBalance(m_Drivetrain)
+        //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "cubebal.csv")
+        );
 
+    Command BlueTwoCubeRun = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeMid.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+        //        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue2cuberun.csv")
+        );
+    Command BlueTwoCubeBal = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeMid.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+        //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue2cubebal.csv")
+        );
+    Command Blue1and1 = new SequentialCommandGroup(
+          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeMid.csv"),
+          new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+         // new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue1and1.csv")
+          );
+    Command Blue2High = new SequentialCommandGroup(
+            new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
+            new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+            //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue2high.csv")
+            );
+
+    // Add commands to the autonomous command chooser
     m_chooser = new SendableChooser<>();
-    //m_chooser.addOption("Original", ORIGgetAutonomousCommand() );
-    m_chooser.addOption("SimpleTest", SimpleTest);
-    m_chooser.addOption("hannahTest", hannahTest);
-    // m_chooser.addOption("2-Ball CENTER", TwoBall_Center);
-    // m_chooser.addOption("2-Ball LEFT", TwoBall_Left);
-    // m_chooser.addOption("3-Ball RIGHT", ThreeBall_Right);
-    // m_chooser.addOption("3-Ball Run Forrest!", ThreeBall_RunForrest);
-    // m_chooser.addOption("4-Ball RIGHT", FourBall_Right);
+    //m_chooser.addOption("TwoCubeOverCable", TwoCubeOverCable);
+    m_chooser.addOption("TwoCubeBump", TwoCubeBump);
+    m_chooser.addOption("Center Cube+Balance", CenterCubeBalance);
+    m_chooser.addOption("Center Cone+Balance", CenterConeBalance);
+    m_chooser.addOption("Blue 2Cube Run", BlueTwoCubeRun);
+    m_chooser.addOption("Blue 2Cube Balance", BlueTwoCubeBal);
+    m_chooser.addOption("Blue Cone+Cube Mid", Blue1and1);
+    m_chooser.addOption("Blue Cone+Cube High", Blue2High);
+
+    //m_chooser.addOption("ScoreBack", BackScore);
 
 
     //m_chooser.addOption("Barrel", new Barrel(m_drivetrain));
@@ -152,46 +183,49 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // // setup buttons
 
+    JoystickButton btnResetDrivetrainOrientation =  new JoystickButton(m_flightcontroller, FlightController.REORIENT_ROBOT);
+
+    JoystickButton btnAutoBalance = new JoystickButton(m_flightcontroller, FlightController.AUTO_BALANCE);    
+    btnAutoBalance.whileTrue(new AutoBalance(m_Drivetrain));
+
+    JoystickButton btnWantACone = new JoystickButton(m_flightcontroller, FlightController.WANT_A_CONE);
+    btnWantACone.onTrue(new LED_ColorSet(m_LEDLights, "Cone"));
+    btnWantACone.onFalse(new LED_ColorSet(m_LEDLights, "nothing"));
+
+    JoystickButton btnWantACube = new JoystickButton(m_flightcontroller, FlightController.WANT_A_CUBE); 
+    btnWantACube.onTrue(new LED_ColorSet(m_LEDLights, "Cube"));
+    btnWantACube.onFalse(new LED_ColorSet(m_LEDLights, "nothing"));
+
     // JoystickButton btnPickupIntake = new JoystickButton(m_flightcontroller, ControllerJoystick.PICKUP_INTAKE);
     JoystickButton btnRunPickup = new JoystickButton(m_controllerJoystick, ControllerJoystick.RUN_PICKUP);
     JoystickButton btnEjectPickup = new JoystickButton(m_controllerJoystick, ControllerJoystick.EJECT_PICKUP);
 
-    JoystickButton btnExtendElevator = new JoystickButton(m_controllerJoystick, ControllerJoystick.EXTEND_ARM);
-    JoystickButton btnRetractElevator = new JoystickButton(m_controllerJoystick, ControllerJoystick.RETRACT_ARM);
+    JoystickButton btnExtendElevator = new JoystickButton(m_controllerJoystick, ControllerJoystick.EXTEND_ELEVATOR);
+    JoystickButton btnRetractElevator = new JoystickButton(m_controllerJoystick, ControllerJoystick.RETRACT_ELEVATOR);
 
     // JoystickButton btnFlipperPickup = new JoystickButton(m_flightcontroller, ControllerJoystick.RUN_FLIPPER_INTAKE);
     JoystickButton btnWristUp = new JoystickButton(m_controllerJoystick, ControllerJoystick.WRIST_UP);
     JoystickButton btnWristDown = new JoystickButton(m_controllerJoystick, ControllerJoystick.WRIST_DOWN);    
 
     JoystickButton btnSkyhookBack = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_REACHBACK);
-    JoystickButton btnSkyhookHome = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_GOHOME);    
     JoystickButton btnSkyhookForward = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_REACHFORWARD);    
 
-    JoystickButton btnAutoBalance = new JoystickButton(m_controllerJoystick, ControllerJoystick.AUTO_BALANCE);    
-    btnAutoBalance.whileTrue(new AutoBalance(m_Drivetrain));
-
-    JoystickButton btnLowFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_LOWFRONT);
+    JoystickButton btnSkyhookDriving = new JoystickButton(m_controllerJoystick, ControllerJoystick.SKYHOOK_DRIVING);    
+    JoystickButton btnUprightCone = new JoystickButton(m_controllerJoystick, ControllerJoystick.UPRIGHTCONE_FRONT);    
+    
+    //JoystickButton btnLowFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_LOWFRONT);
     JoystickButton btnMidFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_MIDFRONT);
     JoystickButton btnTopFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_TOPFRONT);
     JoystickButton btnGroundPickupFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.GROUNDPICKUP_FRONT);
     JoystickButton btnFeederPickupFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.FEEDERPICKUP_FRONT);
 
+    JoystickButton btnScoreBackMid = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_BACK);
+    JoystickButton btnScoreBackHigh = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_BACKTIER3);
+
     //JoystickButton btnCameraToggle = new JoystickButton(m_controllerJoystick, ControllerJoystick.CAMERA_TOGGLE);
-    JoystickButton btnResetDrivetrainOrientation =  new JoystickButton(m_controllerJoystick, ControllerJoystick.REORIENT_ROBOT);
     
-    btnResetDrivetrainOrientation.onTrue(new SetRobotOrientationOnField(m_Drivetrain, 0).andThen(m_Drivetrain::resetEncoders));
+    btnResetDrivetrainOrientation.onTrue(new SetRobotOrientationOnField(m_Drivetrain, 0));//.andThen(m_Drivetrain::resetEncoders));
 
-    //new JoystickButton(m_rightJoystick, RightJoystick.TOGGLE_LIMELIGHT).whenPressed(m_limelight::ToggleVisionProcessing, m_limelight);
-    // btnShoot.whileHeld(new Shoot(m_shooter, m_limelight,
-    //             () -> m_controllerJoystick.getRawButton(ControllerJoystick.FORCE_READY) ,
-    //             () -> m_controllerJoystick.getRawButton(ControllerJoystick.TURBO_SHOT) ));
-    // btnTrexArmDown.whileTrue(new DownTRexArms(m_tRexArms));
-    // btnTrexArmUp.whileTrue(new UpTRexArms(m_tRexArms));
-    // btnTrexClose.whileTrue(new CloseTRexArms(m_tRexArms));
-    // btnTrexOpen.whileTrue(new OpenTRexArms(m_tRexArms));
-
-    //btnFlipperDown.whileTrue(new SkyHook_MoveWrist(m_pancakeFlipper, PancakeFlipper.FlipperPosition.PICKUP));
-    //btnFlipperUp.whileTrue(new SkyHook_MoveWrist(m_pancakeFlipper, PancakeFlipper.FlipperPosition.UP));
 
     btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.5));
     btnRunPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
@@ -199,7 +233,7 @@ public class RobotContainer {
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
     btnEjectPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
     
-    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.GROUNDPICKUP_FRONT)); //-200.0));
+    btnExtendElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.EXTENDED)); //-200.0));
     btnExtendElevator.onFalse(new SkyHook_MoveElevator(m_skyHook, 0.0));
     btnRetractElevator.onTrue(new SkyHook_MoveElevator(m_skyHook, SkyHook.ExtensionPositions.RETRACTED)); // 100.0));// almost home
     btnRetractElevator.onFalse(new SkyHook_MoveElevator(m_skyHook,0.0));
@@ -210,27 +244,32 @@ public class RobotContainer {
     btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.GROUNDPICKUP_FRONT));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    //btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.BACK, false));
-    btnSkyhookHome.onTrue(new SkyHook_MoveArm(m_skyHook, 1.0));
-    //btnSkyhookForward.onTrue(new SkyHook_MoveArm(m_skyHook, SkyHook.ArmFlip.FORWARD, false));
-    //btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, -2.1, true));
     btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.FULLFORWARD));
     btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0));
 
-    //btnSkyhookBack.whileTrue(new SkyHook_MoveArm(m_skyHook, 2.3, true));
-    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT));
+    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.FULLBACK));
     btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
 
-    btnLowFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT
-        , ExtensionPositions.GROUNDPICKUP_FRONT, WristPositions.GROUNDPICKUP_FRONT));
+    btnSkyhookDriving.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.DRIVING
+    , ExtensionPositions.DRIVING, WristPositions.DRIVING));
+
+    btnUprightCone.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.UPRIGHTCONE_FRONT
+        ,ExtensionPositions.UPRIGHTCONE_FRONT, WristPositions.UPRIGHTCONE_FRONT));
 
     btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER2SCORE_FRONT
       , ExtensionPositions.TIER2SCORE_FRONT, WristPositions.TIER2SCORE_FRONT));
 
     btnTopFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER3SCORE_FRONT
-      , ExtensionPositions.TIER3SCORE_FRONT, WristPositions.TIER2SCORE_FRONT));
+      , ExtensionPositions.TIER3SCORE_FRONT, WristPositions.TIER3SCORE_FRONT));
+
+    //btnScoreBack.onTrue(new SkyHook_ScoreBack(m_skyHook));
+    btnScoreBackMid.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER2SCORE_BACK
+    , ExtensionPositions.TIER2SCORE_BACK, WristPositions.TIER2SCORE_BACK));
+
+    btnScoreBackHigh.onTrue(new SkyHook_Scoring(m_skyHook,ArmPositions.TIER3SCORE_BACK
+      , ExtensionPositions.TIER3SCORE_BACK, WristPositions.TIER3SCORE_BACK));
 
     btnGroundPickupFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT
       , ExtensionPositions.GROUNDPICKUP_FRONT, WristPositions.GROUNDPICKUP_FRONT));

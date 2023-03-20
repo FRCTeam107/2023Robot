@@ -26,5 +26,6 @@ public class SetRobotOrientationOnField extends InstantCommand {
   @Override
   public void initialize() {
     m_Drivetrain.zeroHeading(fieldOffsetAngle);
+    m_Drivetrain.resetEncoders();
   }
 }

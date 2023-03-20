@@ -41,7 +41,7 @@ public class SwerveDrivetrain extends SubsystemBase {
   // angle offsets for rotation motors
   // reducing the angle will adjust in counter-clockwise direction
   
-  //COMPETITION ROBOT SETTINGS
+  // //COMPETITION ROBOT SETTINGS
   public static double frontLeftOffset = 80;//89.9;
   public static double frontRightOffset = 159;//281.9;
   public static double backLeftOffset = 110;//116.9;
@@ -222,6 +222,10 @@ public class SwerveDrivetrain extends SubsystemBase {
      *
      * @return the robot's heading in degrees, from -180 to 180
      */
+    public float getYaw() {
+      return m_gyro.getYaw();
+    }
+
     public double getHeading() {
       return m_gyro.getRotation2d().getDegrees();
     }
