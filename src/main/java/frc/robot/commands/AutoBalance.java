@@ -41,7 +41,7 @@ public class AutoBalance extends CommandBase {
   public void execute() {
    
     double checkGyro = 0;
-    double multiplier = 0.006;
+    double multiplier = 0.007;
     double maxCorrection = 0.09;
     double rollCorrection = 0, pitchCorrection = 0;
 
