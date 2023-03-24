@@ -36,6 +36,8 @@ public class SkyHook extends SubsystemBase {
   private final SparkMaxPIDController m_ExtensionPID;
   private CANSparkMax.ControlType m_ExtensionCtrlType;
 
+  private int powerEjectTimer = 0;
+
   private double m_ExtensionSetpoint, m_ArmSetpoint, m_WristSetpoint, m_IntakeSetpoint;
   //private double m_ArmLastPosition;//, m_ExtensionHoldSetpoint, m_WristHoldSetpoint;
 
@@ -124,8 +126,8 @@ static final class ExtensionConstants {
     static final double kFF = 0.05;//.000015;
     static final double kMaxOutput = 1;
     static final double kMinOutput = -1;
-    static final double kCruiseVelocity = 40000;
-    static final double kMaxAccel = 16000;
+    static final double kCruiseVelocity = 45000;
+    static final double kMaxAccel = 18000;
   }
   static final class WristConstants { 
     // PID values
@@ -304,7 +306,14 @@ static final class ExtensionConstants {
     // ideally, the code will move the wrist & arm to safely pass through robot
     
     // intake motor is harmless, do whatever the driver wants
-    m_IntakeMotor.set(m_IntakeCtrlType, m_IntakeSetpoint);
+    if (m_IntakeSetpoint < 0 && powerEjectTimer < 0) {
+      m_IntakeMotor.set(m_IntakeCtrlType, -1);  
+    }
+    else {
+      powerEjectTimer --;
+      m_IntakeMotor.set(m_IntakeCtrlType, m_IntakeSetpoint);
+    }
+    
 
     //always allow 0% power to Extension
     if (m_ExtensionCtrlType == ControlType.kDutyCycle && m_ExtensionSetpoint==0) {
@@ -524,6 +533,12 @@ static final class ExtensionConstants {
     m_IntakeSetpoint = position;
    }
    public void SetIntakePower(double percent){
+    if (percent < 0){
+      powerEjectTimer = 100;
+    }
+    else {
+      powerEjectTimer = 0; //don't use
+    }
     m_IntakeCtrlType = ControlMode.PercentOutput;// ControlType.kDutyCycle;
     m_IntakeSetpoint = percent;
    }
