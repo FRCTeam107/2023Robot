@@ -149,7 +149,7 @@ public final class Constants {
                                 new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
                 // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
-                public static final double kMaxSpeedMetersPerSecond = 0.95; //0.85;//0.88;//0.85;//Units.feetToMeters(6);
+                public static final double kMaxSpeedMetersPerSecond = 0.99; //0.85;//0.88;//0.85;//Units.feetToMeters(6);
 
   //these are limits you can change!!!
                // public static final double kMaxSpeed = Units.feetToMeters(13);//(13.6); // 20 feet per second
