@@ -315,6 +315,10 @@ static final class ExtensionConstants {
     if (m_ArmCtrlType == ControlMode.PercentOutput && m_ArmSetpoint == 0) {
       m_ArmMotor.set(m_ArmCtrlType, m_ArmSetpoint);
     }
+    // always allow wrist to 0% power
+    if (m_WristCtrlType == ControlMode.PercentOutput && m_WristSetpoint == 0) {
+      m_WristMotor.set(m_WristCtrlType, m_WristSetpoint);
+    }
     
     // if arm must move, we need wrist bent and extention retracted
     String msg = "";
