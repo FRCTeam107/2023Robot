@@ -252,7 +252,7 @@ public class RobotContainer {
     btnResetDrivetrainOrientation.onTrue(new SetRobotOrientationOnField(m_Drivetrain, 0));//.andThen(m_Drivetrain::resetEncoders));
 
 
-    btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.5));
+    btnRunPickup.onTrue(new SkyHook_RunIntake(m_skyHook, 0.4));
     btnRunPickup.onFalse(new SkyHook_RunIntake(m_skyHook, 0.0));
 
     btnEjectPickup.onTrue(new SkyHook_RunIntake(m_skyHook, -0.5));
