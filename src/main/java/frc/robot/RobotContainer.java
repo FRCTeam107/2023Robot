@@ -136,21 +136,34 @@ public class RobotContainer {
         //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "cubebal.csv")
         );
 
-    Command OneConeRun = new SequentialCommandGroup(
+        Command CubeAndStay = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0) );
+        
+        Command ConeAndStay = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+        );
+
+      Command OneConeRun = new SequentialCommandGroup(
         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
         new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "simplerun.csv"),
-        new AutoBalance(m_Drivetrain)
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "simplerun.csv")
         //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "cubebal.csv")
         );
 
-    // Command BlueTwoCubeRun = new SequentialCommandGroup(
-    //     new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-    //     new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeMid.csv"),
-    //     new SetRobotOrientationOnField(m_Drivetrain, 0.0)
-    //     //        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue2cuberun.csv")
-    //     );
+    Command BlueTwoCubeRun = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "twocube.csv")
+        );
+
+    Command PlayDead = new SequentialCommandGroup(
+          new SetRobotOrientationOnField(m_Drivetrain, 0.0));
     // Command BlueTwoCubeBal = new SequentialCommandGroup(
     //     new SetRobotOrientationOnField(m_Drivetrain, 0.0),
     //     new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeMid.csv"),
@@ -177,7 +190,10 @@ public class RobotContainer {
     m_chooser.addOption("Center Cube+Balance", CenterCubeBalance);
     m_chooser.addOption("Cube and Run", CubeAndRun);
     m_chooser.addOption("One Cone Run", OneConeRun);
-    // m_chooser.addOption("Blue 2Cube Run", BlueTwoCubeRun);
+    m_chooser.addOption("2 cube run", BlueTwoCubeRun);
+    m_chooser.addOption("Cone and stay", ConeAndStay);
+    m_chooser.addOption("Cube and stay", CubeAndStay);
+    m_chooser.addOption("play dead", PlayDead);
     // m_chooser.addOption("Blue 2Cube Balance", BlueTwoCubeBal);
     // m_chooser.addOption("Blue Cone+Cube Mid", Blue1and1);
     // m_chooser.addOption("Blue Cone+Cube High", Blue2High);
@@ -253,10 +269,10 @@ public class RobotContainer {
     btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.GROUNDPICKUP_FRONT));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.FULLFORWARD));
+    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.MAXFORWARDLIMIT));
     btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0));
 
-    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.FULLBACK));
+    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.MAXBACKLIMIT));
     btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
