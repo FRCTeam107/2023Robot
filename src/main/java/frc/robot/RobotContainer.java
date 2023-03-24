@@ -123,55 +123,64 @@ public class RobotContainer {
         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
         new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "CenterDriveToBalance.csv"),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "centerbalance.csv"),
         new AutoBalance(m_Drivetrain)
         //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "cubebal.csv")
         );
 
-    Command CenterConeBalance = new SequentialCommandGroup(
+    Command CubeAndRun = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "simplerun.csv")
+        //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "cubebal.csv")
+        );
+
+    Command OneConeRun = new SequentialCommandGroup(
         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
         new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ConeDriveToBalance.csv"),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "simplerun.csv"),
         new AutoBalance(m_Drivetrain)
         //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "cubebal.csv")
         );
 
-    Command BlueTwoCubeRun = new SequentialCommandGroup(
-        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeMid.csv"),
-        new SetRobotOrientationOnField(m_Drivetrain, 0.0)
-        //        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue2cuberun.csv")
-        );
-    Command BlueTwoCubeBal = new SequentialCommandGroup(
-        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeMid.csv"),
-        new SetRobotOrientationOnField(m_Drivetrain, 0.0)
-        //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue2cubebal.csv")
-        );
-    Command Blue1and1 = new SequentialCommandGroup(
-          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeMid.csv"),
-          new SetRobotOrientationOnField(m_Drivetrain, 0.0)
-         // new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue1and1.csv")
-          );
-    Command Blue2High = new SequentialCommandGroup(
-            new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
-            new SetRobotOrientationOnField(m_Drivetrain, 0.0)
-            //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue2high.csv")
-            );
+    // Command BlueTwoCubeRun = new SequentialCommandGroup(
+    //     new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+    //     new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeMid.csv"),
+    //     new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+    //     //        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue2cuberun.csv")
+    //     );
+    // Command BlueTwoCubeBal = new SequentialCommandGroup(
+    //     new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+    //     new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeMid.csv"),
+    //     new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+    //     //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue2cubebal.csv")
+    //     );
+    // Command Blue1and1 = new SequentialCommandGroup(
+    //       new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+    //       new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeMid.csv"),
+    //       new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+    //      // new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue1and1.csv")
+    //       );
+    // Command Blue2High = new SequentialCommandGroup(
+    //         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+    //         new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
+    //         new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+    //         //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "Blue2high.csv")
+    //         );
 
     // Add commands to the autonomous command chooser
     m_chooser = new SendableChooser<>();
     //m_chooser.addOption("TwoCubeOverCable", TwoCubeOverCable);
     m_chooser.addOption("TwoCubeBump", TwoCubeBump);
     m_chooser.addOption("Center Cube+Balance", CenterCubeBalance);
-    m_chooser.addOption("Center Cone+Balance", CenterConeBalance);
-    m_chooser.addOption("Blue 2Cube Run", BlueTwoCubeRun);
-    m_chooser.addOption("Blue 2Cube Balance", BlueTwoCubeBal);
-    m_chooser.addOption("Blue Cone+Cube Mid", Blue1and1);
-    m_chooser.addOption("Blue Cone+Cube High", Blue2High);
+    m_chooser.addOption("Cube and Run", CubeAndRun);
+    m_chooser.addOption("One Cone Run", OneConeRun);
+    // m_chooser.addOption("Blue 2Cube Run", BlueTwoCubeRun);
+    // m_chooser.addOption("Blue 2Cube Balance", BlueTwoCubeBal);
+    // m_chooser.addOption("Blue Cone+Cube Mid", Blue1and1);
+    // m_chooser.addOption("Blue Cone+Cube High", Blue2High);
 
     //m_chooser.addOption("ScoreBack", BackScore);
 
@@ -189,11 +198,11 @@ public class RobotContainer {
     btnAutoBalance.whileTrue(new AutoBalance(m_Drivetrain));
 
     JoystickButton btnWantACone = new JoystickButton(m_flightcontroller, FlightController.WANT_A_CONE);
-    btnWantACone.onTrue(new LED_ColorSet(m_LEDLights, "Cone"));
+    btnWantACone.onTrue(new LED_ColorSet(m_LEDLights, "cone"));
     btnWantACone.onFalse(new LED_ColorSet(m_LEDLights, "nothing"));
 
     JoystickButton btnWantACube = new JoystickButton(m_flightcontroller, FlightController.WANT_A_CUBE); 
-    btnWantACube.onTrue(new LED_ColorSet(m_LEDLights, "Cube"));
+    btnWantACube.onTrue(new LED_ColorSet(m_LEDLights, "cube"));
     btnWantACube.onFalse(new LED_ColorSet(m_LEDLights, "nothing"));
 
     // JoystickButton btnPickupIntake = new JoystickButton(m_flightcontroller, ControllerJoystick.PICKUP_INTAKE);

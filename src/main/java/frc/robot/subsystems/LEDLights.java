@@ -86,11 +86,14 @@ public class LEDLights extends SubsystemBase {
 
   public void lightsYellow(){
     m_LEDLights.set(0.69);
+    SmartDashboard.putString("LED", "YELLOW");
     countdownTimer = 1000;
   }
 
   public void lightsPurple(){
     m_LEDLights.set(0.91);
+
+    SmartDashboard.putString("LED", "PURPLE");
     countdownTimer = 1000;
   }
 

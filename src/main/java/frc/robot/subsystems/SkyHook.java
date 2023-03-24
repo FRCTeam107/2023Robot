@@ -47,13 +47,13 @@ public class SkyHook extends SubsystemBase {
   //   static final double LOWERLIMIT = -20; // minimum value for position
   //   }
   public static final class ArmPositions{
-      static final double MAXFORWARDLIMIT = 135000; // maximum value for position
+      static final double MAXFORWARDLIMITx = 175000; // maximum value for position
       public static final double FULLFORWARD = 117000;
       static final double UNSAFEPOSITIONMAX = 1000; // upper point where not safe to extend elevator, and wrist must fold up
       public static final double STARTPOSITION = 0;
       static final double UNSAFEPOSITIONMIN= -30000; // lower point where not safe to extend elevator, and wrist must fold up
       public static final double FULLBACK = -165000;
-      static final double MAXBACKLIMIT = -170000; // minimum value for position
+      static final double MAXBACKLIMITx = -220000; // minimum value for position
 
       public static final double GROUNDPICKUP_FRONT = 2000;
       public static final double UPRIGHTCONE_FRONT = 2000;
@@ -394,8 +394,8 @@ static final class ExtensionConstants {
   //   m_ArmSetpoint = velocity;
   //  }
    public void SetArmSmartMotion(double position){
-    if (position < ArmPositions.MAXBACKLIMIT) {position = ArmPositions.MAXBACKLIMIT;}
-    if (position > ArmPositions.MAXFORWARDLIMIT) {position = ArmPositions.MAXFORWARDLIMIT;}
+    if (position < ArmPositions.MAXBACKLIMITx) {position = ArmPositions.MAXBACKLIMITx;}
+    if (position > ArmPositions.MAXFORWARDLIMITx) {position = ArmPositions.MAXFORWARDLIMITx;}
 
     m_ArmCtrlType = ControlMode.MotionMagic;
     m_ArmSetpoint = position;
