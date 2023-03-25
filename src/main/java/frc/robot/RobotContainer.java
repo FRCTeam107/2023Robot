@@ -37,6 +37,7 @@ import frc.robot.commands.SkyHook_Scoring;
 import frc.robot.commands.SkyHook_MoveArm;
 import frc.robot.commands.SkyHook_MoveElevator;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.DriveAuto;
 import frc.robot.commands.LED_ColorSet;
 import frc.robot.commands.ReplayFile;
 //import frc.robot.commands.ReplayFile;
@@ -174,7 +175,10 @@ public class RobotContainer {
         new SetRobotOrientationOnField(m_Drivetrain, 0.0)
         );
 
-
+      Command testAutoDrive = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+        new DriveAuto(m_Drivetrain, 0.2, 20.0, 0.0, 1007)
+        );
     // Command BlueTwoCubeRun = new SequentialCommandGroup(
     //     new SetRobotOrientationOnField(m_Drivetrain, 0.0),
     //     new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
@@ -203,6 +207,8 @@ public class RobotContainer {
     m_chooser.addOption("Cube and stay", CubeAndStay);
 
     m_chooser.addOption("play dead", PlayDead);
+
+    m_chooser.addOption("test autodrive", testAutoDrive);
 
 
     //m_chooser.addOption("Barrel", new Barrel(m_drivetrain));

@@ -16,7 +16,9 @@ import frc.robot.subsystems.SwerveDrivetrain;
 public class DriveAuto extends CommandBase {
 
   private final SwerveDrivetrain m_drivetrain;
-  private final double X_Drive, Y_Strafe, m_FaceHeading, m_Distance, m_StartingPosition;
+  private final double X_Drive, Y_Strafe, m_FaceHeading, m_Distance;
+
+  private final double[] m_StartingPositions;
 
   public DriveAuto(SwerveDrivetrain drivetrain, double speed, double driveAngle, double faceAngle, double distance) {
 
@@ -29,7 +31,8 @@ public class DriveAuto extends CommandBase {
     m_FaceHeading = faceAngle;
 
     // get current distance recorded on wheels to determine if we drove far enough
-    m_StartingPosition = 0;
+    m_StartingPositions = m_drivetrain.getDistances();
+
     //m_StartingPosition = m_drivetrain.get
 
     addRequirements(drivetrain);
@@ -57,7 +60,16 @@ public class DriveAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //TODO: get current distance on drivetrain and see if we went far enough to be done
-      return false;
+    //get current distance on drivetrain and see if we went far enough to be done
+    double[] currentDistances = m_drivetrain.getDistances();
+    //did we travel far enough? wheel drive distances (avg of wheels?)
+    int passCount = 0;
+    for (int i = 0; i < 4; i++) {
+      if (Math.abs(currentDistances[i] - m_StartingPositions[i]) >= m_Distance){
+        passCount ++;
+      }
+    }
+
+    return (passCount > 2); // done if at least 3 wheels drove enough
   }
 }
