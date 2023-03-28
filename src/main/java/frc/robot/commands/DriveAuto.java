@@ -18,26 +18,32 @@ public class DriveAuto extends CommandBase {
   private final SwerveDrivetrain m_drivetrain;
   private final double X_Drive, Y_Strafe, m_FaceHeading, m_Distance;
 
-  private final double[] m_StartingPositions;
+  private  double[] m_StartingPositions;
 
   public DriveAuto(SwerveDrivetrain drivetrain, double speed, double driveAngle, double faceAngle, double distance) {
 
     m_drivetrain = drivetrain;
     // requested drive speed is hypotenuse of right angle, calculate X and Y as if it is joystick
-    X_Drive = Math.cos(driveAngle) * speed;
-    Y_Strafe = Math.sin(driveAngle) * speed;
+    X_Drive = Math.sin(driveAngle) * speed;
+    Y_Strafe = Math.cos(driveAngle) * speed;
 
-    m_Distance = distance;
+    m_Distance = distance / 10000;
     m_FaceHeading = faceAngle;
 
     // get current distance recorded on wheels to determine if we drove far enough
-    m_StartingPositions = m_drivetrain.getDistances();
+    //m_StartingPositions = m_drivetrain.getDistances();
 
     //m_StartingPosition = m_drivetrain.get
 
     addRequirements(drivetrain);
 
     // this.rightController = controller2;
+  }
+
+  @Override
+  public void initialize(){
+        // get current distance recorded on wheels to determine if we drove far enough
+        m_StartingPositions = m_drivetrain.getDistances();
   }
 
   @Override
@@ -69,7 +75,16 @@ public class DriveAuto extends CommandBase {
         passCount ++;
       }
     }
+    SmartDashboard.putNumber("Auto_m_Distaince", m_Distance);
+    SmartDashboard.putBoolean("Auto_Pass0",  Math.abs(currentDistances[0] - m_StartingPositions[0]) >= m_Distance);
+    SmartDashboard.putNumber("Auto Dist", Math.abs(currentDistances[0] - m_StartingPositions[0]));
+
+    SmartDashboard.putNumber("AutoDrivePass", passCount);
+    if (passCount > 2){
+      m_drivetrain.drive(0,0,0,true);
+    }
 
     return (passCount > 2); // done if at least 3 wheels drove enough
   }
+
 }

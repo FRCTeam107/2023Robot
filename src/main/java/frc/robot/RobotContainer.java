@@ -32,11 +32,12 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FlightController;
 import frc.robot.commands.SkyHook_MoveWrist;
 import frc.robot.commands.SkyHook_RunIntake;
-import frc.robot.commands.SkyHook_ScoreBack;
 import frc.robot.commands.SkyHook_Scoring;
+import frc.robot.commands.SkyHook_ScoringPlus;
 import frc.robot.commands.SkyHook_MoveArm;
 import frc.robot.commands.SkyHook_MoveElevator;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.AutonPause;
 import frc.robot.commands.DriveAuto;
 import frc.robot.commands.LED_ColorSet;
 import frc.robot.commands.ReplayFile;
@@ -177,7 +178,9 @@ public class RobotContainer {
 
       Command testAutoDrive = new SequentialCommandGroup(
         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-        new DriveAuto(m_Drivetrain, 0.2, 20.0, 0.0, 1007)
+        new DriveAuto(m_Drivetrain, 0.2, 90.0, 0.0, 107),
+        new AutonPause(1),
+        new DriveAuto(m_Drivetrain, -0.2, 20.0, 0.0, 50)
         );
     // Command BlueTwoCubeRun = new SequentialCommandGroup(
     //     new SetRobotOrientationOnField(m_Drivetrain, 0.0),
@@ -293,24 +296,24 @@ public class RobotContainer {
     btnUprightCone.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.UPRIGHTCONE_FRONT
         ,ExtensionPositions.UPRIGHTCONE_FRONT, WristPositions.UPRIGHTCONE_FRONT));
 
-    btnMidFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER2SCORE_FRONT
-      , ExtensionPositions.TIER2SCORE_FRONT, WristPositions.TIER2SCORE_FRONT));
+    btnMidFront.onTrue(new SkyHook_ScoringPlus(m_skyHook, ArmPositions.TIER2SCORE_FRONT
+      , ExtensionPositions.TIER2SCORE_FRONT, WristPositions.TIER2SCORE_FRONT, m_controllerJoystick));
 
-    btnTopFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER3SCORE_FRONT
-      , ExtensionPositions.TIER3SCORE_FRONT, WristPositions.TIER3SCORE_FRONT));
+    btnTopFront.onTrue(new SkyHook_ScoringPlus(m_skyHook, ArmPositions.TIER3SCORE_FRONT
+      , ExtensionPositions.TIER3SCORE_FRONT, WristPositions.TIER3SCORE_FRONT, m_controllerJoystick));
 
     //btnScoreBack.onTrue(new SkyHook_ScoreBack(m_skyHook));
-    btnScoreBackMid.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.TIER2SCORE_BACK
-    , ExtensionPositions.TIER2SCORE_BACK, WristPositions.TIER2SCORE_BACK));
+    btnScoreBackMid.onTrue(new SkyHook_ScoringPlus(m_skyHook, ArmPositions.TIER2SCORE_BACK
+    , ExtensionPositions.TIER2SCORE_BACK, WristPositions.TIER2SCORE_BACK, m_controllerJoystick));
 
-    btnScoreBackHigh.onTrue(new SkyHook_Scoring(m_skyHook,ArmPositions.TIER3SCORE_BACK
-      , ExtensionPositions.TIER3SCORE_BACK, WristPositions.TIER3SCORE_BACK));
+    btnScoreBackHigh.onTrue(new SkyHook_ScoringPlus(m_skyHook,ArmPositions.TIER3SCORE_BACK
+      , ExtensionPositions.TIER3SCORE_BACK, WristPositions.TIER3SCORE_BACK, m_controllerJoystick));
 
     btnGroundPickupFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT
       , ExtensionPositions.GROUNDPICKUP_FRONT, WristPositions.GROUNDPICKUP_FRONT));
 
-    btnFeederPickupFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.FEEDERPICKUP_FRONT
-      , ExtensionPositions.FEEDERPICKUP_FRONT, WristPositions.FEEDERPICKUP_FRONT));
+    btnFeederPickupFront.onTrue(new SkyHook_ScoringPlus(m_skyHook, ArmPositions.FEEDERPICKUP_FRONT
+      , ExtensionPositions.FEEDERPICKUP_FRONT, WristPositions.FEEDERPICKUP_FRONT, m_controllerJoystick));
       //btnActivateLimelight.whenReleased(m_limelight::DisableVisionProcessing);
     }
 
