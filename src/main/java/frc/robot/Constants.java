@@ -113,6 +113,8 @@ public final class Constants {
                 public static final int SKYHOOK_EXTENDER = 16;
                 public static final int SKYHOOK_ARM = 17;
                 public static final int SKYHOOK_ARM2 = 18;
+
+                public static final int SKYHOOK_CANIFIER = 1;
         }
 
         // DIO Ports

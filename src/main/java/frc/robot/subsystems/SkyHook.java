@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
@@ -17,6 +18,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxPIDController;
+// import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.Solenoid;
@@ -28,6 +30,8 @@ public class SkyHook extends SubsystemBase {
 
   private final CANSparkMax m_ExtensionMotor;
   private final WPI_TalonFX m_WristMotor, m_IntakeMotor, m_ArmMotor, m_ArmMotor2;
+  private final CANifier m_Canifier;
+
   private ControlMode m_WristCtrlType, m_IntakeCtrlType, m_ArmCtrlType;
   private boolean inManualControlMode = false;
 
@@ -84,8 +88,8 @@ public class SkyHook extends SubsystemBase {
     public static final double TIER3SCORE_BACK = -35.5; //-61; //-110;
 
     //encoder position doesn't match setpoint for some reason
-    static final double SAFESETPOINTMIN = 22;//47;
-    static final double SAFEPOSITIONMIN = 28.5;//58; //setpoint=48
+    static final double SAFESETPOINTMIN = 13;//22;//47;
+    static final double SAFEPOSITIONMIN = 13;//28.5;//58; //setpoint=48
   }
   public static final class WristPositions{
     static final double MINLIMIT = -1500; //9000; // actual limit (upper limit switch hit)
@@ -191,6 +195,11 @@ static final class ExtensionConstants {
     m_ExtensionPID.setOutputRange(ExtensionConstants.kMinOutput, ExtensionConstants.kMaxOutput);
 
     // Skyhook "Arm" to make it flip-flop
+    m_Canifier = new CANifier(Motors.SKYHOOK_CANIFIER);
+    m_Canifier.configFactoryDefault();
+
+    //m_Canifier.setQuadraturePosition(0, 30);
+
     m_ArmMotor = new WPI_TalonFX(Motors.SKYHOOK_ARM);
     m_ArmMotor.configFactoryDefault();
     m_ArmMotor.config_kP(0, ArmConstants.kP);
@@ -203,6 +212,8 @@ static final class ExtensionConstants {
     m_ArmMotor.configPeakOutputReverse(ArmConstants.kMinOutput);
     m_ArmMotor.configMotionAcceleration(ArmConstants.kMaxAccel);
     m_ArmMotor.configMotionCruiseVelocity(ArmConstants.kCruiseVelocity);
+
+    m_ArmMotor.setSelectedSensorPosition(ArmPositions.STARTPOSITION);
    // m_ArmMotor.configuration
 
     m_ArmMotor2 = new WPI_TalonFX(Motors.SKYHOOK_ARM2);
@@ -236,7 +247,7 @@ static final class ExtensionConstants {
     m_WristMotor.configFactoryDefault();
     m_WristMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 100);
     m_WristMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 100);
-    m_WristMotor.setSelectedSensorPosition(WristPositions.STARTPOSITION * 4);
+    m_WristMotor.setSelectedSensorPosition(WristPositions.STARTPOSITION);
     m_WristMotor.setNeutralMode(NeutralMode.Brake);
     // m_shootbottom.configClosedloopRamp(0.3);
     // m_shoottop.configClosedloopRamp(0.3);
@@ -287,6 +298,8 @@ static final class ExtensionConstants {
     SmartDashboard.putNumber("dataRecorder." + datapoint.IntakeSpeed, m_IntakeSetpoint);
 
     SmartDashboard.putNumber("Arm.Position", GetArmPosition());
+    SmartDashboard.putNumber("Arm Canifier", m_Canifier.getQuadraturePosition());
+
     //SmartDashboard.putNumber("Arm.Velocity", GetArmVelocity());
     SmartDashboard.putBoolean("ArmInSafeZone", ArmInSafeZone());
     SmartDashboard.putBoolean("ArmWantsToMove", ArmWantsToMove());
