@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import javax.lang.model.util.ElementScanner14;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
@@ -62,28 +60,28 @@ public class SkyHook extends SubsystemBase {
       public static final double DRIVING = 2000;
       public static final double FEEDERPICKUP_FRONT = 60000;
       public static final double GROUNDSCORE_FRONT = 2000;
-      public static final double TIER2SCORE_FRONT = 115000;
-      public static final double TIER3SCORE_FRONT = 135000;
+      public static final double TIER2SCORE_FRONT = 111000;
+      public static final double TIER3SCORE_FRONT = 130000;
 
-      public static final double TIER2SCORE_BACK = -142000;
-      public static final double TIER3SCORE_BACK = -165000;
+      public static final double TIER2SCORE_BACK = -162000;
+      public static final double TIER3SCORE_BACK = -172000;
       }
   public static final class ExtensionPositions{
-    static final double RETRACTLIMIT = 28;//51;  //0; // actual limit (upper limit switch hit)
-    public static final double RETRACTED = 27.5;//49;//-5; // advertised retracted position
+    static final double RETRACTLIMIT = 17.5;//28;//51;  //0; // actual limit (upper limit switch hit)
+    public static final double RETRACTED = 16.5;//27.5;//49;//-5; // advertised retracted position
     static final double STARTPOSITION = 0;//-85;
-    public static final double EXTENDED = -61;//-100;//-100;
-    static final double EXTENDLIMIT = -61.5;//-115; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 7.5;//13;
-    public static final double UPRIGHTCONE_FRONT = 27.5;
+    public static final double EXTENDED = -35.5; //-61;//-100;//-100;
+    static final double EXTENDLIMIT = -36;//-50;//-61.5;//-115; // fully extended position
+    public static final double GROUNDPICKUP_FRONT = 4;//7.5;//13;
+    public static final double UPRIGHTCONE_FRONT = 16.5;//27.5;
     public static final double DRIVING = RETRACTED;
     public static final double FEEDERPICKUP_FRONT = RETRACTED;
     // public static final double GROUNDSCORE_FRONT = 5;
-    public static final double TIER2SCORE_FRONT = -4.5;//-10;
-    public static final double TIER3SCORE_FRONT = -62;//-115;
+    public static final double TIER2SCORE_FRONT = -2.9; //-4.5;//-10;
+    public static final double TIER3SCORE_FRONT = -35.5;//-62;//-115;
 
-    public static final double TIER2SCORE_BACK = 11.5; //20;
-    public static final double TIER3SCORE_BACK = -61; //-110;
+    public static final double TIER2SCORE_BACK = 6.5;//11.5; //20;
+    public static final double TIER3SCORE_BACK = -35.5; //-61; //-110;
 
     //encoder position doesn't match setpoint for some reason
     static final double SAFESETPOINTMIN = 22;//47;
