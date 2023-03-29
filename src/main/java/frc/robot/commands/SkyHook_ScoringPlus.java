@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
-import frc.robot.subsystems.SkyHook.ArmPositions;
-
 
 public class SkyHook_ScoringPlus extends CommandBase {
   /**
@@ -53,7 +51,7 @@ public class SkyHook_ScoringPlus extends CommandBase {
     SmartDashboard.putNumber("arm adjuster", m_Joystick.getThrottle());
 
     if (Math.abs(adjustFactor) > 0.1) {
-      double adjustedSetPoint = m_armSetPoint - Math.copySign(adjustFactor * 15000, adjustFactor);
+      double adjustedSetPoint = m_armSetPoint;// - Math.copySign(adjustFactor * 200, adjustFactor);
       m_skyHook.SetArmSmartMotion(adjustedSetPoint);
     }
     else{

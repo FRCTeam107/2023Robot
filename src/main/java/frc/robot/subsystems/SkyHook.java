@@ -9,8 +9,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -51,32 +54,32 @@ public class SkyHook extends SubsystemBase {
   //   static final double LOWERLIMIT = -20; // minimum value for position
   //   }
   public static final class ArmPositions{
-      public static final double MAXFORWARDLIMIT = 175000; // maximum value for position
-      public static final double FULLFORWARD = 117000;
-      static final double UNSAFEPOSITIONMAX = 1000; // upper point where not safe to extend elevator, and wrist must fold up
+      public static final double MAXFORWARDLIMIT = 3000; //175000; // maximum value for position
+      public static final double FULLFORWARD = 2500; //117000;
+     //static final double UNSAFEPOSITIONMAX = 1; //1000; // upper point where not safe to extend elevator, and wrist must fold up
       public static final double STARTPOSITION = 0;
-      static final double UNSAFEPOSITIONMIN= -30000; // lower point where not safe to extend elevator, and wrist must fold up
-      public static final double FULLBACK = -165000;
-      public static final double MAXBACKLIMIT = -220000; // minimum value for position
+      //static final double UNSAFEPOSITIONMIN= -1;// -30000; // lower point where not safe to extend elevator, and wrist must fold up
+      public static final double FULLBACK = -2500; //-165000;
+      public static final double MAXBACKLIMIT = -3000; //-220000; // minimum value for position
 
-      public static final double GROUNDPICKUP_FRONT = 2000;
-      public static final double UPRIGHTCONE_FRONT = 2000;
-      public static final double DRIVING = 2000;
-      public static final double FEEDERPICKUP_FRONT = 60000;
-      public static final double GROUNDSCORE_FRONT = 2000;
-      public static final double TIER2SCORE_FRONT = 111000;
-      public static final double TIER3SCORE_FRONT = 130000;
+      public static final double GROUNDPICKUP_FRONT = 6;//2000;
+      public static final double UPRIGHTCONE_FRONT = 6;//2000;
+      public static final double DRIVING = 6; //2000;
+      public static final double FEEDERPICKUP_FRONT = 1233;//60000;
+      public static final double GROUNDSCORE_FRONT = 6;  //2000;
+      public static final double TIER2SCORE_FRONT = 2200; // 111000;
+      public static final double TIER3SCORE_FRONT = 2535; // 130000;
 
-      public static final double TIER2SCORE_BACK = -162000;
-      public static final double TIER3SCORE_BACK = -172000;
+      public static final double TIER2SCORE_BACK = -2390; //-162000;
+      public static final double TIER3SCORE_BACK = -2710; //-172000;
       }
   public static final class ExtensionPositions{
-    static final double RETRACTLIMIT = 17.5;//28;//51;  //0; // actual limit (upper limit switch hit)
-    public static final double RETRACTED = 16.5;//27.5;//49;//-5; // advertised retracted position
+    static final double RETRACTLIMIT = 18.5;//28;//51;  //0; // actual limit (upper limit switch hit)
+    public static final double RETRACTED = 17.5;//27.5;//49;//-5; // advertised retracted position
     static final double STARTPOSITION = 0;//-85;
     public static final double EXTENDED = -35.5; //-61;//-100;//-100;
     static final double EXTENDLIMIT = -36;//-50;//-61.5;//-115; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 4;//7.5;//13;
+    public static final double GROUNDPICKUP_FRONT = 1;//7.5;//13;
     public static final double UPRIGHTCONE_FRONT = 16.5;//27.5;
     public static final double DRIVING = RETRACTED;
     public static final double FEEDERPICKUP_FRONT = RETRACTED;
@@ -92,8 +95,8 @@ public class SkyHook extends SubsystemBase {
     static final double SAFEPOSITIONMIN = 13;//28.5;//58; //setpoint=48
   }
   public static final class WristPositions{
-    static final double MINLIMIT = -1500; //9000; // actual limit (upper limit switch hit)
-    public static final double FRONTFOLDUP = -1500;//-8600; // advertised retracted position
+    static final double MINLIMIT = -1500;//-1500; //9000; // actual limit (upper limit switch hit)
+    public static final double FRONTFOLDUP = -1000;//-1500;//-8600; // advertised retracted position
     static final double STARTPOSITION = 0;//-9000;//-13000;
     public static final double BACKFOLDUP = 16500;
     static final double MAXLIMIT = 16500;//-9000; // fully extended position
@@ -121,15 +124,15 @@ static final class ExtensionConstants {
 
   static final class ArmConstants { 
     // PID values
-    static final double kP = 0.2;//0.03;
+    static final double kP = 0.7; //0.2;//0.03;
     static final double kI = 1e-6;
     static final double kD = 0;
     static final double kIz = 0;
-    static final double kFF = 0.05;//.000015;
+    static final double kFF = 0.08;//.000015;
     static final double kMaxOutput = 1;
     static final double kMinOutput = -1;
-    static final double kCruiseVelocity = 45000;
-    static final double kMaxAccel = 18000;
+    static final double kCruiseVelocity = 40000;
+    static final double kMaxAccel = 3000;
   }
   static final class WristConstants { 
     // PID values
@@ -197,7 +200,6 @@ static final class ExtensionConstants {
     // Skyhook "Arm" to make it flip-flop
     m_Canifier = new CANifier(Motors.SKYHOOK_CANIFIER);
     m_Canifier.configFactoryDefault();
-
     //m_Canifier.setQuadraturePosition(0, 30);
 
     m_ArmMotor = new WPI_TalonFX(Motors.SKYHOOK_ARM);
@@ -207,12 +209,31 @@ static final class ExtensionConstants {
     m_ArmMotor.config_kD(0, ArmConstants.kD);
     m_ArmMotor.config_IntegralZone(0, ArmConstants.kIz);
     m_ArmMotor.config_kF(0, ArmConstants.kFF);
+ 
+    TalonFXConfiguration armTalonFXConfiguration = new TalonFXConfiguration();
+    armTalonFXConfiguration.slot0.kP = ArmConstants.kP;
+    armTalonFXConfiguration.slot0.kI = ArmConstants.kI;
+    armTalonFXConfiguration.slot0.kD = ArmConstants.kD;
+    armTalonFXConfiguration.slot0.integralZone = ArmConstants.kIz;
+    armTalonFXConfiguration.slot0.kF = ArmConstants.kFF;
+    armTalonFXConfiguration.slot0.closedLoopPeakOutput = ArmConstants.kMaxOutput;
+    // Use the CANCoder as the remote sensor for the primary TalonFX PID
+    armTalonFXConfiguration.remoteFilter0.remoteSensorDeviceID = m_Canifier.getDeviceID();
+    armTalonFXConfiguration.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_Quadrature; 
+  
+    armTalonFXConfiguration.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+    m_ArmMotor.configAllSettings(armTalonFXConfiguration);
     m_ArmMotor.configClosedLoopPeakOutput(0, ArmConstants.kMaxOutput);
     m_ArmMotor.configPeakOutputForward(ArmConstants.kMaxOutput);
     m_ArmMotor.configPeakOutputReverse(ArmConstants.kMinOutput);
     m_ArmMotor.configMotionAcceleration(ArmConstants.kMaxAccel);
     m_ArmMotor.configMotionCruiseVelocity(ArmConstants.kCruiseVelocity);
-
+    
+    // Use the CANCoder as the remote sensor for the primary TalonFX PID
+    //m_ArmMotor.configRemoteFeedbackFilter(m_Canifier.getDeviceID(), RemoteSensorSource.CANifier_Quadrature, 0);
+    //m_ArmMotor.configRe .primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+    m_ArmMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
+    //m_ArmMotor.configSelectedFeedbackSensor(m_Canifier.getDeviceID(), RemoteSensorSource.CANifier_Quadrature, 0);
     m_ArmMotor.setSelectedSensorPosition(ArmPositions.STARTPOSITION);
    // m_ArmMotor.configuration
 
@@ -441,8 +462,8 @@ static final class ExtensionConstants {
     //double position = GetArmPosition();
     // never safe if moving
     if (Math.abs(GetArmVelocity()) > (ArmConstants.kMaxAccel / 50) ) { return false; }
-
-    return (GetArmPosition() < ArmPositions.UNSAFEPOSITIONMIN || GetArmPosition() > ArmPositions.UNSAFEPOSITIONMAX);
+    return true;
+    //return (GetArmPosition() < ArmPositions.UNSAFEPOSITIONMIN || GetArmPosition() > ArmPositions.UNSAFEPOSITIONMAX);
    }
 
    private boolean ArmWantsToMove(){
@@ -450,19 +471,19 @@ static final class ExtensionConstants {
       return false;   // no request to move the arm
     }
 
-    // if arm set to go to unsafe position, assume bad things
-    if ((m_ArmSetpoint > ArmPositions.UNSAFEPOSITIONMIN)
-    && (m_ArmSetpoint < ArmPositions.UNSAFEPOSITIONMAX)) { 
-      return true; // arm set to go to an unsafe position
-    }
-    // if arm IS in an unsafe position
-    if ((GetArmPosition() > ArmPositions.UNSAFEPOSITIONMIN)
-    && (GetArmPosition() < ArmPositions.UNSAFEPOSITIONMAX)){
-      return true; // arm is in unsafe position
-    }
+    // // if arm set to go to unsafe position, assume bad things
+    // if ((m_ArmSetpoint > ArmPositions.UNSAFEPOSITIONMIN)
+    // && (m_ArmSetpoint < ArmPositions.UNSAFEPOSITIONMAX)) { 
+    //   return true; // arm set to go to an unsafe position
+    // }
+    // // if arm IS in an unsafe position
+    // if ((GetArmPosition() > ArmPositions.UNSAFEPOSITIONMIN)
+    // && (GetArmPosition() < ArmPositions.UNSAFEPOSITIONMAX)){
+    //   return true; // arm is in unsafe position
+    // }
 
     // if arm is not near to  or more away from desired position
-    if (Math.abs(GetArmPosition() - m_ArmSetpoint) > 1500) {
+    if (Math.abs(GetArmPosition() - m_ArmSetpoint) > 100) {
       return true;  // arm not where requested
     }
     return false; // arm is safely where requested

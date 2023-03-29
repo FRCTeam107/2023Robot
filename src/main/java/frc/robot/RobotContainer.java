@@ -279,7 +279,7 @@ public class RobotContainer {
     btnWristUp.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.BACKFOLDUP));
     btnWristUp.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.GROUNDPICKUP_FRONT));
+    btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.FRONTFOLDUP));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
     btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.MAXFORWARDLIMIT));
