@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ControllerJoystick;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.Constants.FlightController;
 import frc.robot.commands.SkyHook_MoveWrist;
 import frc.robot.commands.SkyHook_RunIntake;
@@ -56,7 +57,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveDrivetrain;
 //import frc.robot.subsystems.VisionCamera;
 import frc.robot.subsystems.SkyHook;
-import frc.robot.subsystems.VisionCamera;
+//import frc.robot.subsystems.VisionCamera;
 import frc.robot.subsystems.SkyHook.ArmPositions;
 import frc.robot.subsystems.SkyHook.ExtensionPositions;
 //import frc.robot.commands.ClimberResetToHome;
@@ -90,6 +91,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    CameraServer.startAutomaticCapture();
+    
     m_flightcontroller = new Joystick(Constants.UsbPorts.FlightController);
     m_flightcontroller.setXChannel(FlightController.DRIVE_X_AXIS);
     m_flightcontroller.setYChannel(FlightController.DRIVE_Y_AXIS);

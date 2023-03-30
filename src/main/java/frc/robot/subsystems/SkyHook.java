@@ -70,8 +70,8 @@ public class SkyHook extends SubsystemBase {
       public static final double TIER2SCORE_FRONT = 2200; // 111000;
       public static final double TIER3SCORE_FRONT = 2535; // 130000;
 
-      public static final double TIER2SCORE_BACK = -2390; //-162000;
-      public static final double TIER3SCORE_BACK = -2710; //-172000;
+      public static final double TIER2SCORE_BACK = -2350; //-162000;
+      public static final double TIER3SCORE_BACK = -2650; //-172000;
       }
   public static final class ExtensionPositions{
     static final double RETRACTLIMIT = 18.5;//28;//51;  //0; // actual limit (upper limit switch hit)
@@ -79,7 +79,7 @@ public class SkyHook extends SubsystemBase {
     static final double STARTPOSITION = 0;//-85;
     public static final double EXTENDED = -35.5; //-61;//-100;//-100;
     static final double EXTENDLIMIT = -36;//-50;//-61.5;//-115; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 1;//7.5;//13;
+    public static final double GROUNDPICKUP_FRONT = 6;//7.5;//13;
     public static final double UPRIGHTCONE_FRONT = 16.5;//27.5;
     public static final double DRIVING = RETRACTED;
     public static final double FEEDERPICKUP_FRONT = RETRACTED;
