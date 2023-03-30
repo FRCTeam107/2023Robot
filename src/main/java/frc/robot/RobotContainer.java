@@ -160,6 +160,20 @@ public class RobotContainer {
         //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "cubebal.csv")
         );
 
+    Command TwoCubeThrow = new SequentialCommandGroup(
+          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
+          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "runforcubebelow.csv")
+           );
+
+    Command TwoCubeMid = new SequentialCommandGroup(
+          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
+          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "runforcubemid.csv")
+          );
+      
       Command OneConeRun = new SequentialCommandGroup(
           new SetRobotOrientationOnField(m_Drivetrain, 0.0),
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
@@ -202,10 +216,13 @@ public class RobotContainer {
     m_chooser.addOption("Center Cube+Balance", CenterCubeBalance);
     m_chooser.addOption("Ctr Cone and Balance", CenterConeBalance);
 
-    m_chooser.addOption("Center Cube+Balance Fast", CenterCubeBalance);
-    m_chooser.addOption("Ctr Cone and Balance Fast", CenterConeBalance);
+    m_chooser.addOption("Center Cube+Balance Fast", CenterCubeBalanceFast);
+    m_chooser.addOption("Ctr Cone and Balance Fast", CenterConeBalanceFast);
 
     m_chooser.addOption("Cube and Run", CubeAndRun);
+    m_chooser.addOption("Two Cube - throw", TwoCubeThrow);
+    m_chooser.addOption("Two cube Mid", TwoCubeMid);
+
     m_chooser.addOption("One Cone Run", OneConeRun);
 
     //m_chooser.addOption("2 cube run", BlueTwoCubeRun);
