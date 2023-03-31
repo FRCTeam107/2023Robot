@@ -42,7 +42,7 @@ public class AutoBalance extends CommandBase {
    
     double checkGyro = 0;
     double multiplier = 0.0075;
-    double maxCorrection = 0.09;
+    double maxCorrection = 0.091;
     double rollCorrection = 0, pitchCorrection = 0;
 
     checkGyro = m_drivetrain.getRoll();
@@ -73,14 +73,14 @@ public class AutoBalance extends CommandBase {
 
 
 // if we are in the final moments of auton, then lock the wheels
-      if ( edu.wpi.first.wpilibj.Timer.getMatchTime() < 0.5){
+      if ( edu.wpi.first.wpilibj.Timer.getMatchTime() < 0.25){
         m_drivetrain.xFormat();
-        balanceWaittimeout = 50;
+        balanceWaittimeout = 40;
         switchBackCounter = 0;
       }
       else if (Math.abs(BalanceCorrection) < 0.02){
         m_drivetrain.xFormat();
-        balanceWaittimeout = 50;
+        balanceWaittimeout = 40;
         switchBackCounter = 0;
      }
      else {
