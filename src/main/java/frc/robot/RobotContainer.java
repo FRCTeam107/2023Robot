@@ -157,8 +157,7 @@ public class RobotContainer {
         new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
         new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleStraightRun.csv")
-        //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "cubebal.csv")
-        );
+       );
 
     Command TwoCubeThrow = new SequentialCommandGroup(
           new SetRobotOrientationOnField(m_Drivetrain, 0.0),
@@ -179,7 +178,6 @@ public class RobotContainer {
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
           new SetRobotOrientationOnField(m_Drivetrain, 0.0),
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleStraight.csv")
-          //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "cubebal.csv")
           );
 
       Command CubeAndStay = new SequentialCommandGroup(
