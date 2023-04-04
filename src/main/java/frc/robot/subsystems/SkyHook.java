@@ -62,11 +62,11 @@ public class SkyHook extends SubsystemBase {
       public static final double FULLBACK = -2500; //-165000;
       public static final double MAXBACKLIMIT = -3000; //-220000; // minimum value for position
 
-      public static final double GROUNDPICKUP_FRONT = 6;//2000;
-      public static final double UPRIGHTCONE_FRONT = 6;//2000;
-      public static final double DRIVING = 6; //2000;
-      public static final double FEEDERPICKUP_FRONT = 1233;//60000;
-      public static final double GROUNDSCORE_FRONT = 6;  //2000;
+      public static final double GROUNDPICKUP_FRONT = 107;//2000;
+      public static final double UPRIGHTCONE_FRONT = 107;//2000;
+      public static final double DRIVING = 10; //2000
+      public static final double FEEDERPICKUP_FRONT = 1333;//60000;
+      public static final double GROUNDSCORE_FRONT = 10;  //2000;
       public static final double TIER2SCORE_FRONT = 2200; // 111000;
       public static final double TIER3SCORE_FRONT = 2535; // 130000;
 
@@ -79,8 +79,8 @@ public class SkyHook extends SubsystemBase {
     static final double STARTPOSITION = 0;//-85;
     public static final double EXTENDED = -35.5; //-61;//-100;//-100;
     static final double EXTENDLIMIT = -36;//-50;//-61.5;//-115; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 2;//7.5;//13;
-    public static final double UPRIGHTCONE_FRONT = 16.5;//27.5;
+    public static final double GROUNDPICKUP_FRONT = 6;//7.5;//13;
+    public static final double UPRIGHTCONE_FRONT = 17.5;//27.5;
     public static final double DRIVING = RETRACTED;
     public static final double FEEDERPICKUP_FRONT = RETRACTED;
     // public static final double GROUNDSCORE_FRONT = 5;
@@ -100,10 +100,10 @@ public class SkyHook extends SubsystemBase {
     static final double STARTPOSITION = 0;//-9000;//-13000;
     public static final double BACKFOLDUP = 16500;
     static final double MAXLIMIT = 16500;//-9000; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 1500;
+    public static final double GROUNDPICKUP_FRONT = 3000;
     public static final double UPRIGHTCONE_FRONT = 3000;
     public static final double DRIVING = 10;
-    public static final double FEEDERPICKUP_FRONT = 2500;
+    public static final double FEEDERPICKUP_FRONT = -700;
     public static final double GROUNDSCORE_FRONT = -1000;
     public static final double TIER2SCORE_FRONT = 10500;
     public static final double TIER3SCORE_FRONT = 11000;

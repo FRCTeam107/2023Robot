@@ -173,19 +173,19 @@ public class RobotContainer {
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "runforcubelow.csv")
            );
 
-    Command TwoCubeMid = new SequentialCommandGroup(
+    Command TwoCubeMidBlue = new SequentialCommandGroup(
           new SetRobotOrientationOnField(m_Drivetrain, 0.0),
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
           new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "runforcubemid.csv")
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "runforcubemid_BLUE.csv")
           );
-      
-    // Command TwoCubeMidREd = new SequentialCommandGroup(
-    //         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-    //         new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
-    //         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-    //         new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "runforcubemid_RED.csv")
-    //         );
+    
+    Command TwoCubeMidREd = new SequentialCommandGroup(
+            new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
+            new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "runforcubemid_RED.csv")
+            );
       
     Command OneConeRun = new SequentialCommandGroup(
           new SetRobotOrientationOnField(m_Drivetrain, 0.0),
@@ -234,8 +234,8 @@ public class RobotContainer {
 
     m_chooser.addOption("Cube and Run", CubeAndRun);
     m_chooser.addOption("Two Cube - throw", TwoCubeThrow);
-    m_chooser.addOption("Two cube Mid", TwoCubeMid);
-   // m_chooser.addOption("Two cube Mid - RED", TwoCubeMidREd);
+    m_chooser.addOption("Two cube Mid - BLUE", TwoCubeMidBlue);
+    m_chooser.addOption("Two cube Mid - RED", TwoCubeMidREd);
     m_chooser.addOption("One Cone Run", OneConeRun);
 
     //m_chooser.addOption("2 cube run", BlueTwoCubeRun);
