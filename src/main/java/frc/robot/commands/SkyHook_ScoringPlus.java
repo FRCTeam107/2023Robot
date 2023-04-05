@@ -7,23 +7,28 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SkyHook;
-import frc.robot.subsystems.SkyHook.ArmPositions;
-import frc.robot.subsystems.SkyHook.ExtensionPositions;
-import frc.robot.subsystems.SkyHook.WristPositions;
 
-
-public class SkyHook_ScoreBack extends CommandBase {
+public class SkyHook_ScoringPlus extends CommandBase {
   /**
    * Creates a new Shoot.`
    */
   private final SkyHook m_skyHook;
-  private int ScoreTier = 0;
+  private final double m_armSetPoint;
+  private final double m_extensionSetPoint;
+  private final double m_wristSetPoint;
+  private final Joystick m_Joystick;
+  //private final double m_intakeSpeed;
 
-  public SkyHook_ScoreBack(SkyHook _skyHook) {
+  public SkyHook_ScoringPlus(SkyHook _skyHook, Double _armPosition, Double _extensionPosition, Double _wristPosition, Joystick _controller) {
     m_skyHook = _skyHook;
+    m_armSetPoint = _armPosition;
+    m_extensionSetPoint = _extensionPosition;
+    m_wristSetPoint = _wristPosition;
+    m_Joystick = _controller;
     //m_intakeSpeed = _intakeSpeed;
 
 
@@ -42,19 +47,20 @@ public class SkyHook_ScoreBack extends CommandBase {
   public void execute() {
     m_skyHook.setManualControlMode(false);
     
-    ScoreTier =(ScoreTier + 1) % 2;
-    //SmartDashboard.putNumber("Score Back", ScoreTier);
+    double adjustFactor = m_Joystick.getThrottle(); // + 1.0) / 2.0; // get number from -1 to 1
+    SmartDashboard.putNumber("arm adjuster", m_Joystick.getThrottle());
 
-    if ( ScoreTier == 1 ){
-      m_skyHook.SetArmSmartMotion(ArmPositions.TIER2SCORE_BACK);
-      m_skyHook.SetExtensionPosition(ExtensionPositions.TIER2SCORE_BACK);
-      m_skyHook.SetWristPosition(WristPositions.TIER2SCORE_BACK);
+    if (Math.abs(adjustFactor) > 0.1) {
+      double adjustedSetPoint = m_armSetPoint;// - Math.copySign(adjustFactor * 200, adjustFactor);
+      m_skyHook.SetArmSmartMotion(adjustedSetPoint);
     }
-    else {
-      m_skyHook.SetArmSmartMotion(ArmPositions.TIER3SCORE_BACK);
-      m_skyHook.SetExtensionPosition(ExtensionPositions.TIER3SCORE_BACK);
-      m_skyHook.SetWristPosition(WristPositions.TIER3SCORE_BACK);
-     }
+    else{
+      m_skyHook.SetArmSmartMotion(m_armSetPoint);
+    }
+        
+    m_skyHook.SetExtensionPosition(m_extensionSetPoint);
+    m_skyHook.SetWristPosition(m_wristSetPoint);
+    //m_skyHook.SetIntakePower(m_intakeSpeed);
   }
 
   // Called once the command ends or is interrupted.

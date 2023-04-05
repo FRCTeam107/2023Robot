@@ -113,6 +113,8 @@ public final class Constants {
                 public static final int SKYHOOK_EXTENDER = 16;
                 public static final int SKYHOOK_ARM = 17;
                 public static final int SKYHOOK_ARM2 = 18;
+
+                public static final int SKYHOOK_CANIFIER = 1;
         }
 
         // DIO Ports
@@ -149,7 +151,7 @@ public final class Constants {
                                 new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
                 // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
-                public static final double kMaxSpeedMetersPerSecond = 0.95; //0.85;//0.88;//0.85;//Units.feetToMeters(6);
+                public static final double kMaxSpeedMetersPerSecond = 1.05; //0.85;//0.88;//0.85;//Units.feetToMeters(6);
 
   //these are limits you can change!!!
                // public static final double kMaxSpeed = Units.feetToMeters(13);//(13.6); // 20 feet per second

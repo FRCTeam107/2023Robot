@@ -229,6 +229,12 @@ public class SwerveDrivetrain extends SubsystemBase {
     public double getHeading() {
       return m_gyro.getRotation2d().getDegrees();
     }
+
+    public double[] getDistances(){
+      double[] retVal ={m_frontLeft.getDistance(), m_frontRight.getDistance(),
+              m_rearLeft.getDistance(), m_rearRight.getDistance()};
+      return retVal;
+    }
   
     /**
      * Returns the turn rate of the robot.
