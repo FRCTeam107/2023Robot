@@ -65,10 +65,10 @@ public class SkyHook extends SubsystemBase {
       public static final double GROUNDPICKUP_FRONT = 107;//2000;
       public static final double UPRIGHTCONE_FRONT = 107;//2000;
       public static final double DRIVING = 10; //2000
-      public static final double FEEDERPICKUP_FRONT = 1333;//60000;
+      public static final double FEEDERPICKUP_FRONT = 1083;//60000;
       public static final double GROUNDSCORE_FRONT = 10;  //2000;
-      public static final double TIER2SCORE_FRONT = 2200; // 111000;
-      public static final double TIER3SCORE_FRONT = 2535; // 130000;
+      public static final double TIER2SCORE_FRONT = 2150;//2200; // 111000;
+      public static final double TIER3SCORE_FRONT = 2450;//2535; // 130000;
 
       public static final double TIER2SCORE_BACK = -2350; //-162000;
       public static final double TIER3SCORE_BACK = -2650; //-172000;

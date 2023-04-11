@@ -143,7 +143,12 @@ public class RobotContainer {
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "centerbalancefast.csv"),
           new AutoBalance(m_Drivetrain)
           );
-
+      Command CenterBalanceOnly = new SequentialCommandGroup(
+            new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "centerbalancefast.csv"),
+            new AutoBalance(m_Drivetrain)
+            );
+  
     // Command CenterConeBalance = new SequentialCommandGroup(
     //       new SetRobotOrientationOnField(m_Drivetrain, 0.0),
     //       new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
@@ -243,6 +248,7 @@ public class RobotContainer {
     // m_chooser.addOption("Center Cube+Balance", CenterCubeBalance);
     // m_chooser.addOption("Ctr Cone and Balance", CenterConeBalance);
 
+    m_chooser.addOption("Balance Only", CenterBalanceOnly);
     m_chooser.addOption("Cube and Balance", CenterCubeBalanceFast);
     m_chooser.addOption("Cone and Balance", CenterConeBalanceFast);
     m_chooser.addOption("Over and Back", OverAndBack);
