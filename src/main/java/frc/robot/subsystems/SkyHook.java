@@ -32,7 +32,7 @@ import frc.robot.subsystems.DataRecorder.datapoint;
 public class SkyHook extends SubsystemBase {
 
   private final CANSparkMax m_ExtensionMotor;
-  private final WPI_TalonFX m_WristMotor, m_IntakeMotor, m_ArmMotor, m_ArmMotor2;
+  private final WPI_TalonFX m_WristMotor, m_IntakeMotor, m_ArmMotor;//, m_ArmMotor2;
   private final CANifier m_Canifier;
 
   private ControlMode m_WristCtrlType, m_IntakeCtrlType, m_ArmCtrlType;
@@ -54,24 +54,25 @@ public class SkyHook extends SubsystemBase {
   //   static final double LOWERLIMIT = -20; // minimum value for position
   //   }
   public static final class ArmPositions{
-      public static final double MAXFORWARDLIMIT = 3000; //175000; // maximum value for position
-      public static final double FULLFORWARD = 2500; //117000;
+      static final double MINLIMIT = -3000; //175000; // minimum value for position
+      static final double MAXLIMIT = 3000; //-220000; // maximum value for position
+      public static final double FULLFORWARD = -2500; //117000;
      //static final double UNSAFEPOSITIONMAX = 1; //1000; // upper point where not safe to extend elevator, and wrist must fold up
       public static final double STARTPOSITION = 0;
       //static final double UNSAFEPOSITIONMIN= -1;// -30000; // lower point where not safe to extend elevator, and wrist must fold up
-      public static final double FULLBACK = -2500; //-165000;
-      public static final double MAXBACKLIMIT = -3000; //-220000; // minimum value for position
+      public static final double FULLBACK = 2500; //-165000;
+      
 
-      public static final double GROUNDPICKUP_FRONT = 107;//2000;
-      public static final double UPRIGHTCONE_FRONT = 107;//2000;
-      public static final double DRIVING = 10; //2000
-      public static final double FEEDERPICKUP_FRONT = 1083;//60000;
-      public static final double GROUNDSCORE_FRONT = 10;  //2000;
-      public static final double TIER2SCORE_FRONT = 2150;//2200; // 111000;
-      public static final double TIER3SCORE_FRONT = 2450;//2535; // 130000;
+      public static final double GROUNDPICKUP_FRONT = -107;//2000;
+      public static final double UPRIGHTCONE_FRONT = -107;//2000;
+      public static final double DRIVING = -10; //2000
+      public static final double FEEDERPICKUP_FRONT = -900;//60000;
+      public static final double GROUNDSCORE_FRONT = -10;  //2000;
+      public static final double TIER2SCORE_FRONT = -2050;//2200; // 111000;
+      public static final double TIER3SCORE_FRONT = -2400;//2535; // 130000;
 
-      public static final double TIER2SCORE_BACK = -2350; //-162000;
-      public static final double TIER3SCORE_BACK = -2650; //-172000;
+      public static final double TIER2SCORE_BACK = 2350; //-162000;
+      public static final double TIER3SCORE_BACK = 2650; //-172000;
       }
   public static final class ExtensionPositions{
     static final double RETRACTLIMIT = 18.5;//28;//51;  //0; // actual limit (upper limit switch hit)
@@ -84,7 +85,7 @@ public class SkyHook extends SubsystemBase {
     public static final double DRIVING = RETRACTED;
     public static final double FEEDERPICKUP_FRONT = RETRACTED;
     // public static final double GROUNDSCORE_FRONT = 5;
-    public static final double TIER2SCORE_FRONT = -2.9; //-4.5;//-10;
+    public static final double TIER2SCORE_FRONT = 7.5;// -2.9; //-4.5;//-10;
     public static final double TIER3SCORE_FRONT = -35.5;//-62;//-115;
 
     public static final double TIER2SCORE_BACK = 6.5;//11.5; //20;
@@ -124,11 +125,11 @@ static final class ExtensionConstants {
 
   static final class ArmConstants { 
     // PID values
-    static final double kP = 0.7; //0.2;//0.03;
-    static final double kI = 1e-6;
+    static final double kP = 0.8;//0.7; //0.2;//0.03;
+    static final double kI = 0.0003; //1e-6;
     static final double kD = 0;
-    static final double kIz = 0;
-    static final double kFF = 0.08;//.000015;
+    static final double kIz = 800;//0;
+    static final double kFF = 0.107;// 0.08;//.000015;
     static final double kMaxOutput = 1;
     static final double kMinOutput = -1;
     static final double kCruiseVelocity = 40000;
@@ -237,16 +238,10 @@ static final class ExtensionConstants {
     m_ArmMotor.setSelectedSensorPosition(ArmPositions.STARTPOSITION);
    // m_ArmMotor.configuration
 
-    m_ArmMotor2 = new WPI_TalonFX(Motors.SKYHOOK_ARM2);
-    m_ArmMotor2.configFactoryDefault();
-    m_ArmMotor2.follow(m_ArmMotor);
-    m_ArmMotor2.setInverted(false);
-    // m_ArmMotor = new CANSparkMax(Motors.SKYHOOK_RIGHTARM, MotorType.kBrushless);
-    // m_ArmMotor.restoreFactoryDefaults();
-    // m_ArmMotor.setIdleMode(IdleMode.kBrake);
-    // m_ArmMotor.getEncoder().setPosition(ArmPositions.STARTPOSITION);
-    // m_ArmMotor.setSmartCurrentLimit(20);
-
+    // m_ArmMotor2 = new WPI_TalonFX(Motors.SKYHOOK_ARM2);
+    // m_ArmMotor2.configFactoryDefault();
+    // m_ArmMotor2.follow(m_ArmMotor);
+    // m_ArmMotor2.setInverted(false);
     // // reduce communication on CAN bus
     // m_ArmMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
     // m_ArmMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 100);
@@ -439,8 +434,8 @@ static final class ExtensionConstants {
   //   m_ArmSetpoint = velocity;
   //  }
    public void SetArmSmartMotion(double position){
-    if (position < ArmPositions.MAXBACKLIMIT) {position = ArmPositions.MAXBACKLIMIT;}
-    if (position > ArmPositions.MAXFORWARDLIMIT) {position = ArmPositions.MAXFORWARDLIMIT;}
+    if (position < ArmPositions.MINLIMIT) {position = ArmPositions.MINLIMIT;}
+    if (position > ArmPositions.MAXLIMIT) {position = ArmPositions.MAXLIMIT;}
 
     m_ArmCtrlType = ControlMode.MotionMagic;
     m_ArmSetpoint = position;

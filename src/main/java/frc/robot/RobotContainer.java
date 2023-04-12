@@ -334,10 +334,10 @@ public class RobotContainer {
     btnWristDown.onTrue(new SkyHook_MoveWrist(m_skyHook, WristPositions.FRONTFOLDUP));
     btnWristDown.onFalse(new SkyHook_MoveWrist(m_skyHook, 0.0));
 
-    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.MAXFORWARDLIMIT));
+    btnSkyhookForward.whileTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.FULLFORWARD));
     btnSkyhookForward.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0));
 
-    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.MAXBACKLIMIT));
+    btnSkyhookBack.onTrue(new SkyHook_MoveArm(m_skyHook, ArmPositions.FULLBACK));
     btnSkyhookBack.onFalse(new SkyHook_MoveArm(m_skyHook, 0.0));
     // // btnCameraToggle.whenPressed(m_Camera::changeCamera);
      //btnActivateLimelight.whenPressed(m_limelight::EnableVisionProcessing);
