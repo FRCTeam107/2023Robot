@@ -129,9 +129,9 @@ public class RobotContainer {
     //     new AutoBalance(m_Drivetrain)
     //     );
 
-    Command OverAndBack = new SequentialCommandGroup(
+    Command OverAndBackFront = new SequentialCommandGroup(
           new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHighFront.csv"),
           new SetRobotOrientationOnField(m_Drivetrain, 0.0),
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "over.csv"),
           new AutoBalance(m_Drivetrain)
@@ -213,9 +213,9 @@ public class RobotContainer {
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleStraight.csv")
           );
 
-      Command CubeAndStay = new SequentialCommandGroup(
+      Command CubeAndStayFront = new SequentialCommandGroup(
         new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHighFront.csv"),
         new SetRobotOrientationOnField(m_Drivetrain, 0.0) );
         
       Command ConeAndStay = new SequentialCommandGroup(
@@ -251,7 +251,7 @@ public class RobotContainer {
     m_chooser.addOption("Balance Only", CenterBalanceOnly);
     m_chooser.addOption("Cube and Balance", CenterCubeBalanceFast);
     m_chooser.addOption("Cone and Balance", CenterConeBalanceFast);
-    m_chooser.addOption("Over and Back", OverAndBack);
+    m_chooser.addOption("CubeFront+Over and Back", OverAndBackFront);
     m_chooser.addOption("Cube and Run", CubeAndRun);
     m_chooser.addOption("Two Cube - bump BLUE", TwoCubeBumpBLUE);
     m_chooser.addOption("Two Cube - bump RED", TwoCubeBumpRED);
@@ -261,10 +261,10 @@ public class RobotContainer {
     m_chooser.addOption("One Cone Run", OneConeRun);
     //m_chooser.addOption("2 cube run", BlueTwoCubeRun);
     m_chooser.addOption("Cone and stay", ConeAndStay);
-    m_chooser.addOption("Cube and stay", CubeAndStay);
+    m_chooser.addOption("CubeFront and stay", CubeAndStayFront);
     m_chooser.addOption("play dead", PlayDead);
 
-    m_chooser.addOption("test autodrive", testAutoDrive);
+    //m_chooser.addOption("test autodrive", testAutoDrive);
 
     //m_chooser.addOption("Barrel", new Barrel(m_drivetrain));
     SmartDashboard.putData("Auto choices", m_chooser);

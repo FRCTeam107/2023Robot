@@ -71,8 +71,8 @@ public class SkyHook extends SubsystemBase {
       public static final double TIER2SCORE_FRONT = -2050;//2200; // 111000;
       public static final double TIER3SCORE_FRONT = -2400;//2535; // 130000;
 
-      public static final double TIER2SCORE_BACK = 2350; //-162000;
-      public static final double TIER3SCORE_BACK = 2650; //-172000;
+      public static final double TIER2SCORE_BACK = 2100; //-162000;
+      public static final double TIER3SCORE_BACK = 2450; //-172000;
       }
   public static final class ExtensionPositions{
     static final double RETRACTLIMIT = 18.5;//28;//51;  //0; // actual limit (upper limit switch hit)
