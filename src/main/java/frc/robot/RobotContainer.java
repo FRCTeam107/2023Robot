@@ -129,23 +129,28 @@ public class RobotContainer {
     //     new AutoBalance(m_Drivetrain)
     //     );
 
+    Command LowConeBal = new SequentialCommandGroup(
+          new SetRobotOrientationOnField(m_Drivetrain, -180.0),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "lowconebal.csv"),
+          new AutoBalance(m_Drivetrain)
+          );
     Command OverAndBackFront = new SequentialCommandGroup(
-          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+          new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+          //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHighFront.csv"),
+          new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "overback180.csv"),
+          new AutoBalance(m_Drivetrain)
+          );
+      Command CenterCubeFrontBalanceFast = new SequentialCommandGroup(
+          new SetRobotOrientationOnField(m_Drivetrain, 180.0),
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHighFront.csv"),
-          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "over.csv"),
+          new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "centerbalancefast180.csv"),
           new AutoBalance(m_Drivetrain)
           );
-      Command CenterCubeBalanceFast = new SequentialCommandGroup(
-          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
-          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "centerbalancefast.csv"),
-          new AutoBalance(m_Drivetrain)
-          );
-      Command CenterBalanceOnly = new SequentialCommandGroup(
-            new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "centerbalancefast.csv"),
+      Command CenterFrontBalanceOnly = new SequentialCommandGroup(
+            new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "centerbalancefast180.csv"),
             new AutoBalance(m_Drivetrain)
             );
   
@@ -157,18 +162,18 @@ public class RobotContainer {
     //       new AutoBalance(m_Drivetrain)
     //       );
 
-     Command CenterConeBalanceFast = new SequentialCommandGroup(
-            new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
-            new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "centerbalancefast.csv"),
+     Command CenterConeFrontBalanceFast = new SequentialCommandGroup(
+            new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHighFront.csv"),
+            new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+            new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "centerbalancefast180.csv"),
             new AutoBalance(m_Drivetrain)
             );
-    Command CubeAndRun = new SequentialCommandGroup(
-        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHigh.csv"),
-        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleStraightRun.csv")
+    Command CubeFrontAndRun = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHighFront.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleStraightRun180.csv")
        );
 
     Command TwoCubeBumpBLUE = new SequentialCommandGroup(
@@ -206,22 +211,22 @@ public class RobotContainer {
             new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "runforcubemid_RED.csv")
             );
       
-    Command OneConeRun = new SequentialCommandGroup(
-          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
-          new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleStraight.csv")
+    Command OneConeFrontRun = new SequentialCommandGroup(
+          new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHighFront.csv"),
+          new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "SimpleStraight180.csv")
           );
 
-      Command CubeAndStayFront = new SequentialCommandGroup(
-        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
+      Command CubeFrontAndStayFront = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 180.0),
         new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHighFront.csv"),
-        new SetRobotOrientationOnField(m_Drivetrain, 0.0) );
+        new SetRobotOrientationOnField(m_Drivetrain, 180.0) );
         
-      Command ConeAndStay = new SequentialCommandGroup(
-        new SetRobotOrientationOnField(m_Drivetrain, 0.0),
-        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHigh.csv"),
-        new SetRobotOrientationOnField(m_Drivetrain, 0.0)
+      Command ConeFrontAndStay = new SequentialCommandGroup(
+        new SetRobotOrientationOnField(m_Drivetrain, 180.0),
+        new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreConeHighFront.csv"),
+        new SetRobotOrientationOnField(m_Drivetrain, 180.0)
         );
 
       Command testAutoDrive = new SequentialCommandGroup(
@@ -248,20 +253,21 @@ public class RobotContainer {
     // m_chooser.addOption("Center Cube+Balance", CenterCubeBalance);
     // m_chooser.addOption("Ctr Cone and Balance", CenterConeBalance);
 
-    m_chooser.addOption("Balance Only", CenterBalanceOnly);
-    m_chooser.addOption("Cube and Balance", CenterCubeBalanceFast);
-    m_chooser.addOption("Cone and Balance", CenterConeBalanceFast);
+    m_chooser.addOption("LowCone Front bal", LowConeBal);
+    m_chooser.addOption("Empty Front Balance Only", CenterFrontBalanceOnly);
+    m_chooser.addOption("Cube Front and Balance", CenterCubeFrontBalanceFast);
+    m_chooser.addOption("Cone Front and Balance", CenterConeFrontBalanceFast);
     m_chooser.addOption("CubeFront+Over and Back", OverAndBackFront);
-    m_chooser.addOption("Cube and Run", CubeAndRun);
+    m_chooser.addOption("Cube Front and Run", CubeFrontAndRun);
     m_chooser.addOption("Two Cube - bump BLUE", TwoCubeBumpBLUE);
     m_chooser.addOption("Two Cube - bump RED", TwoCubeBumpRED);
     m_chooser.addOption("Two cube - smooth BLUE", TwoCubeMidBlue);
     m_chooser.addOption("Two cube - smooth RED", TwoCubeMidREd);
     m_chooser.addOption("Two cube - original", TwoCubeMidX);
-    m_chooser.addOption("One Cone Run", OneConeRun);
+    m_chooser.addOption("One Cone Front Run", OneConeFrontRun);
     //m_chooser.addOption("2 cube run", BlueTwoCubeRun);
-    m_chooser.addOption("Cone and stay", ConeAndStay);
-    m_chooser.addOption("CubeFront and stay", CubeAndStayFront);
+    m_chooser.addOption("Cone Frontand stay", ConeFrontAndStay);
+    m_chooser.addOption("Cube Front and stay", CubeFrontAndStayFront);
     m_chooser.addOption("play dead", PlayDead);
 
     //m_chooser.addOption("test autodrive", testAutoDrive);
