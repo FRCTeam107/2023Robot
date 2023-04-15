@@ -63,11 +63,11 @@ public class SkyHook extends SubsystemBase {
       public static final double FULLBACK = 2500; //-165000;
       
 
-      public static final double GROUNDPICKUP_FRONT = -107;//2000;
-      public static final double UPRIGHTCONE_FRONT = -107;//2000;
+      public static final double GROUNDPICKUP_FRONT = -117;//2000;
+      public static final double UPRIGHTCONE_FRONT = -300;//2000;
       public static final double DRIVING = -10; //2000
       public static final double FEEDERPICKUP_FRONT = -900;//60000;
-      public static final double GROUNDSCORE_FRONT = -10;  //2000;
+      //public static final double GROUNDSCORE_FRONT = -10;  //2000;
       public static final double TIER2SCORE_FRONT = -2050;//2200; // 111000;
       public static final double TIER3SCORE_FRONT = -2400;//2535; // 130000;
 
@@ -75,13 +75,13 @@ public class SkyHook extends SubsystemBase {
       public static final double TIER3SCORE_BACK = 2450; //-172000;
       }
   public static final class ExtensionPositions{
-    static final double RETRACTLIMIT = 18.5;//28;//51;  //0; // actual limit (upper limit switch hit)
-    public static final double RETRACTED = 17.5;//27.5;//49;//-5; // advertised retracted position
+    static final double RETRACTLIMIT = 21;//28;//51;  //0; // actual limit (upper limit switch hit)
+    public static final double RETRACTED = 20.75;//27.5;//49;//-5; // advertised retracted position
     static final double STARTPOSITION = 0;//-85;
     public static final double EXTENDED = -35.5; //-61;//-100;//-100;
     static final double EXTENDLIMIT = -36;//-50;//-61.5;//-115; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 6;//7.5;//13;
-    public static final double UPRIGHTCONE_FRONT = 17.5;//27.5;
+    public static final double GROUNDPICKUP_FRONT = 9;//7.5;//13;
+    public static final double UPRIGHTCONE_FRONT = 19;//18;//27.5;
     public static final double DRIVING = RETRACTED;
     public static final double FEEDERPICKUP_FRONT = RETRACTED;
     // public static final double GROUNDSCORE_FRONT = 5;
@@ -96,12 +96,12 @@ public class SkyHook extends SubsystemBase {
     static final double SAFEPOSITIONMIN = 13;//28.5;//58; //setpoint=48
   }
   public static final class WristPositions{
-    static final double MINLIMIT = -1500;//-1500; //9000; // actual limit (upper limit switch hit)
-    public static final double FRONTFOLDUP = -1000;//-1500;//-8600; // advertised retracted position
+    static final double MINLIMIT = -1400;//-1500; //9000; // actual limit (upper limit switch hit)
+    public static final double FRONTFOLDUP = -1300;//-1500;//-8600; // advertised retracted position
     static final double STARTPOSITION = 0;//-9000;//-13000;
     public static final double BACKFOLDUP = 16500;
     static final double MAXLIMIT = 16500;//-9000; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 3000;
+    public static final double GROUNDPICKUP_FRONT = 2000;
     public static final double UPRIGHTCONE_FRONT = 3000;
     public static final double DRIVING = 10;
     public static final double FEEDERPICKUP_FRONT = -700;
@@ -117,8 +117,8 @@ static final class ExtensionConstants {
     static final double kP = 0.035; //0.05;
     static final double kI = 0.00001;
     static final double kD = 0;
-    static final double kIz = 5;
-    static final double kFF = 0.01;//.000015;
+    static final double kIz = 100;
+    static final double kFF = 0;//0.01;//.000015;
     static final double kMaxOutput = 1;
     static final double kMinOutput = -1;
   }
@@ -478,7 +478,7 @@ static final class ExtensionConstants {
     // }
 
     // if arm is not near to  or more away from desired position
-    if (Math.abs(GetArmPosition() - m_ArmSetpoint) > 100) {
+    if (Math.abs(GetArmPosition() - m_ArmSetpoint) > 107) {
       return true;  // arm not where requested
     }
     return false; // arm is safely where requested

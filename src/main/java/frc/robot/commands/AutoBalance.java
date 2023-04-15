@@ -73,7 +73,7 @@ public class AutoBalance extends CommandBase {
 
 
 // if we are in the final moments of auton, then lock the wheels
-      if ( edu.wpi.first.wpilibj.Timer.getMatchTime() < 0.25){
+      if (false &&  edu.wpi.first.wpilibj.Timer.getMatchTime() < 0.25){
         m_drivetrain.xFormat();
         balanceWaittimeout = 40;
         switchBackCounter = 0;
