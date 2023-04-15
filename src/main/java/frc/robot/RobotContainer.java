@@ -129,9 +129,9 @@ public class RobotContainer {
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "lowconebal.csv"),
           new AutoBalance(m_Drivetrain)
           );
-    Command OverAndBackFront = new SequentialCommandGroup(
+    Command CubeWithOverAndBackFront = new SequentialCommandGroup(
           new SetRobotOrientationOnField(m_Drivetrain, -180.0),
-          //new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHighFront.csv"),
+          new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "ScoreCubeHighFront.csv"),
           new SetRobotOrientationOnField(m_Drivetrain, -180.0),
           new ReplayFile(m_Drivetrain, m_skyHook, m_limelight, m_DataRecorder, "overback180.csv"),
           new AutoBalance(m_Drivetrain)
@@ -249,10 +249,10 @@ public class RobotContainer {
     // m_chooser.addOption("Ctr Cone and Balance", CenterConeBalance);
 
     m_chooser.addOption("LowCone Front bal", LowConeBal);
+    m_chooser.addOption("CubeFront+Over and Back", CubeWithOverAndBackFront);
     m_chooser.addOption("Empty Front Balance Only", CenterFrontBalanceOnly);
     m_chooser.addOption("Cube Front and Balance", CenterCubeFrontBalanceFast);
     m_chooser.addOption("Cone Front and Balance", CenterConeFrontBalanceFast);
-    m_chooser.addOption("CubeFront+Over and Back", OverAndBackFront);
     m_chooser.addOption("Cube Front and Run", CubeFrontAndRun);
     m_chooser.addOption("Two Cube - bump BLUE", TwoCubeBumpBLUE);
     m_chooser.addOption("Two Cube - bump RED", TwoCubeBumpRED);

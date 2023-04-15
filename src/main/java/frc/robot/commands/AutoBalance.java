@@ -41,20 +41,27 @@ public class AutoBalance extends CommandBase {
   public void execute() {
    
     double checkGyro = 0;
-    double multiplier = 0.0077;
-    double maxCorrection = 0.091;
+    double multiplier = 0.007;
+    double maxCorrection = 0.085;
     double rollCorrection = 0, pitchCorrection = 0;
 
     checkGyro = m_drivetrain.getRoll();
-    if (Math.abs(checkGyro) > 5.5 ) {
+    if (Math.abs(checkGyro) > 6 ) {
       rollCorrection = checkGyro * multiplier; 
       if (m_drivetrain.getYaw()<0){ rollCorrection *= -1; }
     }
 
     checkGyro = m_drivetrain.getPitch();
-    if (Math.abs(checkGyro) > 5.5 ) {
+    if (Math.abs(checkGyro) > 6 ) {
       pitchCorrection = checkGyro * multiplier;
       if (Math.abs(m_drivetrain.getYaw()) < 90) {pitchCorrection *= -1; }
+    }
+
+    // if robot orientation is not zero, invert things
+    //TODO: tidy up for angle offest of other than 180
+    if (Math.abs(m_drivetrain.getFieldOffsetAngle()) > 90){
+      rollCorrection *= -1;
+      pitchCorrection *= -1;
     }
 
     double BalanceCorrection = rollCorrection + pitchCorrection;
@@ -73,7 +80,7 @@ public class AutoBalance extends CommandBase {
 
 
 // if we are in the final moments of auton, then lock the wheels
-      if (false &&  edu.wpi.first.wpilibj.Timer.getMatchTime() < 0.25){
+      if (edu.wpi.first.wpilibj.Timer.getMatchTime() < 0.25){
         m_drivetrain.xFormat();
         balanceWaittimeout = 40;
         switchBackCounter = 0;

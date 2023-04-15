@@ -25,7 +25,7 @@ public class SetRobotOrientationOnField extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_Drivetrain.zeroHeading(fieldOffsetAngle);
+    m_Drivetrain.setFieldOffsetAngle(fieldOffsetAngle);
     m_Drivetrain.resetEncoders();
   }
 }

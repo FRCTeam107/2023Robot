@@ -96,8 +96,8 @@ public class SkyHook extends SubsystemBase {
     static final double SAFEPOSITIONMIN = 13;//28.5;//58; //setpoint=48
   }
   public static final class WristPositions{
-    static final double MINLIMIT = -1400;//-1500; //9000; // actual limit (upper limit switch hit)
-    public static final double FRONTFOLDUP = -1300;//-1500;//-8600; // advertised retracted position
+    static final double MINLIMIT = -1350;//-1500; //9000; // actual limit (upper limit switch hit)
+    public static final double FRONTFOLDUP = -1280;//-1500;//-8600; // advertised retracted position
     static final double STARTPOSITION = 0;//-9000;//-13000;
     public static final double BACKFOLDUP = 16500;
     static final double MAXLIMIT = 16500;//-9000; // fully extended position
@@ -118,7 +118,7 @@ static final class ExtensionConstants {
     static final double kI = 0.00001;
     static final double kD = 0;
     static final double kIz = 100;
-    static final double kFF = 0;//0.01;//.000015;
+    static final double kFF = 0.001;//0.01;//.000015;
     static final double kMaxOutput = 1;
     static final double kMinOutput = -1;
   }
