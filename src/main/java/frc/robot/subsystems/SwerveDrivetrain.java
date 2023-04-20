@@ -53,7 +53,9 @@ public class SwerveDrivetrain extends SubsystemBase {
   // public static double backLeftOffset = 130;//116.9;
   // public static double backRightOffset = 190;//304.8;
 
-
+// field offset angle
+  private double m_fieldOffsetAngle = 0;
+  
   public static AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
   // Odometry class for tracking robot pose
@@ -68,7 +70,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 
    public SwerveDrivetrain(double fieldOffsetAngle) {
     // gyro.reset(); 
-    zeroHeading(fieldOffsetAngle);  // at time of initializtion, assume a zero offset
+    setFieldOffsetAngle(fieldOffsetAngle);  // at time of initializtion, assume a zero offset
   
     m_frontLeft = new SwerveModuleMK3(new TalonFX(Motors.frontLeftDriveId), new TalonFX(Motors.frontLeftSteerId), new CANCoder(Motors.frontLeftCANCoderId), Rotation2d.fromDegrees(frontLeftOffset));
     m_frontRight = new SwerveModuleMK3(new TalonFX(Motors.frontRightDriveId), new TalonFX(Motors.frontRightSteerId), new CANCoder(Motors.frontRightCANCoderId), Rotation2d.fromDegrees(frontRightOffset));
@@ -193,10 +195,15 @@ public class SwerveDrivetrain extends SubsystemBase {
     }
   
     /** Zeroes the heading of the robot. Based on fieldOffsetAngle */
-    public void zeroHeading(double fieldOffsetAngle) {
+    public void setFieldOffsetAngle(double fieldOffsetAngle) {
       m_gyro.reset();
       m_gyro.setAngleAdjustment(fieldOffsetAngle);
-    } 
+      m_fieldOffsetAngle = fieldOffsetAngle;
+    }
+
+    public double getFieldOffsetAngle(){
+      return m_fieldOffsetAngle;
+    }
 
     public void xFormat(){
       m_frontLeft.setWheelLock(Rotation2d.fromDegrees(35));
