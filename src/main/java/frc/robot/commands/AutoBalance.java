@@ -46,13 +46,13 @@ public class AutoBalance extends CommandBase {
     double rollCorrection = 0, pitchCorrection = 0;
 
     checkGyro = m_drivetrain.getRoll();
-    if (Math.abs(checkGyro) > 6 ) {
+    if (Math.abs(checkGyro) > 7 ) {
       rollCorrection = checkGyro * multiplier; 
       if (m_drivetrain.getYaw()<0){ rollCorrection *= -1; }
     }
 
     checkGyro = m_drivetrain.getPitch();
-    if (Math.abs(checkGyro) > 6 ) {
+    if (Math.abs(checkGyro) > 7 ) {
       pitchCorrection = checkGyro * multiplier;
       if (Math.abs(m_drivetrain.getYaw()) < 90) {pitchCorrection *= -1; }
     }

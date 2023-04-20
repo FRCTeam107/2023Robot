@@ -49,6 +49,7 @@ import frc.robot.commands.SetRobotOrientationOnField;
 import frc.robot.subsystems.DataRecorder;
 //import frc.robot.subsystems.Intake;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.XFactor;
 //import frc.robot.commands.TransferToNextBar;
 //import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.LEDLights;
@@ -278,6 +279,10 @@ public class RobotContainer {
 
     JoystickButton btnAutoBalance = new JoystickButton(m_flightcontroller, FlightController.AUTO_BALANCE);    
     btnAutoBalance.whileTrue(new AutoBalance(m_Drivetrain));
+
+    JoystickButton btnXTheWheels = new JoystickButton(m_flightcontroller, FlightController.X_THE_WHEELS);    
+    btnXTheWheels.whileTrue(new XFactor(m_Drivetrain));
+
 
     JoystickButton btnWantACone = new JoystickButton(m_flightcontroller, FlightController.WANT_A_CONE);
     btnWantACone.onTrue(new LED_ColorSet(m_LEDLights, "cone"));
