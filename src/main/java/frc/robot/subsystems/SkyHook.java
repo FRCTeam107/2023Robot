@@ -80,7 +80,7 @@ public class SkyHook extends SubsystemBase {
     static final double STARTPOSITION = 0;//-85;
     public static final double EXTENDED = -35.5; //-61;//-100;//-100;
     static final double EXTENDLIMIT = -36;//-50;//-61.5;//-115; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 9;//7.5;//13;
+    public static final double GROUNDPICKUP_FRONT = 5;//7.5;//13;
     public static final double UPRIGHTCONE_FRONT = 19;//18;//27.5;
     public static final double DRIVING = RETRACTED;
     public static final double FEEDERPICKUP_FRONT = RETRACTED;
@@ -101,8 +101,8 @@ public class SkyHook extends SubsystemBase {
     static final double STARTPOSITION = 0;//-9000;//-13000;
     public static final double BACKFOLDUP = 16500;
     static final double MAXLIMIT = 16500;//-9000; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 2000;
-    public static final double UPRIGHTCONE_FRONT = 3000;
+    public static final double GROUNDPICKUP_FRONT = 1000;
+    public static final double UPRIGHTCONE_FRONT = 4000;
     public static final double DRIVING = 10;
     public static final double FEEDERPICKUP_FRONT = -700;
     public static final double GROUNDSCORE_FRONT = -1000;
