@@ -310,8 +310,8 @@ public class RobotContainer {
     JoystickButton btnGroundPickupFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.GROUNDPICKUP_FRONT);
     JoystickButton btnFeederPickupFront = new JoystickButton(m_controllerJoystick, ControllerJoystick.FEEDERPICKUP_FRONT);
 
-    JoystickButton btnScoreBackMid = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_BACK);
-    JoystickButton btnScoreBackHigh = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_BACKTIER3);
+    //JoystickButton btnScoreBackMid = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_BACK);
+    //JoystickButton btnScoreBackHigh = new JoystickButton(m_controllerJoystick, ControllerJoystick.SCORE_BACKTIER3);
 
     //JoystickButton btnCameraToggle = new JoystickButton(m_controllerJoystick, ControllerJoystick.CAMERA_TOGGLE);
     
@@ -356,11 +356,11 @@ public class RobotContainer {
       , ExtensionPositions.TIER3SCORE_FRONT, WristPositions.TIER3SCORE_FRONT, m_controllerJoystick));
 
     //btnScoreBack.onTrue(new SkyHook_ScoreBack(m_skyHook));
-    btnScoreBackMid.onTrue(new SkyHook_ScoringPlus(m_skyHook, ArmPositions.TIER2SCORE_BACK
-    , ExtensionPositions.TIER2SCORE_BACK, WristPositions.TIER2SCORE_BACK, m_controllerJoystick));
+    // btnScoreBackMid.onTrue(new SkyHook_ScoringPlus(m_skyHook, ArmPositions.TIER2SCORE_BACK
+    // , ExtensionPositions.TIER2SCORE_BACK, WristPositions.TIER2SCORE_BACK, m_controllerJoystick));
 
-    btnScoreBackHigh.onTrue(new SkyHook_ScoringPlus(m_skyHook,ArmPositions.TIER3SCORE_BACK
-      , ExtensionPositions.TIER3SCORE_BACK, WristPositions.TIER3SCORE_BACK, m_controllerJoystick));
+    // btnScoreBackHigh.onTrue(new SkyHook_ScoringPlus(m_skyHook,ArmPositions.TIER3SCORE_BACK
+    //   , ExtensionPositions.TIER3SCORE_BACK, WristPositions.TIER3SCORE_BACK, m_controllerJoystick));
 
     btnGroundPickupFront.onTrue(new SkyHook_Scoring(m_skyHook, ArmPositions.GROUNDPICKUP_FRONT
       , ExtensionPositions.GROUNDPICKUP_FRONT, WristPositions.GROUNDPICKUP_FRONT));
