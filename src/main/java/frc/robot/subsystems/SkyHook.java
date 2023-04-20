@@ -69,7 +69,7 @@ public class SkyHook extends SubsystemBase {
       public static final double FEEDERPICKUP_FRONT = -900;//60000;
       //public static final double GROUNDSCORE_FRONT = -10;  //2000;
       public static final double TIER2SCORE_FRONT = -2050;//2200; // 111000;
-      public static final double TIER3SCORE_FRONT = -2400;//2535; // 130000;
+      public static final double TIER3SCORE_FRONT = -2350;//2535; // 130000;
 
       public static final double TIER2SCORE_BACK = 2100; //-162000;
       public static final double TIER3SCORE_BACK = 2450; //-172000;
@@ -78,15 +78,15 @@ public class SkyHook extends SubsystemBase {
     static final double RETRACTLIMIT = 21;//28;//51;  //0; // actual limit (upper limit switch hit)
     public static final double RETRACTED = 20.75;//27.5;//49;//-5; // advertised retracted position
     static final double STARTPOSITION = 0;//-85;
-    public static final double EXTENDED = -35.5; //-61;//-100;//-100;
-    static final double EXTENDLIMIT = -36;//-50;//-61.5;//-115; // fully extended position
+    public static final double EXTENDED = -38.5; //-61;//-100;//-100;
+    static final double EXTENDLIMIT = -39;//-50;//-61.5;//-115; // fully extended position
     public static final double GROUNDPICKUP_FRONT = 5;//7.5;//13;
     public static final double UPRIGHTCONE_FRONT = 19;//18;//27.5;
     public static final double DRIVING = RETRACTED;
     public static final double FEEDERPICKUP_FRONT = RETRACTED;
     // public static final double GROUNDSCORE_FRONT = 5;
-    public static final double TIER2SCORE_FRONT = 7.5;// -2.9; //-4.5;//-10;
-    public static final double TIER3SCORE_FRONT = -35.5;//-62;//-115;
+    public static final double TIER2SCORE_FRONT = 5.5;// -2.9; //-4.5;//-10;
+    public static final double TIER3SCORE_FRONT = -38.5;//-62;//-115;
 
     public static final double TIER2SCORE_BACK = 6.5;//11.5; //20;
     public static final double TIER3SCORE_BACK = -35.5; //-61; //-110;
@@ -101,7 +101,7 @@ public class SkyHook extends SubsystemBase {
     static final double STARTPOSITION = 0;//-9000;//-13000;
     public static final double BACKFOLDUP = 16500;
     static final double MAXLIMIT = 16500;//-9000; // fully extended position
-    public static final double GROUNDPICKUP_FRONT = 1000;
+    public static final double GROUNDPICKUP_FRONT = 2200;
     public static final double UPRIGHTCONE_FRONT = 4000;
     public static final double DRIVING = 10;
     public static final double FEEDERPICKUP_FRONT = -700;

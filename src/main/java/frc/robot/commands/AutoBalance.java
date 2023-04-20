@@ -41,8 +41,8 @@ public class AutoBalance extends CommandBase {
   public void execute() {
    
     double checkGyro = 0;
-    double multiplier = 0.007;
-    double maxCorrection = 0.085;
+    double multiplier = 0.0065;
+    double maxCorrection = 0.08;
     double rollCorrection = 0, pitchCorrection = 0;
 
     checkGyro = m_drivetrain.getRoll();
